@@ -1,0 +1,134 @@
+const path = require('path');
+const logger = require('./logger');
+const fs = require('fs');
+
+class RefreshManager {
+    constructor(extendedConfig) {
+        this.windows = [];
+        this.interval = null;
+        this.extendedConfig = extendedConfig;
+
+        // Standardwerte (werden aus ExtendedConfig überschrieben)
+        this.refreshDelay = 30000;
+        this.overlayDelay = 1000;
+    }
+
+    async loadConfig() {
+        try {
+            const config = await this.extendedConfig.loadConfig();
+            this.refreshDelay = config.refresh?.intervalMs || this.refreshDelay;
+            this.overlayDelay = config.refresh?.overlayMinTimeMs || this.overlayDelay;
+            console.log('[REFRESH-MANAGER] Konfiguration geladen:', {
+                refreshDelay: this.refreshDelay,
+                overlayDelay: this.overlayDelay
+            });
+        } catch (err) {
+  logger.logError('[REFRESH-MANAGER] Fehler beim Laden der ExtendedConfig', err);
+}
+    }
+
+    addWindow(win, options) {
+    this.windows.push({
+        window: win,
+        url: options.url,
+        // Mindestabstand einstellen, damit Overlay niemals "sofort" kommt!
+        refreshDelay: Math.max(this.refreshDelay, 60000), // z.B. mind. 60 Sekunden
+        overlayDelay: options.overlayDelay || this.overlayDelay,
+        lastRefresh: Date.now(),      // <--- HIER wird der Timer gesetzt, sodass erst nach refreshDelay der erste Refresh kommt!
+        isRefreshing: false
+    });
+}
+
+    removeWindow(win) {
+        this.windows = this.windows.filter(w => w.window !== win);
+    }
+
+    startCoordinatedRefresh() {
+        if (this.interval) return;
+        console.log('[REFRESH-MANAGER] Starte koordinierten Refresh…');
+        this.interval = setInterval(() => {
+            const now = Date.now();
+            for (const w of this.windows) {
+                if (
+                    now - w.lastRefresh >= w.refreshDelay &&
+                    !w.isRefreshing // NEU: Nur, wenn kein Refresh läuft!
+                ) {
+                    this.refreshWindow(w);
+                }
+            }
+        }, 1000);
+    }
+
+    stopCoordinatedRefresh() {
+        if (this.interval) {
+            clearInterval(this.interval);
+            this.interval = null;
+            console.log('[REFRESH-MANAGER] Refresh gestoppt.');
+        }
+    }
+
+    isExcludedFromRefresh(url) {
+        const skipList = [
+            'https://shop.tiptorro.com/livescoretv',
+            'https://shop.tiptorro.com/livescoretv2'
+        ];
+        return skipList.some(base => url.startsWith(base));
+    }
+
+refreshWindow(windowData) {
+    const { window, url } = windowData;
+
+    if (!window || window.isDestroyed()) {
+        this.removeWindow(window);
+        return;
+    }
+    if (window.webContents.isLoading()) {
+        return;
+    }
+    if (this.isExcludedFromRefresh(url)) {
+        return;
+    }
+    if (windowData.isRefreshing) {
+        return;
+    }
+
+    windowData.isRefreshing = true;
+    windowData.lastRefresh = Date.now();
+
+try {
+    // Overlay EINblenden
+    window.webContents.executeJavaScript("window.overlayAPI && window.overlayAPI.showOverlay();")
+  .catch(err => logger.logError('[REFRESH-MANAGER] Fehler beim Overlay-Show', err));
+
+    // <<== Overlay bleibt overlayDelay Millisekunden sichtbar, erst dann reload!
+    setTimeout(() => {
+        window.webContents.once('did-finish-load', () => {
+            window.webContents.executeJavaScript("window.overlayAPI && window.overlayAPI.hideOverlay();")
+  .catch(err => logger.logError('[REFRESH-MANAGER] Fehler beim Overlay-Hide', err));
+            windowData.isRefreshing = false;
+            console.log('[REFRESH-MANAGER] Zielseite vollständig geladen, Overlay ausgeblendet');
+        });
+
+        window.loadURL(url)
+            .catch(err => {
+  windowData.isRefreshing = false;
+  window.webContents.executeJavaScript("window.overlayAPI && window.overlayAPI.hideOverlay();")
+    .catch(hideErr => logger.logError('[REFRESH-MANAGER] Fehler beim Overlay-Hide nach URL-Fehler', hideErr));
+  logger.logError('[REFRESH-MANAGER] Fehler beim Laden der Ziel-URL', err);
+});
+
+    }, windowData.overlayDelay || this.overlayDelay); // <<--- HIER wird overlayDelay verwendet!
+} catch (error) {
+  windowData.isRefreshing = false;
+  window.webContents.executeJavaScript("window.overlayAPI && window.overlayAPI.hideOverlay();")
+    .catch(hideErr => logger.logError('[REFRESH-MANAGER] Fehler beim Overlay-Hide nach Refresh-Fehler', hideErr));
+  logger.logError('[REFRESH-MANAGER] Fehler beim Refresh', error);
+}
+}
+    cleanup() {
+        console.log('[REFRESH-MANAGER] Cleanup');
+        this.stopCoordinatedRefresh();
+        this.windows = [];
+    }
+}
+module.exports = RefreshManager;

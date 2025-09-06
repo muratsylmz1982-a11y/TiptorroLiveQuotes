@@ -1,0 +1,35 @@
+﻿# Node/Electron
+node_modules/
+dist/
+out/
+build/
+electron-out/
+*.asar
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS/Editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+
+# Logs/Temp
+*.log
+logs/
+*.tmp
+*.bak
+*.swp
+*.orig
+
+# Installer/Artefakte
+*.msi
+*.exe
+*.appx
+*.zip
+/release/
+/artifacts/
+/installer/
+/installer-outputs/

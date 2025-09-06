@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://shop.tiptorro.com https://docs.google.com;">
+    <meta charset="UTF-8">
+    <title>TTQuotes - Erweiterte Einstellungen</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .settings-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .settings-section {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .settings-header {
+            background: rgba(38, 153, 71, 0.1);
+            border-bottom: 1px solid #333;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .settings-header h3 {
+            color: var(--tt-green);
+            margin: 0;
+            font-size: 16px;
+        }
+        
+        .settings-body {
+            padding: 20px;
+        }
+        
+        .setting-row {
+            display: grid;
+            grid-template-columns: 1fr 200px;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #222;
+        }
+        
+        .setting-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .setting-label {
+            color: var(--tt-white);
+            font-weight: 500;
+        }
+        
+        .setting-description {
+            color: var(--tt-gray);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        
+        .setting-control input,
+        .setting-control select {
+            width: 100%;
+            height: 35px;
+            background: #161816;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: var(--tt-white);
+            padding: 0 10px;
+            font-size: 13px;
+        }
+        
+        .setting-control input:focus,
+        .setting-control select:focus {
+            border-color: var(--tt-green);
+            box-shadow: 0 0 0 2px rgba(38, 153, 71, 0.2);
+            outline: none;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #333;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background: var(--tt-green);
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 10px;
+            transition: left 0.3s;
+        }
+        
+        .toggle-switch.active::after {
+            left: 28px;
+        }
+        
+        .actions-bar {
+            background: rgba(0, 0, 0, 0.8);
+            border-top: 1px solid #333;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            bottom: 0;
+        }
+        
+        .domain-list {
+            max-height: 100px;
+            overflow-y: auto;
+            border: 1px solid #333;
+            border-radius: 6px;
+            background: #161816;
+        }
+        
+        .domain-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border-bottom: 1px solid #222;
+        }
+        
+        .domain-item:last-child {
+            border-bottom: none;
+        }
+        
+        .domain-name {
+            color: var(--tt-white);
+            font-size: 13px;
+        }
+        
+        .remove-domain {
+            background: var(--tt-red);
+            color: white;
+            border: none;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        
+        .add-domain-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .add-domain-input {
+            flex: 1;
+            height: 30px;
+            background: #161816;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: var(--tt-white);
+            padding: 0 10px;
+            font-size: 12px;
+        }
+        
+        .add-domain-btn {
+            background: var(--tt-green);
+            color: var(--tt-white);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .status-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .status-message.success {
+            background: var(--tt-green);
+            color: white;
+        }
+        
+        .status-message.error {
+            background: var(--tt-red);
+            color: white;
+        }
+        
+        .status-message.show {
+            opacity: 1;
+        }
+        /* Analytics Modal */
+.modal-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:2000;opacity:0;pointer-events:none;transition:.3s}
+.modal-overlay.show{opacity:1;pointer-events:auto}
+.modal{background:#111;border:1px solid #333;border-radius:12px;padding:24px;max-width:600px;width:90%;color:#fff}
+.modal h3{margin-top:0;color:var(--green-dark)}
+.close-modal{position:absolute;top:12px;right:14px;background:transparent;border:0;font-size:20px;color:#999;cursor:pointer}
+    </style>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <div class="topbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #000; border-bottom: 1px solid #333;">
+        <div class="header-left" style="display: flex; align-items: center; gap: 15px; padding: 15px 20px;">
+            <button onclick="goBack()" class="btn" style="background: var(--tt-green); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+                ← Zurück
+            </button>
+            <h2 style="color: var(--tt-green); margin: 0;">🛠️ Erweiterte Einstellungen</h2>
+        </div>
+    </div>
+
+    <!-- Scrollbarer Content -->
+    <div class="content-container" style="margin-top: 80px; padding: 20px; height: calc(100vh - 100px); overflow-y: auto;">
+        
+        <!-- Werkzeuge & Monitoring -->
+        <div class="settings-section">
+            <div class="settings-header">
+                <h3>Verfügbare Tools</h3>
+            </div>
+            <div class="settings-body">
+                <!-- Refresh -->
+<div class="settings-section">
+  <div class="settings-header"><h3>🔄 Refresh-Einstellungen</h3></div>
+  <div class="settings-body">
+    <label>Automatischer Refresh
+      <input type="checkbox" id="refreshEnabled">
+    </label><br><br>
+    <label>Intervall (Sekunden)
+      <input type="number" id="refreshInterval" min="30" step="30" style="width:120px">
+    </label><br><br>
+    <label>Overlay-Min-Zeit (ms)
+      <input type="number" id="overlayMin" min="500" step="500" style="width:120px">
+    </label>
+  </div>
+</div>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-icon">📊</div>
+                        <h4>Performance Dashboard</h4>
+                        <p>Live-Metriken und System-Überwachung</p>
+                        <button class="tool-btn" onclick="openPerformanceDashboard()">Dashboard öffnen</button>
+                        <div class="tool-status" id="performanceStatus">Bereit</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">🔄</div>
+                        <h4>Update-Prüfung</h4>
+                        <p>Auf neue App-Versionen prüfen</p>
+                        <button class="tool-btn" onclick="checkForUpdates()">Jetzt prüfen</button>
+                        <div class="tool-status" id="updateStatus">Zuletzt: Nie</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">📈</div>
+                        <h4>Analytics-Report</h4>
+                        <p>Nutzungsstatistiken anzeigen</p>
+                        <button class="tool-btn" onclick="showAnalyticsReport()">Report anzeigen</button>
+                        <div class="tool-status" id="analyticsStatus">–</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">🧪</div>
+                        <h4>System-Tests</h4>
+                        <p>Unit-Tests ausführen</p>
+                        <button class="tool-btn" onclick="runSystemTests()">Tests starten</button>
+                        <div class="tool-status" id="testStatus">Bereit</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Actions Bar -->
+<div class="actions-bar">
+  <button class="action-btn" onclick="saveSettings()">💾 Einstellungen speichern</button>
+  <button class="action-btn secondary" onclick="loadSettings()">🔄 Neu laden</button>
+  <button class="action-btn error" onclick="resetSettings()">⚠️ Auf Standard zurücksetzen</button>
+  <!-- Statusanzeige -->
+<div id="statusMessage" class="status-message"></div>
+</div>
+<!-- Analytics Modal -->
+<div id="analyticsModal" class="modal-overlay">
+  <div class="modal">
+    <button class="close-modal" onclick="hideAnalyticsModal()">×</button>
+    <h3>📈 Analytics Report</h3>
+    <pre id="analyticsContent" style="white-space:pre-wrap;font-size:12px;color:#ddd"></pre>
+  </div>
+</div>
+</body>
+<script>
+    function goBack() {
+        window.location.href = 'index.html';
+    }
+
+    async function openPerformanceDashboard() {
+        try {
+            await window.electronAPI.openPerformanceDashboard();
+            document.getElementById('performanceStatus').textContent = 'Dashboard geöffnet ✓';
+        } catch (e) {
+            document.getElementById('performanceStatus').textContent = 'Fehler ✗';
+            console.error(e);
+        }
+    }
+
+    async function checkForUpdates() {
+        document.getElementById('updateStatus').textContent = 'Prüfung läuft...';
+        try {
+            const res = await window.electronAPI.checkForUpdates();
+            document.getElementById('updateStatus').textContent = res.hasUpdate
+                ? `Update verfügbar: v${res.version}`
+                : 'App ist aktuell ✓';
+        } catch (e) {
+            document.getElementById('updateStatus').textContent = 'Fehler ✗';
+            console.error(e);
+        }
+    }
+
+    async function showAnalyticsReport(){
+        const modal = document.getElementById('analyticsModal');
+        const pre = document.getElementById('analyticsContent');
+        pre.textContent = 'Lade ...';
+        modal.classList.add('show');
+        try {
+            const report = await window.electronAPI.getAnalyticsReport();
+            pre.textContent = JSON.stringify(report, null, 2);
+            document.getElementById('analyticsStatus').textContent = `${report.stats?.totalEvents||0} Events ✓`;
+        } catch(e) {
+            pre.textContent = 'Fehler beim Laden.';
+            console.error(e);
+        }
+    }
+
+    function hideAnalyticsModal() {
+        document.getElementById('analyticsModal').classList.remove('show');
+    }
+
+    async function runSystemTests() {
+        document.getElementById('testStatus').textContent = 'Tests laufen...';
+        try {
+            const result = await window.electronAPI.runSystemTests();
+            document.getElementById('testStatus').textContent = `${result.testsPassed}/${result.testsRun} Tests bestanden ✓`;
+        } catch (e) {
+            document.getElementById('testStatus').textContent = 'Fehler ✗';
+            console.error(e);
+        }
+    }
+
+    // Lädt aktuelle Konfiguration
+    async function loadSettings() {
+        try {
+            const currentConfig = await window.electronAPI.getExtendedConfig();
+            if (currentConfig) {
+                document.getElementById('refreshEnabled').checked = currentConfig.refresh?.enabled || false;
+                document.getElementById('refreshInterval').value = (currentConfig.refresh?.intervalMs || 30000) / 1000;
+                document.getElementById('overlayMin').value = currentConfig.refresh?.overlayMinTimeMs || 2000;
+            }
+        } catch (e) {
+            console.error('Fehler beim Laden der Einstellungen:', e);
+        }
+
+    }
+
+   // Speichert Konfiguration
+async function saveSettings() {
+    const newConfig = {
+        refresh: {
+            enabled: document.getElementById('refreshEnabled').checked,
+            intervalMs: parseInt(document.getElementById('refreshInterval').value) * 1000,
+            overlayMinTimeMs: parseInt(document.getElementById('overlayMin').value)
+        }
+    };
+
+    try {
+        // Konfiguration speichern
+        const successConfig = await window.electronAPI.saveExtendedConfig(newConfig);
+window.electronAPI.send('config-updated');
+
+        // Statusmeldung
+        if (successConfig && successAS) {
+            showStatus('Einstellungen & Auto-Start gespeichert ✓', 'success');
+        } else {
+            throw new Error('Save fehlgeschlagen');
+        }
+    } catch (err) {
+        showStatus('Fehler beim Speichern ✗', 'error');
+        console.error(err);
+    }
+}
+
+
+    // Setzt auf Standard zurück
+    async function resetSettings() {
+        if (confirm('Alle Einstellungen auf Standard zurücksetzen?')) {
+            try {
+                const success = await window.electronAPI.resetExtendedConfig();
+                if (success) {
+                    await loadSettings(); // Neu laden
+                    showStatus('Einstellungen zurückgesetzt ✓', 'success');
+                }
+            } catch (err) {
+                showStatus('Fehler beim Zurücksetzen ✗', 'error');
+                console.error(err);
+            }
+        }
+    }
+
+    // Status-Nachricht anzeigen
+    function showStatus(message, type) {
+        const statusEl = document.getElementById('statusMessage');
+        if (statusEl) {
+            statusEl.textContent = message;
+            statusEl.className = `status-message ${type} show`;
+            setTimeout(() => {
+                statusEl.classList.remove('show');
+            }, 3000);
+        }
+    }
+    // Auto-Start Toggle
+  document.getElementById('autoStartSwitch').addEventListener('click', evt => {
+    evt.currentTarget.classList.toggle('active');
+  });
+    // ESC schließt Modal
+    document.addEventListener('keydown', evt => {
+        if (evt.key === 'Escape') hideAnalyticsModal();
+    });
+
+    // Beim Laden der Seite: Settings laden
+    document.addEventListener('DOMContentLoaded', loadSettings);
+    
+</script>
+
+</html>
