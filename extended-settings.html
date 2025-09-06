@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://shop.tiptorro.com https://docs.google.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; connect-src 'self' https:; frame-src https:; object-src 'none'; base-uri 'self'; form-action 'self';">
     <meta charset="UTF-8">
     <title>TTQuotes - Erweiterte Einstellungen</title>
     <link rel="stylesheet" href="style.css">
@@ -224,9 +224,9 @@
     <div class="topbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #000; border-bottom: 1px solid #333;">
         <div class="header-left" style="display: flex; align-items: center; gap: 15px; padding: 15px 20px;">
             <button onclick="goBack()" class="btn" style="background: var(--tt-green); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
-                ← Zurück
+                â† ZurÃ¼ck
             </button>
-            <h2 style="color: var(--tt-green); margin: 0;">🛠️ Erweiterte Einstellungen</h2>
+            <h2 style="color: var(--tt-green); margin: 0;">ðŸ› ï¸ Erweiterte Einstellungen</h2>
         </div>
     </div>
 
@@ -236,12 +236,12 @@
         <!-- Werkzeuge & Monitoring -->
         <div class="settings-section">
             <div class="settings-header">
-                <h3>Verfügbare Tools</h3>
+                <h3>VerfÃ¼gbare Tools</h3>
             </div>
             <div class="settings-body">
                 <!-- Refresh -->
 <div class="settings-section">
-  <div class="settings-header"><h3>🔄 Refresh-Einstellungen</h3></div>
+  <div class="settings-header"><h3>ðŸ”„ Refresh-Einstellungen</h3></div>
   <div class="settings-body">
     <label>Automatischer Refresh
       <input type="checkbox" id="refreshEnabled">
@@ -256,33 +256,33 @@
 </div>
                 <div class="tools-grid">
                     <div class="tool-card">
-                        <div class="tool-icon">📊</div>
+                        <div class="tool-icon">ðŸ“Š</div>
                         <h4>Performance Dashboard</h4>
-                        <p>Live-Metriken und System-Überwachung</p>
-                        <button class="tool-btn" onclick="openPerformanceDashboard()">Dashboard öffnen</button>
+                        <p>Live-Metriken und System-Ãœberwachung</p>
+                        <button class="tool-btn" onclick="openPerformanceDashboard()">Dashboard Ã¶ffnen</button>
                         <div class="tool-status" id="performanceStatus">Bereit</div>
                     </div>
                     
                     <div class="tool-card">
-                        <div class="tool-icon">🔄</div>
-                        <h4>Update-Prüfung</h4>
-                        <p>Auf neue App-Versionen prüfen</p>
-                        <button class="tool-btn" onclick="checkForUpdates()">Jetzt prüfen</button>
+                        <div class="tool-icon">ðŸ”„</div>
+                        <h4>Update-PrÃ¼fung</h4>
+                        <p>Auf neue App-Versionen prÃ¼fen</p>
+                        <button class="tool-btn" onclick="checkForUpdates()">Jetzt prÃ¼fen</button>
                         <div class="tool-status" id="updateStatus">Zuletzt: Nie</div>
                     </div>
                     
                     <div class="tool-card">
-                        <div class="tool-icon">📈</div>
+                        <div class="tool-icon">ðŸ“ˆ</div>
                         <h4>Analytics-Report</h4>
                         <p>Nutzungsstatistiken anzeigen</p>
                         <button class="tool-btn" onclick="showAnalyticsReport()">Report anzeigen</button>
-                        <div class="tool-status" id="analyticsStatus">–</div>
+                        <div class="tool-status" id="analyticsStatus">â€“</div>
                     </div>
                     
                     <div class="tool-card">
-                        <div class="tool-icon">🧪</div>
+                        <div class="tool-icon">ðŸ§ª</div>
                         <h4>System-Tests</h4>
-                        <p>Unit-Tests ausführen</p>
+                        <p>Unit-Tests ausfÃ¼hren</p>
                         <button class="tool-btn" onclick="runSystemTests()">Tests starten</button>
                         <div class="tool-status" id="testStatus">Bereit</div>
                     </div>
@@ -292,17 +292,17 @@
     </div>
     <!-- Actions Bar -->
 <div class="actions-bar">
-  <button class="action-btn" onclick="saveSettings()">💾 Einstellungen speichern</button>
-  <button class="action-btn secondary" onclick="loadSettings()">🔄 Neu laden</button>
-  <button class="action-btn error" onclick="resetSettings()">⚠️ Auf Standard zurücksetzen</button>
+  <button class="action-btn" onclick="saveSettings()">ðŸ’¾ Einstellungen speichern</button>
+  <button class="action-btn secondary" onclick="loadSettings()">ðŸ”„ Neu laden</button>
+  <button class="action-btn error" onclick="resetSettings()">âš ï¸ Auf Standard zurÃ¼cksetzen</button>
   <!-- Statusanzeige -->
 <div id="statusMessage" class="status-message"></div>
 </div>
 <!-- Analytics Modal -->
 <div id="analyticsModal" class="modal-overlay">
   <div class="modal">
-    <button class="close-modal" onclick="hideAnalyticsModal()">×</button>
-    <h3>📈 Analytics Report</h3>
+    <button class="close-modal" onclick="hideAnalyticsModal()">Ã—</button>
+    <h3>ðŸ“ˆ Analytics Report</h3>
     <pre id="analyticsContent" style="white-space:pre-wrap;font-size:12px;color:#ddd"></pre>
   </div>
 </div>
@@ -315,22 +315,22 @@
     async function openPerformanceDashboard() {
         try {
             await window.electronAPI.openPerformanceDashboard();
-            document.getElementById('performanceStatus').textContent = 'Dashboard geöffnet ✓';
+            document.getElementById('performanceStatus').textContent = 'Dashboard geÃ¶ffnet âœ“';
         } catch (e) {
-            document.getElementById('performanceStatus').textContent = 'Fehler ✗';
+            document.getElementById('performanceStatus').textContent = 'Fehler âœ—';
             console.error(e);
         }
     }
 
     async function checkForUpdates() {
-        document.getElementById('updateStatus').textContent = 'Prüfung läuft...';
+        document.getElementById('updateStatus').textContent = 'PrÃ¼fung lÃ¤uft...';
         try {
             const res = await window.electronAPI.checkForUpdates();
             document.getElementById('updateStatus').textContent = res.hasUpdate
-                ? `Update verfügbar: v${res.version}`
-                : 'App ist aktuell ✓';
+                ? `Update verfÃ¼gbar: v${res.version}`
+                : 'App ist aktuell âœ“';
         } catch (e) {
-            document.getElementById('updateStatus').textContent = 'Fehler ✗';
+            document.getElementById('updateStatus').textContent = 'Fehler âœ—';
             console.error(e);
         }
     }
@@ -343,7 +343,7 @@
         try {
             const report = await window.electronAPI.getAnalyticsReport();
             pre.textContent = JSON.stringify(report, null, 2);
-            document.getElementById('analyticsStatus').textContent = `${report.stats?.totalEvents||0} Events ✓`;
+            document.getElementById('analyticsStatus').textContent = `${report.stats?.totalEvents||0} Events âœ“`;
         } catch(e) {
             pre.textContent = 'Fehler beim Laden.';
             console.error(e);
@@ -358,14 +358,14 @@
         document.getElementById('testStatus').textContent = 'Tests laufen...';
         try {
             const result = await window.electronAPI.runSystemTests();
-            document.getElementById('testStatus').textContent = `${result.testsPassed}/${result.testsRun} Tests bestanden ✓`;
+            document.getElementById('testStatus').textContent = `${result.testsPassed}/${result.testsRun} Tests bestanden âœ“`;
         } catch (e) {
-            document.getElementById('testStatus').textContent = 'Fehler ✗';
+            document.getElementById('testStatus').textContent = 'Fehler âœ—';
             console.error(e);
         }
     }
 
-    // Lädt aktuelle Konfiguration
+    // LÃ¤dt aktuelle Konfiguration
     async function loadSettings() {
         try {
             const currentConfig = await window.electronAPI.getExtendedConfig();
@@ -397,28 +397,28 @@ window.electronAPI.send('config-updated');
 
         // Statusmeldung
         if (successConfig && successAS) {
-            showStatus('Einstellungen & Auto-Start gespeichert ✓', 'success');
+            showStatus('Einstellungen & Auto-Start gespeichert âœ“', 'success');
         } else {
             throw new Error('Save fehlgeschlagen');
         }
     } catch (err) {
-        showStatus('Fehler beim Speichern ✗', 'error');
+        showStatus('Fehler beim Speichern âœ—', 'error');
         console.error(err);
     }
 }
 
 
-    // Setzt auf Standard zurück
+    // Setzt auf Standard zurÃ¼ck
     async function resetSettings() {
-        if (confirm('Alle Einstellungen auf Standard zurücksetzen?')) {
+        if (confirm('Alle Einstellungen auf Standard zurÃ¼cksetzen?')) {
             try {
                 const success = await window.electronAPI.resetExtendedConfig();
                 if (success) {
                     await loadSettings(); // Neu laden
-                    showStatus('Einstellungen zurückgesetzt ✓', 'success');
+                    showStatus('Einstellungen zurÃ¼ckgesetzt âœ“', 'success');
                 }
             } catch (err) {
-                showStatus('Fehler beim Zurücksetzen ✗', 'error');
+                showStatus('Fehler beim ZurÃ¼cksetzen âœ—', 'error');
                 console.error(err);
             }
         }
@@ -439,7 +439,7 @@ window.electronAPI.send('config-updated');
   document.getElementById('autoStartSwitch').addEventListener('click', evt => {
     evt.currentTarget.classList.toggle('active');
   });
-    // ESC schließt Modal
+    // ESC schlieÃŸt Modal
     document.addEventListener('keydown', evt => {
         if (evt.key === 'Escape') hideAnalyticsModal();
     });
