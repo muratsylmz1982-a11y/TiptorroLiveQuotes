@@ -40,6 +40,7 @@ function hideStatus() {
 window.addEventListener('DOMContentLoaded', async () => {
     displays = await window.electronAPI.getDisplays();
     favorites = await window.electronAPI.getFavorites();
+    try { showAllowlistBadge(); } catch {};
 
     if (!Array.isArray(favorites)) favorites = [];
 
@@ -403,6 +404,25 @@ function updateFavoriteDropdowns() {
     });
 }
 
+async function showAllowlistBadge() {
+  const el = document.getElementById('allowlist-badge');
+  if (!el || !window.electronAPI?.getAllowlistStatus) return;
+  try {
+    const st = await window.electronAPI.getAllowlistStatus();
+    el.hidden = false;
+    if (st?.enforce) {
+      el.textContent = 'Allowlist aktiv (ENFORCE)';
+      el.classList.remove('gray');
+      el.classList.add('green');
+    } else {
+      el.textContent = 'Allowlist Monitor-Only';
+      el.classList.remove('green');
+      el.classList.add('gray');
+    }
+  } catch {}
+}
+
+
 // ------------------- BESTEHENDE FUNKTIONEN ---------------------
 function startApp() {
     const configs = [];
@@ -438,6 +458,7 @@ window.electronAPI.onMissingDisplays((event, missingDisplays) => {
         alert(message);
     }
 });
+
 
 function openPreviewWindow(monitorIndex) {
     const urlInput = document.querySelector(`input[data-monitor="${monitorIndex}"]`);

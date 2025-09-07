@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; connect-src 'self' https:; frame-src https:; object-src 'none'; base-uri 'self'; form-action 'self';">
@@ -7,6 +7,11 @@
   <title>TTQuotes - Live TV Config</title>
   <link href="https://fonts.googleapis.com/css?family=Inter:400,500,600,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+<style>
+  .badge{padding:4px 10px;border-radius:9999px;font-size:12px;font-weight:600;display:inline-block}
+  .badge.green{background:#16a34a;color:#fff}
+  .badge.gray{background:#6b7280;color:#fff}
+</style>
 </head>
 <body>
   <div id="config-main">
@@ -21,6 +26,7 @@
           <span>System Online</span>
         </div>
         <span id="display-count">0 TV-Ger&auml;te erkannt</span>
+        <span id="allowlist-badge" class="badge gray" hidden>Allowlist</span>
       </div>
     </div>
 

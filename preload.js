@@ -27,6 +27,7 @@ window.addEventListener('message', (event) => {
 contextBridge.exposeInMainWorld('electronAPI', {
   getAutostartStatus: () => ipcRenderer.invoke('get-autostart'),
   toggleAutostart: (enable) => ipcRenderer.invoke('toggle-autostart', enable),
+  getAllowlistStatus: () => ipcRenderer.invoke('allowlist:getStatus'),
   getCurrentConfig: () => ipcRenderer.invoke('get-current-config'),
   getDisplays: () => ipcRenderer.invoke('get-displays'),
   getFavorites: () => ipcRenderer.invoke('get-favorites'),

@@ -1,4 +1,4 @@
-﻿const { safeLoadUrl } = require('./modules/safeLoad');
+const { safeLoadUrl } = require('./modules/safeLoad');
 /* ===== TTQ early session hardening (must run before any BrowserWindow) ===== */
 try {
   const { hardenSession, hardenWebContents } = require('./modules/security');
@@ -64,6 +64,12 @@ ipcMain.handle('toggle-autostart', async (event, enable) => {
     return false;
   }
 });
+
+ipcMain.handle('allowlist:getStatus', () => {
+  const cfg = allowlist.readConfig();
+  return { enforce: cfg.enforce, origins: cfg.origins, prefixes: cfg.prefixes };
+});
+
 // âœ… ExtendedConfig + RefreshManager Ã¼ber Singleton
 const { getRefreshManager } = require('./modules/refreshManagerSingleton');
 const refreshManager = getRefreshManager(app);
