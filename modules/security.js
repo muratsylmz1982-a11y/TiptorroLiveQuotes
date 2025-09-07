@@ -1,33 +1,53 @@
 ﻿const { shell } = require('electron');
-const { isAllowedUrl } = require('./allowlist');
+const { isAllowedUrl, ENFORCE } = require('./allowlist');
 
 function hardenWebContents(wc) {
-  // Blockt Navigations zu nicht erlaubten Zielen (öffnet sie extern)
+  // Blockt Navigations innerhalb des Fensters
   wc.on('will-navigate', (event, url) => {
     if (!isAllowedUrl(url)) {
-      event.preventDefault();
-      shell.openExternal(url).catch(() => {});
+      if (ENFORCE) {
+        event.preventDefault();
+        try { shell.openExternal(url); } catch {}
+      } else {
+        // Monitor-Only: erlauben, aber Hinweis in Konsole (bereits in isAllowedUrl)
+      }
     }
   });
 
-  // Neue Fenster/Popups nur erlauben, wenn Domain auf Allowlist steht
+  // Steuert Popups/target=_blank
   wc.setWindowOpenHandler(({ url }) => {
     if (isAllowedUrl(url)) return { action: 'allow' };
-    shell.openExternal(url).catch(() => {});
+    try { shell.openExternal(url); } catch {}
     return { action: 'deny' };
   });
 
-  // Hardening (kleine Zusatzmaßnahme)
+  // Kleine Zusatz-Härtung im Renderer
   wc.on('dom-ready', () => {
-    wc.executeJavaScript('try{window.eval=undefined}catch(e){}').catch(() => {});
+    try { wc.executeJavaScript('try{window.eval=undefined}catch(e){}'); } catch {}
   });
 }
 
 function hardenSession(sess) {
-  // Standardmäßig alle Berechtigungen verweigern (Mikrofon, Kamera, etc.)
-  sess.setPermissionRequestHandler((_wc, _permission, callback) => {
-    callback(false);
-  });
+  // Standardmäßig keine Sonderberechtigungen
+  sess.setPermissionRequestHandler((_wc, _permission, callback) => callback(false));
+
+  // **Zuverlässiger Request-Filter** (greift auch bei loadURL)
+  try {
+    sess.webRequest.onBeforeRequest(
+      { urls: ['http://*/*', 'https://*/*'] },
+      (details, callback) => {
+        const url = details.url;
+        if (isAllowedUrl(url)) return callback({ cancel: false });
+
+        if (ENFORCE) {
+          try { console.warn('[allowlist][block]', url); } catch {}
+          return callback({ cancel: true });
+        }
+        try { console.warn('[allowlist][monitor]', url); } catch {}
+        return callback({ cancel: false });
+      }
+    );
+  } catch {}
 }
 
 module.exports = { hardenWebContents, hardenSession };
