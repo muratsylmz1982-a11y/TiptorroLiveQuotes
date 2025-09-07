@@ -1,14 +1,15 @@
-const path = require('path');
+﻿const path = require('path');
 const logger = require('./logger');
 const fs = require('fs');
 
 class RefreshManager {
     constructor(extendedConfig) {
+        this.isRunning = false;
         this.windows = [];
         this.interval = null;
         this.extendedConfig = extendedConfig;
 
-        // Standardwerte (werden aus ExtendedConfig überschrieben)
+        // Standardwerte (werden aus ExtendedConfig Ã¼berschrieben)
         this.refreshDelay = 30000;
         this.overlayDelay = 1000;
     }
@@ -27,10 +28,10 @@ class RefreshManager {
 }
     }
 
-    addWindow(win, options) {
+    addWindow(win, options = {}) {
     this.windows.push({
         window: win,
-        url: options.url,
+        url: (options && options.url) ? options.url : "about:blank",
         // Mindestabstand einstellen, damit Overlay niemals "sofort" kommt!
         refreshDelay: Math.max(this.refreshDelay, 60000), // z.B. mind. 60 Sekunden
         overlayDelay: options.overlayDelay || this.overlayDelay,
@@ -44,14 +45,15 @@ class RefreshManager {
     }
 
     startCoordinatedRefresh() {
+        this.isRunning = true;
         if (this.interval) return;
-        console.log('[REFRESH-MANAGER] Starte koordinierten Refresh…');
+        console.log('[REFRESH-MANAGER] Starte koordinierten Refreshâ€¦');
         this.interval = setInterval(() => {
             const now = Date.now();
             for (const w of this.windows) {
                 if (
                     now - w.lastRefresh >= w.refreshDelay &&
-                    !w.isRefreshing // NEU: Nur, wenn kein Refresh läuft!
+                    !w.isRefreshing // NEU: Nur, wenn kein Refresh lÃ¤uft!
                 ) {
                     this.refreshWindow(w);
                 }
@@ -60,6 +62,7 @@ class RefreshManager {
     }
 
     stopCoordinatedRefresh() {
+        this.isRunning = false;
         if (this.interval) {
             clearInterval(this.interval);
             this.interval = null;
@@ -106,7 +109,7 @@ try {
             window.webContents.executeJavaScript("window.overlayAPI && window.overlayAPI.hideOverlay();")
   .catch(err => logger.logError('[REFRESH-MANAGER] Fehler beim Overlay-Hide', err));
             windowData.isRefreshing = false;
-            console.log('[REFRESH-MANAGER] Zielseite vollständig geladen, Overlay ausgeblendet');
+            console.log('[REFRESH-MANAGER] Zielseite vollstÃ¤ndig geladen, Overlay ausgeblendet');
         });
 
         window.loadURL(url)
@@ -132,3 +135,4 @@ try {
     }
 }
 module.exports = RefreshManager;
+
