@@ -120,7 +120,9 @@ function createConfigWindow() {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
-            nodeIntegration: false
+            nodeIntegration: false,
+            enableRemoteModule: false,
+            webSecurity: true
         }
     });
 
@@ -178,7 +180,9 @@ function openPerformanceDashboard() {
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'preload.js'),
+            enableRemoteModule: false,
+            webSecurity: true
         }
     });
     
@@ -212,7 +216,9 @@ function openExtendedSettings() {
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'preload.js'),
+            enableRemoteModule: false,
+            webSecurity: true
         }
     });
     
@@ -334,7 +340,9 @@ killTicketchecker();
                         height: display.bounds.height,
                         webPreferences: {
                             nodeIntegration: false,
-                            contextIsolation: true
+                            contextIsolation: true,
+                            enableRemoteModule: false,
+                            webSecurity: true
                         }
                     });
                     win.setMenuBarVisibility(false);
@@ -388,7 +396,7 @@ killTicketchecker();
                         y: display.bounds.y,
                         width: display.bounds.width,
                         height: display.bounds.height,
-                        webPreferences: { nodeIntegration: false, contextIsolation: true }
+                        webPreferences: { nodeIntegration: false, contextIsolation: true, enableRemoteModule: false, webSecurity: true }
                     });
                     win.setMenuBarVisibility(false);
                     win.webContents.setUserAgent(
