@@ -1,6 +1,33 @@
+﻿/* ===== TTQ early session hardening (must run before any BrowserWindow) ===== */
+try {
+  const { hardenSession, hardenWebContents } = require('./modules/security');
+  const { app, session } = require('electron');
+
+  // Default-Session sofort härten (nur einmal)
+  if (session && session.defaultSession && !session.defaultSession.__ttqHardened) {
+    hardenSession(session.defaultSession);
+    session.defaultSession.__ttqHardened = true;
+  }
+
+  // Zukünftige Sessions ebenfalls härten
+  app.on('session-created', (sess) => {
+    try {
+      if (!sess.__ttqHardened) {
+        hardenSession(sess);
+        sess.__ttqHardened = true;
+      }
+    } catch {}
+  });
+
+  // Jedes neue Fenster absichern (Navigation/Popups)
+  app.on('browser-window-created', (_e, win) => {
+    try { hardenWebContents(win.webContents); } catch {}
+  });
+} catch {}
+/* ===== end TTQ early session hardening ===== */
 const { app, BrowserWindow, screen, ipcMain, globalShortcut } = require('electron');
 const { createDisplayWindow, closeTicketcheckerWindow: killTicketchecker } = require('./modules/displays');
-// Erlaubt Kamera, USB und Serial nur für Ticketchecker-Seite
+// Erlaubt Kamera, USB und Serial nur fÃ¼r Ticketchecker-Seite
 app.on('web-contents-created', (event, contents) => {
   contents.session.setPermissionRequestHandler((webContents, permission, callback) => {
     const url = webContents.getURL();
@@ -36,20 +63,20 @@ ipcMain.handle('toggle-autostart', async (event, enable) => {
     return false;
   }
 });
-// ✅ ExtendedConfig + RefreshManager über Singleton
+// âœ… ExtendedConfig + RefreshManager Ã¼ber Singleton
 const { getRefreshManager } = require('./modules/refreshManagerSingleton');
 const refreshManager = getRefreshManager(app);
 
-// Optional global verfügbar machen:
+// Optional global verfÃ¼gbar machen:
 global.refreshManager = refreshManager;
-// --- Cleanup alte Auto-Start-Einträge via app.setLoginItemSettings ---
+// --- Cleanup alte Auto-Start-EintrÃ¤ge via app.setLoginItemSettings ---
 app.whenReady().then(() => {
   app.setLoginItemSettings({
     openAtLogin: false,
     path: process.execPath,
     args: []
   });
-  console.log('[AUTO-START] Alte Login-Item-Einträge entfernt');
+  console.log('[AUTO-START] Alte Login-Item-EintrÃ¤ge entfernt');
 });
 const { zeigeWartebildschirme, schliesseWartebildschirme } = require('./modules/wartebildschirme');
 const WindowManager = require('./modules/WindowManager');
@@ -72,7 +99,7 @@ ipcMain.on('config-updated', async () => {
     w.lastRefresh = Date.now(); // <--- Das synchronisiert ALLE Fenster
   });
 
-  console.log('[REFRESH-MANAGER] Neue Config übernommen');
+  console.log('[REFRESH-MANAGER] Neue Config Ã¼bernommen');
 });
 
 // Tray-Icon entfernt
@@ -91,7 +118,7 @@ global.isAppReturningToUI = false;
 
 ipcMain.handle('get-current-config', () => config.loadConfig(app));
 
-// Prüft, ob eine gültige Konfiguration existiert
+// PrÃ¼ft, ob eine gÃ¼ltige Konfiguration existiert
 function isValidConfig(saved, displays) {
     if (!Array.isArray(saved)) return false;
     if (saved.some(cfg => cfg.monitorId !== undefined)) {
@@ -162,7 +189,7 @@ function reopenConfigWindow() {
     schliesseWartebildschirme();
     zeigeWartebildschirme();
 
-    createConfigWindow(); // sofort öffnen, kein Timeout
+    createConfigWindow(); // sofort Ã¶ffnen, kein Timeout
 }
 // Erstellt das Performance Dashboard
 function openPerformanceDashboard() {
@@ -191,7 +218,7 @@ function openPerformanceDashboard() {
         dashboardWindow = null;
     });
     
-    // Dashboard-Daten regelmäßig senden
+    // Dashboard-Daten regelmÃ¤ÃŸig senden
     const updateInterval = setInterval(() => {
         if (dashboardWindow && !dashboardWindow.isDestroyed()) {
             const dashboardData = performanceMonitor.getDashboardData();
@@ -203,7 +230,7 @@ function openPerformanceDashboard() {
         }
     }, 5000); // Alle 5 Sekunden
     
-    logger.logSuccess('Performance Dashboard geöffnet');
+    logger.logSuccess('Performance Dashboard geÃ¶ffnet');
 }
 // Erstellt das Erweiterte Settings-Fenster
 function openExtendedSettings() {
@@ -223,7 +250,7 @@ function openExtendedSettings() {
     
     settingsWindow.loadFile('extended-settings.html');
     
-    logger.logSuccess('Erweiterte Einstellungen geöffnet');
+    logger.logSuccess('Erweiterte Einstellungen geÃ¶ffnet');
 }
 // Gemeinsame Quit-Funktion
 async function quitAppFully() {
@@ -264,7 +291,7 @@ app.whenReady().then(() => {
     // Jetzt Event-Tracking starten
     analyticsManager.trackMonitorSetup(displays);
 
-    // UpdateManager initialisieren (benötigt configWindow später)
+    // UpdateManager initialisieren (benÃ¶tigt configWindow spÃ¤ter)
     updateManager = new UpdateManager(configWindow);
 
     // Performance Monitoring starten
@@ -282,21 +309,21 @@ app.whenReady().then(() => {
 analyticsManager.on('eventTracked', (event) => {
     console.log(`[ANALYTICS] Event: ${event.event}`);
 });
-// Auto-Update beim App-Start prüfen
+// Auto-Update beim App-Start prÃ¼fen
 setTimeout(() => {
     updateManager.checkForUpdates();
 }, 5000); // 5 Sekunden nach Start
 
 // Update-Events
 updateManager.on('update-available', (info) => {
-    logger.logSuccess(`Update verfügbar: v${info.version}`);
+    logger.logSuccess(`Update verfÃ¼gbar: v${info.version}`);
 });
 
 updateManager.on('update-not-available', () => {
     logger.logDebug('App ist aktuell');
 });
 
-    // ESC-Global Shortcut → wie Notausstieg
+    // ESC-Global Shortcut â†’ wie Notausstieg
     globalShortcut.register('Escape', () => {
         isAppReturningToUI = true;
         global.isAppReturningToUI = true;
@@ -358,9 +385,9 @@ killTicketchecker();
                 }
             });
         }, 1000);
-    }  // ← schließt den else-Block
+    }  // â† schlieÃŸt den else-Block
 
-});   // ← schließt den app.whenReady().then-Block
+});   // â† schlieÃŸt den app.whenReady().then-Block
 // START-Button: Live-Views starten
 ipcMain.on('start-app', async (event, neueKonfig) => {
     schliesseWartebildschirme();
@@ -431,7 +458,7 @@ killTicketchecker();
     }, 1000);
 });
 
-// Konfiguration löschen
+// Konfiguration lÃ¶schen
 ipcMain.on('delete-config', () => {
     isAppReturningToUI = true;
     global.isAppReturningToUI = true;
@@ -480,7 +507,7 @@ ipcMain.handle('reset-extended-config', async () => {
     try {
         return await refreshManager.extendedConfig.resetToDefaults();
     } catch (error) {
-        logger.logError('Fehler beim Zurücksetzen der erweiterten Config', error);
+        logger.logError('Fehler beim ZurÃ¼cksetzen der erweiterten Config', error);
         return false;
     }
 });
@@ -514,9 +541,10 @@ ipcMain.handle('get-analytics-report', async () => {
 
 // System-Tests
 ipcMain.handle('run-system-tests', () => {
-  // Simuliert Test-Ausführung
+  // Simuliert Test-AusfÃ¼hrung
   return { success: true, testsRun: 5, testsPassed: 5 };
 });
 // Schutz vorm Automatik-Quit
 app.on('window-all-closed', () => { /* leer lassen */ });
+
 
