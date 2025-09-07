@@ -1,4 +1,4 @@
-﻿const path = require('path');
+const path = require('path');
 const logger = require('./logger');
 const fs = require('fs');
 
@@ -10,9 +10,9 @@ class RefreshManager {
         this.interval = null;
         this.extendedConfig = extendedConfig;
 
-        // Standardwerte (werden aus ExtendedConfig Ã¼berschrieben)
-        this.refreshDelay = 30000;
-        this.overlayDelay = 1000;
+        // Standardwerte (werden aus ExtendedConfig überschrieben)
+        this.refreshDelay = 1800000; // 30 Minuten
+        this.overlayDelay = 3500;    // 3,5 Sekunden
     }
 
     async loadConfig() {

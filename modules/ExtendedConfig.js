@@ -8,8 +8,8 @@ class ExtendedConfig {
         this.configPath = utils.getUserDataPath(app, 'extended-config.json');
         this.defaultConfig = {
             refresh: {
-                intervalMs: 60000,          // 1 Minute
-                overlayMinTimeMs: 3000,     // 3 Sekunden
+                intervalMs: 1800000,        // 30 Minuten
+                overlayMinTimeMs: 3500,     // 3,5 Sekunden
                 retryDelayMs: 1000,         // 1 Sekunde
                 enabled: true
             },
