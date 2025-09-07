@@ -3,6 +3,8 @@ const { safeLoadUrl } = require('./modules/safeLoad');
 try {
   const { hardenSession, hardenWebContents } = require('./modules/security');
   const { app, session } = require('electron');
+  const allowlist = require('./modules/allowlist');
+
 
   // Default-Session sofort härten (nur einmal)
   if (session && session.defaultSession && !session.defaultSession.__ttqHardened) {
@@ -27,6 +29,8 @@ try {
 } catch {}
 /* ===== end TTQ early session hardening ===== */
 const { app, BrowserWindow, screen, ipcMain, globalShortcut } = require('electron');
+
+const { seedFavourites } = require('./modules/favourites-seed');
 const { createDisplayWindow, closeTicketcheckerWindow: killTicketchecker } = require('./modules/displays');
 // Erlaubt Kamera, USB und Serial nur fÃ¼r Ticketchecker-Seite
 app.on('web-contents-created', (event, contents) => {
@@ -66,8 +70,13 @@ ipcMain.handle('toggle-autostart', async (event, enable) => {
 });
 
 ipcMain.handle('allowlist:getStatus', () => {
-  const cfg = allowlist.readConfig();
-  return { enforce: cfg.enforce, origins: cfg.origins, prefixes: cfg.prefixes };
+  try {
+    const allowlist = require('./modules/allowlist');
+    return allowlist.getStatus();
+  } catch (e) {
+    console.error('[allowlist:getStatus] handler error:', e);
+    return { enforce: false, origins: [], prefixes: [], error: e.message || String(e) };
+  }
 });
 
 // âœ… ExtendedConfig + RefreshManager Ã¼ber Singleton
@@ -77,8 +86,17 @@ const refreshManager = getRefreshManager(app);
 // Optional global verfÃ¼gbar machen:
 global.refreshManager = refreshManager;
 // --- Cleanup alte Auto-Start-EintrÃ¤ge via app.setLoginItemSettings ---
-app.whenReady().then(() => {
-  app.setLoginItemSettings({
+app.whenReady().then(async () => {
+// 1) FAVOURITES SEED (zuerst!)
+  
+console.log('[FAV-SEED] start');
+try {
+  await seedFavourites({ mode: 'copy', key: 'url' });
+  console.log('[FAV-SEED] done (copy,url)');
+} catch (e) {
+  console.warn('[FAV-SEED] error:', e && e.message ? e.message : e);
+}
+app.setLoginItemSettings({
     openAtLogin: false,
     path: process.execPath,
     args: []
