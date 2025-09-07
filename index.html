@@ -1,140 +1,136 @@
-﻿Ã¯Â»Â¿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; connect-src 'self' https:; frame-src https:; object-src 'none'; base-uri 'self'; form-action 'self';">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TTQuotes - Live TV Config</title>
-    <link href="https://fonts.googleapis.com/css?family=Inter:400,500,600,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TTQuotes - Live TV Config</title>
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="config-main">
-        <!-- Header -->
-        <div class="topbar">
-            <div class="header-left">
-                <img src="tt3.svg" alt="Logo" class="header-logo">
-            </div>
-            <div class="header-right">
-                <div class="status-indicator">
-                    <div class="status-dot"></div>
-                    <span>System Online</span>
-                </div>
-                <span id="display-count">0 TV-GerÃƒÆ’Ã‚Â¤te erkannt</span>
-            </div>
-        </div>
-        
-        <div class="accent-bar"></div>
-        <div class="config-section-title">Live TV Config</div>
-        
-        <div class="config-header">
-            <div class="tv-counter" id="tv-counter">0 TV-GerÃƒÆ’Ã‚Â¤te konfiguriert</div>
-        </div>
-        
-        <!-- Display-Konfiguration Container -->
-        <div id="config-container">
-            <!-- TV-GerÃƒÆ’Ã‚Â¤te werden hier dynamisch eingefÃƒÆ’Ã‚Â¼gt -->
-        </div>
-        
-       <!-- Action Buttons -->
-<div class="actionbar">
-  <div class="actions-group">
-    <button class="action-btn gray toggle-btn">Auto-Start</button>
-    <button class="action-btn" onclick="startApp()">LIVE-VIEWS STARTEN</button>
-  </div>
-  <div class="actions-group">
-    <button class="action-btn gray" onclick="editFavorites()">FAVORITEN BEARBEITEN</button>
-    <button class="action-btn red" onclick="deleteConfig()">KONFIGURATION LÃƒÆ’Ã¢â‚¬â€œSCHEN</button>
-    <button class="action-btn red" onclick="quitApp()">BEENDEN</button>
-    <button class="action-btn" onclick="window.location.href='extended-settings.html'">
-      ÃƒÂ¢Ã…Â¡Ã¢â€žÂ¢ÃƒÂ¯Ã‚Â¸Ã‚Â ERWEITERTE EINSTELLUNGEN
-    </button>
-  </div>
-</div>
-   <!-- Favoriten Modal -->
-<div id="favorites-modal" class="modal-overlay">
-  <div class="modal-content favorites-modal">
-    <div class="modal-header">
-      <h3>Favoriten bearbeiten</h3>
-      <button class="close-button" type="button" id="close-favorites">&times;</button>
-    </div>
-    <div class="modal-body">
-      <!-- NEU: HinzufÃƒÆ’Ã‚Â¼gen oben im Modal -->
-      <div class="add-favorite-section">
-        <div class="input-row">
-          <input type="text" id="new-favorite-name" class="url-input" placeholder="Name eingeben" />
-          <input type="url" id="new-favorite-url" class="url-input" placeholder="https://example.com" />
-          <button class="btn green add-btn" type="button" id="add-favorite-btn">+ HinzufÃƒÆ’Ã‚Â¼gen</button>
-        </div>
+  <div id="config-main">
+    <!-- Header -->
+    <div class="topbar">
+      <div class="header-left">
+        <img src="tt3.svg" alt="Logo" class="header-logo">
       </div>
+      <div class="header-right">
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          <span>System Online</span>
+        </div>
+        <span id="display-count">0 TV-Ger&auml;te erkannt</span>
+      </div>
+    </div>
 
-      <!-- Favoriten-Liste -->
-      <div class="favorites-section">
-        <div id="favorites-list" class="favorites-list">
-          <!-- Favoritenzeilen generiert das JS (siehe unten) -->
+    <div class="accent-bar"></div>
+    <div class="config-section-title">Live TV Config</div>
+
+    <div class="config-header">
+      <div class="tv-counter" id="tv-counter">0 TV-Ger&auml;te konfiguriert</div>
+    </div>
+
+    <!-- Display-Konfiguration Container -->
+    <div id="config-container">
+      <!-- TV-Ger&auml;te werden hier dynamisch eingef&uuml;gt -->
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="actionbar">
+      <div class="actions-group">
+        <button class="action-btn gray toggle-btn">Auto-Start</button>
+        <button class="action-btn" onclick="startApp()">LIVE-VIEWS STARTEN</button>
+      </div>
+      <div class="actions-group">
+        <button class="action-btn gray" onclick="editFavorites()">FAVORITEN BEARBEITEN</button>
+        <button class="action-btn red" onclick="deleteConfig()">KONFIGURATION L&Ouml;SCHEN</button>
+        <button class="action-btn red" onclick="quitApp()">BEENDEN</button>
+        <button class="action-btn" onclick="window.location.href='extended-settings.html'">
+          &#9881; ERWEITERTE EINSTELLUNGEN
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Favoriten Modal -->
+  <div id="favorites-modal" class="modal-overlay">
+    <div class="modal-content favorites-modal">
+      <div class="modal-header">
+        <h3>Favoriten bearbeiten</h3>
+        <button class="close-button" type="button" id="close-favorites">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- NEU: Hinzuf&uuml;gen oben im Modal -->
+        <div class="add-favorite-section">
+          <div class="input-row">
+            <input type="text" id="new-favorite-name" class="url-input" placeholder="Name eingeben" />
+            <input type="url" id="new-favorite-url" class="url-input" placeholder="https://example.com" />
+            <button class="btn green add-btn" type="button" id="add-favorite-btn">+ Hinzuf&uuml;gen</button>
+          </div>
+        </div>
+
+        <!-- Favoriten-Liste -->
+        <div class="favorites-section">
+          <div id="favorites-list" class="favorites-list">
+            <!-- Favoritenzeilen generiert das JS (siehe unten) -->
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-
-    <script src="renderer.js"></script>
-<!-- Custom Confirm Modal (UI-Dialog fÃƒÆ’Ã‚Â¼r BestÃƒÆ’Ã‚Â¤tigungen) -->
-<div id="custom-confirm-overlay" class="modal-overlay" style="display: none;">
-  <div class="modal-content small-modal">
-    <div class="modal-header">
-      <h3 id="confirm-title">Achtung</h3>
-    </div>
-    <div class="modal-body">
-      <div id="confirm-message" style="margin-bottom: 30px;">
-        <!-- Die eigentliche Frage wird per JS gesetzt -->
+  <!-- Custom Confirm Modal (UI-Dialog f&uuml;r Best&auml;tigungen) -->
+  <div id="custom-confirm-overlay" class="modal-overlay" style="display: none;">
+    <div class="modal-content small-modal">
+      <div class="modal-header">
+        <h3 id="confirm-title">Achtung</h3>
       </div>
-      <div style="display:flex;justify-content:center;gap:30px;">
-        <button class="btn red" id="confirm-ok-btn">OK</button>
-        <button class="btn gray" id="confirm-cancel-btn">Abbrechen</button>
+      <div class="modal-body">
+        <div id="confirm-message" style="margin-bottom: 30px;">
+          <!-- Die eigentliche Frage wird per JS gesetzt -->
+        </div>
+        <div style="display:flex;justify-content:center;gap:30px;">
+          <button class="btn red" id="confirm-ok-btn">OK</button>
+          <button class="btn gray" id="confirm-cancel-btn">Abbrechen</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+  <script src="renderer.js"></script>
   <script>
-  async function initAutoStartBtn() {
-  // WÃƒÆ’Ã‚Â¤hlt per Klasse aus ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ nimmt den ersten Button mit toggle-btn
-  const btn = document.querySelector('.action-btn.toggle-btn');
-  let enabled = await window.electronAPI.getAutostartStatus();
-  // Startzustand: grÃƒÆ’Ã‚Â¼n wenn enabled, sonst grau
-  btn.classList.toggle('green', enabled);
-  btn.classList.toggle('gray', !enabled);
-
-  btn.addEventListener('click', async () => {
-    enabled = !enabled;
-    const ok = await window.electronAPI.toggleAutostart(enabled);
-    if (ok) {
+    async function initAutoStartBtn() {
+      // waehlt per Klasse den ersten Button mit toggle-btn
+      const btn = document.querySelector('.action-btn.toggle-btn');
+      let enabled = await window.electronAPI.getAutostartStatus();
+      // Startzustand: gruen wenn enabled, sonst grau
       btn.classList.toggle('green', enabled);
       btn.classList.toggle('gray', !enabled);
-    } else {
-      console.error('Auto-Start konnte nicht umgestellt werden');
+
+      btn.addEventListener('click', async () => {
+        enabled = !enabled;
+        const ok = await window.electronAPI.toggleAutostart(enabled);
+        if (ok) {
+          btn.classList.toggle('green', enabled);
+          btn.classList.toggle('gray', !enabled);
+        } else {
+          console.error('Auto-Start konnte nicht umgestellt werden');
+        }
+      });
     }
-  });
-}
 
-  document.addEventListener('DOMContentLoaded', () => {
-    initAutoStartBtn();
-    // ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ weitere Initialisierungen ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦
-  });
-</script>
-</body>
-<div id="status-banner" class="status-banner" hidden>
-  <div class="status-content">
-    <span id="status-message"></span>
-    <button id="status-close" class="status-close">&times;</button>
+    document.addEventListener('DOMContentLoaded', () => {
+      initAutoStartBtn();
+      // ... weitere Initialisierungen ...
+    });
+  </script>
+
+  <div id="status-banner" class="status-banner" hidden>
+    <div class="status-content">
+      <span id="status-message"></span>
+      <button id="status-close" class="status-close">&times;</button>
+    </div>
   </div>
-</div>
+</body>
 </html>
-
-
-
-
-
-
-
