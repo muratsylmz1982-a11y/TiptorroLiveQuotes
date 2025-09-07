@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+﻿const { app, BrowserWindow } = require('electron');
 const { getRefreshManager } = require('./refreshManagerSingleton');
 const refreshManager = getRefreshManager(app);
 const WindowManager = require('./WindowManager');
@@ -6,6 +6,7 @@ const path = require('path');
 const utils = require('./utils');
 const { spawn, execSync } = require('child_process');
 const fs = require('fs');
+const { safeLoadUrl } = require('./safeLoad');
 let ticketcheckerProcess = null;
 const displayWindowManager = new WindowManager();
 const DisplayService = require('./DisplayService');
@@ -155,7 +156,7 @@ function createDisplayWindow(liveWindows, display, url) {
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36'
     );
 
-    win.loadURL(url)
+    safeLoadUrl(win,url)
       .catch(err => console.error('[DISPLAY] Fehler beim Laden der Start-URL:', err));
 
     win.webContents.once('did-finish-load', () => {
@@ -240,7 +241,7 @@ function showMonitorNumbers(previewWindows, displayInfo, displays) {
             </html>
         `;
 
-        previewWin.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(html));
+        safeLoadUrl(previewWin,'data:text/html;charset=utf-8,' + encodeURIComponent(html));
         previewWindows.push(previewWin);
     });
 }
@@ -258,3 +259,4 @@ module.exports = {
     showMonitorNumbers,
     cleanupDisplayWindows
 };
+

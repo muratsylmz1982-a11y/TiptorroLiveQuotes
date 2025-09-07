@@ -2,6 +2,7 @@
 const logger = require('./logger');
 const fs = require('fs');
 
+const { safeLoadUrl } = require('./safeLoad');
 class RefreshManager {
     constructor(extendedConfig) {
         this.isRunning = false;
@@ -112,7 +113,7 @@ try {
             console.log('[REFRESH-MANAGER] Zielseite vollstÃ¤ndig geladen, Overlay ausgeblendet');
         });
 
-        window.loadURL(url)
+        safeLoadUrl(window,url)
             .catch(err => {
   windowData.isRefreshing = false;
   window.webContents.executeJavaScript("window.overlayAPI && window.overlayAPI.hideOverlay();")
@@ -183,5 +184,6 @@ try {
   }
 } catch (_) {}
 /* ===== Ende Compat-Patch ===== */
+
 
 

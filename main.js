@@ -1,4 +1,5 @@
-﻿/* ===== TTQ early session hardening (must run before any BrowserWindow) ===== */
+﻿const { safeLoadUrl } = require('./modules/safeLoad');
+/* ===== TTQ early session hardening (must run before any BrowserWindow) ===== */
 try {
   const { hardenSession, hardenWebContents } = require('./modules/security');
   const { app, session } = require('electron');
@@ -375,7 +376,7 @@ killTicketchecker();
                     win.webContents.setUserAgent(
                         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
                     );
-                    win.loadURL(cfg.url);
+                    safeLoadUrl(win,cfg.url);
                     win.webContents.on('before-input-event', (event, input) => {
                         if (input.type === 'keyDown' && input.key === 'Escape') win.close();
                     });
@@ -428,7 +429,7 @@ killTicketchecker();
                     win.webContents.setUserAgent(
                         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
                     );
-                    win.loadURL(cfg.url);
+                    safeLoadUrl(win,cfg.url);
                     win.webContents.on('before-input-event', (event, input) => {
                         if (input.type === 'keyDown' && input.key === 'Escape') win.close();
                     });
@@ -546,5 +547,6 @@ ipcMain.handle('run-system-tests', () => {
 });
 // Schutz vorm Automatik-Quit
 app.on('window-all-closed', () => { /* leer lassen */ });
+
 
 

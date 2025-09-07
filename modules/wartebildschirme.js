@@ -1,4 +1,5 @@
-const { BrowserWindow, screen } = require('electron');
+﻿const { BrowserWindow, screen } = require('electron');
+const { safeLoadUrl } = require('./safeLoad');
 let warteWindows = [];
 
 function zeigeWartebildschirme() {
@@ -152,7 +153,7 @@ const html = `
 </html>
 `;
 
-    win.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(html));
+    safeLoadUrl(win,'data:text/html;charset=utf-8,' + encodeURIComponent(html));
     warteWindows.push(win);
   });
 }
@@ -168,3 +169,4 @@ module.exports = {
   zeigeWartebildschirme,
   schliesseWartebildschirme
 };
+
