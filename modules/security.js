@@ -1,49 +1,45 @@
-﻿const { shell } = require('electron');
-const { isAllowedUrl, ENFORCE } = require('./allowlist');
+const { shell } = require('electron');
+const allowlist = require('./allowlist');
 
 function hardenWebContents(wc) {
-  // Blockt Navigations innerhalb des Fensters
+  // In-Page Navigationen im Fenster absichern
   wc.on('will-navigate', (event, url) => {
-    if (!isAllowedUrl(url)) {
-      if (ENFORCE) {
-        event.preventDefault();
-        try { shell.openExternal(url); } catch {}
-      } else {
-        // Monitor-Only: erlauben, aber Hinweis in Konsole (bereits in isAllowedUrl)
-      }
+    if (!allowlist.isAllowedUrl(url) && allowlist.isEnforced()) {
+      event.preventDefault();
+      try { shell.openExternal(url); } catch {}
     }
   });
 
-  // Steuert Popups/target=_blank
+  // Popups / target=_blank
   wc.setWindowOpenHandler(({ url }) => {
-    if (isAllowedUrl(url)) return { action: 'allow' };
+    if (allowlist.isAllowedUrl(url)) return { action: 'allow' };
     try { shell.openExternal(url); } catch {}
     return { action: 'deny' };
   });
 
-  // Kleine Zusatz-Härtung im Renderer
+  // kleine Härtung
   wc.on('dom-ready', () => {
     try { wc.executeJavaScript('try{window.eval=undefined}catch(e){}'); } catch {}
   });
 }
 
 function hardenSession(sess) {
-  // Standardmäßig keine Sonderberechtigungen
-  sess.setPermissionRequestHandler((_wc, _permission, callback) => callback(false));
+  // Standardmäßig keine Sonderrechte erteilen
+  sess.setPermissionRequestHandler((_wc, _permission, cb) => cb(false));
 
-  // **Zuverlässiger Request-Filter** (greift auch bei loadURL)
+  // HTTP/HTTPS-Requests global filtern (greift auch bei loadURL)
   try {
     sess.webRequest.onBeforeRequest(
       { urls: ['http://*/*', 'https://*/*'] },
       (details, callback) => {
         const url = details.url;
-        if (isAllowedUrl(url)) return callback({ cancel: false });
+        if (allowlist.isAllowedUrl(url)) return callback({ cancel: false });
 
-        if (ENFORCE) {
+        if (allowlist.isEnforced()) {
           try { console.warn('[allowlist][block]', url); } catch {}
           return callback({ cancel: true });
         }
-        try { console.warn('[allowlist][monitor]', url); } catch {}
+        try { console.warn('[allowlist][monitor]', url, 'nicht erlaubt (Config)'); } catch {}
         return callback({ cancel: false });
       }
     );
