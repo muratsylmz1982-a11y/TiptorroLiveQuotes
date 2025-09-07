@@ -9,10 +9,10 @@ function showStatus(message, type = 'info', duration = 5000) {
   
   if (!banner || !messageEl) return;
   
-  // Klassen zurücksetzen
+  // Klassen zurÃ¼cksetzen
   banner.className = 'status-banner';
   
-  // Typ-spezifische Klasse hinzufügen
+  // Typ-spezifische Klasse hinzufÃ¼gen
   if (type === 'error') banner.classList.add('error');
   if (type === 'warning') banner.classList.add('warning');
   
@@ -54,12 +54,12 @@ window.addEventListener('DOMContentLoaded', async () => {
         block.classList.add('display-section');
 
         const display = displays[index];
-        const monitorName = `TV-Gerät ${index + 1}`;
-        const monitorSpecs = `1920 × 1080`;
+        const monitorName = `TV-GerÃ¤t ${index + 1}`;
+        const monitorSpecs = `1920 Ã— 1080`;
         const monitorType = index === 0 ? 'Primary' : index === 1 ? 'Secondary' : 'Extended';
 
         const favoriteOptions = [
-            { name: '— Favorit wählen —', url: '' },
+            { name: 'â€” Favorit wÃ¤hlen â€”', url: '' },
             ...favorites
         ]
             .map(f => `<option value="${f.url}">${f.name}</option>`)
@@ -68,7 +68,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         block.innerHTML = `
             <div class="monitor-info">
                 <h3 class="monitor-name">${monitorName}</h3>
-                <div class="monitor-specs">${monitorSpecs} • ${monitorType}</div>
+                <div class="monitor-specs">${monitorSpecs} â€¢ ${monitorType}</div>
             </div>
             <div class="field-group">
                 <div class="field">
@@ -94,7 +94,7 @@ window.addEventListener('DOMContentLoaded', async () => {
             </div>
         `;
 
-                        // NEU: gespeicherten Wert setzen + Favoriten-Dropdown auswählen
+                        // NEU: gespeicherten Wert setzen + Favoriten-Dropdown auswÃ¤hlen
         if (Array.isArray(savedConfig)) {
             const found = savedConfig.find(cfg => cfg.monitorIndex === index && cfg.url);
             if (found) {
@@ -102,12 +102,12 @@ window.addEventListener('DOMContentLoaded', async () => {
                 const select = block.querySelector(`select[data-monitor="${index}"]`);
                 if (urlInput) urlInput.value = found.url;
                 if (select) {
-                    // Wenn ein Favorit die URL hat, diesen in der Auswahl wählen
+                    // Wenn ein Favorit die URL hat, diesen in der Auswahl wÃ¤hlen
                     const favMatch = favorites.find(f => f.url === found.url);
                     if (favMatch) {
                         select.value = favMatch.url;
                     } else {
-                        // Falls kein Favorit passt, auf "— Favorit wählen —" lassen
+                        // Falls kein Favorit passt, auf "â€” Favorit wÃ¤hlen â€”" lassen
                         select.value = '';
                     }
                 }
@@ -125,16 +125,16 @@ window.addEventListener('DOMContentLoaded', async () => {
     updateDisplayCounts();
 });
 
-// IPC-Event empfangen und alle URL-Felder leeren + Dropdowns zurücksetzen
+// IPC-Event empfangen und alle URL-Felder leeren + Dropdowns zurÃ¼cksetzen
 window.electronAPI.onConfigCleared(() => {
-    console.log('Config wurde gelöscht – Felder leeren...');
+    console.log('Config wurde gelÃ¶scht â€“ Felder leeren...');
     document.querySelectorAll('.url-input').forEach(input => {
         input.value = '';
     });
     document.querySelectorAll('.favorite-select').forEach(select => {
         select.value = '';
     });
-    // Optional Anzeige-Zähler updaten
+    // Optional Anzeige-ZÃ¤hler updaten
     updateDisplayCounts();
 });
 
@@ -168,18 +168,18 @@ function setupEventListeners() {
                 const name = item.querySelector('.fav-edit-name').value.trim();
                 const url = item.querySelector('.fav-edit-url').value.trim();
                 if (!name || !url) {
-                    alert('Bitte füllen Sie beide Felder aus.');
+                    alert('Bitte fÃ¼llen Sie beide Felder aus.');
                     return;
                 }
                 if (!/^https?:\/\//i.test(url)) {
-                    alert('Bitte geben Sie eine gültige URL ein (mit http:// oder https://).');
+                    alert('Bitte geben Sie eine gÃ¼ltige URL ein (mit http:// oder https://).');
                     return;
                 }
                 favorites[index] = { name, url };
                 window.electronAPI.saveFavorites(favorites).then(loadFavoritesInModal);
             }
         }
-        // Favorit löschen
+        // Favorit lÃ¶schen
         if (e.target.classList.contains('delete-btn')) {
             const index = parseInt(e.target.dataset.index);
             deleteFavoriteItem(index);
@@ -191,7 +191,7 @@ function setupEventListeners() {
             openPreviewWindow(parseInt(monitorIndex));
         }
 
-        // Favoriten Modal schließen - X Button
+        // Favoriten Modal schlieÃŸen - X Button
         if (e.target.id === 'close-favorites') {
             e.preventDefault();
             e.stopPropagation();
@@ -199,14 +199,14 @@ function setupEventListeners() {
             return false;
         }
 
-        // Favorit hinzufügen
+        // Favorit hinzufÃ¼gen
         if (e.target.id === 'add-favorite-btn') {
             e.preventDefault();
             addFavorite();
         }
     });
 
-    // Modal schließen bei Klick außerhalb des Contents
+    // Modal schlieÃŸen bei Klick auÃŸerhalb des Contents
     document.addEventListener('click', (e) => {
         const favoritesModal = document.getElementById('favorites-modal');
         if (e.target === favoritesModal) {
@@ -214,7 +214,7 @@ function setupEventListeners() {
         }
     });
 
-    // ESC-Taste für Modal schließen
+    // ESC-Taste fÃ¼r Modal schlieÃŸen
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             const favoritesModal = document.getElementById('favorites-modal');
@@ -231,7 +231,7 @@ function updateUrlFromFavorite(selectElement, monitorIndex) {
     const urlInput = document.querySelector(`input[data-monitor="${monitorIndex}"]`);
     
     if (!urlInput) {
-        console.error(`URL-Input für Monitor ${monitorIndex} nicht gefunden`);
+        console.error(`URL-Input fÃ¼r Monitor ${monitorIndex} nicht gefunden`);
         return;
     }
     
@@ -243,7 +243,7 @@ function updateUrlFromFavorite(selectElement, monitorIndex) {
         // Optional: Display-Counter aktualisieren
         updateDisplayCounts();
     } else {
-        // Falls "— Favorit wählen —" ausgewählt wird, URL-Feld leeren
+        // Falls "â€” Favorit wÃ¤hlen â€”" ausgewÃ¤hlt wird, URL-Feld leeren
         urlInput.value = '';
         console.log(`Monitor ${monitorIndex}: URL-Feld geleert`);
         
@@ -283,7 +283,7 @@ async function loadFavoritesInModal() {
         favoritesList.innerHTML = '';
 
         if (favorites.length === 0) {
-            favoritesList.innerHTML = '<div class="favorites-empty">Noch keine Favoriten vorhanden.<br>Fügen Sie oben einen Favoriten hinzu.</div>';
+            favoritesList.innerHTML = '<div class="favorites-empty">Noch keine Favoriten vorhanden.<br>FÃ¼gen Sie oben einen Favoriten hinzu.</div>';
             return;
         }
 
@@ -295,7 +295,7 @@ async function loadFavoritesInModal() {
                 <input type="url" class="fav-edit-url url-input" value="${favorite.url}" readonly />
                 <button class="btn green edit-btn" type="button" data-index="${index}">Bearbeiten</button>
                 <button class="btn green save-btn" type="button" data-index="${index}" style="display:none;">Speichern</button>
-                <button class="btn red delete-btn" type="button" data-index="${index}">Löschen</button>
+                <button class="btn red delete-btn" type="button" data-index="${index}">LÃ¶schen</button>
             `;
             favoritesList.appendChild(item);
         });
@@ -314,12 +314,12 @@ async function addFavorite() {
     const url = urlInput.value.trim();
 
     if (!name || !url) {
-        alert('Bitte füllen Sie beide Felder aus.');
+        alert('Bitte fÃ¼llen Sie beide Felder aus.');
         return;
     }
 
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        alert('Bitte geben Sie eine gültige URL ein (mit http:// oder https://).');
+        alert('Bitte geben Sie eine gÃ¼ltige URL ein (mit http:// oder https://).');
         return;
     }
 
@@ -341,12 +341,12 @@ try {
         updateFavoriteDropdowns();
 
     } catch (error) {
-        console.error('Fehler beim Hinzufügen des Favorits:', error);
+        console.error('Fehler beim HinzufÃ¼gen des Favorits:', error);
         alert('Fehler beim Speichern des Favorits.');
     }
 }
 
-// Die folgenden "editFavoriteItem" und "updateFavoriteDropdowns" sind für Dropdown-Updates im Konfig, können bleiben!
+// Die folgenden "editFavoriteItem" und "updateFavoriteDropdowns" sind fÃ¼r Dropdown-Updates im Konfig, kÃ¶nnen bleiben!
 async function editFavoriteItem(index) {
     if (index < 0 || index >= favorites.length) return;
 
@@ -367,7 +367,7 @@ async function editFavoriteItem(index) {
             updateFavoriteDropdowns();
         } catch (error) {
             console.error('Fehler beim Bearbeiten des Favorits:', error);
-            alert('Fehler beim Speichern der Änderungen.');
+            alert('Fehler beim Speichern der Ã„nderungen.');
         }
     }
 }
@@ -376,15 +376,15 @@ async function deleteFavoriteItem(index) {
     if (index < 0 || index >= favorites.length) return;
 
     const favorite = favorites[index];
-    if (confirm(`Favorit "${favorite.name}" wirklich löschen?`)) {
+    if (confirm(`Favorit "${favorite.name}" wirklich lÃ¶schen?`)) {
         try {
             favorites.splice(index, 1);
             await window.electronAPI.saveFavorites(favorites);
             await loadFavoritesInModal();
             updateFavoriteDropdowns();
         } catch (error) {
-            console.error('Fehler beim Löschen des Favorits:', error);
-            alert('Fehler beim Löschen des Favorits.');
+            console.error('Fehler beim LÃ¶schen des Favorits:', error);
+            alert('Fehler beim LÃ¶schen des Favorits.');
         }
     }
 }
@@ -394,7 +394,7 @@ function updateFavoriteDropdowns() {
     selects.forEach(select => {
         const currentValue = select.value;
         select.innerHTML = `
-            <option value="">— Favorit wählen —</option>
+            <option value="">â€” Favorit wÃ¤hlen â€”</option>
             ${favorites.map(f => `<option value="${f.url}">${f.name}</option>`).join('')}
         `;
         if (currentValue) {
@@ -419,7 +419,7 @@ function startApp() {
     if (configs.length > 0) {
         window.electronAPI.startApp(configs);
     } else {
-        alert('Bitte konfigurieren Sie mindestens ein TV-Gerät.');
+        alert('Bitte konfigurieren Sie mindestens ein TV-GerÃ¤t.');
     }
 }
 
@@ -434,7 +434,7 @@ function disableAutostart() {
 
 window.electronAPI.onMissingDisplays((event, missingDisplays) => {
     if (missingDisplays.length > 0) {
-        const message = `Warnung: ${missingDisplays.length} TV-Gerät(e) nicht mehr verfügbar:\n${missingDisplays.join('\n')}`;
+        const message = `Warnung: ${missingDisplays.length} TV-GerÃ¤t(e) nicht mehr verfÃ¼gbar:\n${missingDisplays.join('\n')}`;
         alert(message);
     }
 });
@@ -442,18 +442,18 @@ window.electronAPI.onMissingDisplays((event, missingDisplays) => {
 function openPreviewWindow(monitorIndex) {
     const urlInput = document.querySelector(`input[data-monitor="${monitorIndex}"]`);
     if (urlInput && urlInput.value.trim()) {
-        // Öffne die URL im neuen Tab/Fenster als Vorschau
+        // Ã–ffne die URL im neuen Tab/Fenster als Vorschau
         window.open(urlInput.value.trim(), '_blank');
     } else {
-        alert('Bitte zuerst eine gültige URL eingeben!');
+        alert('Bitte zuerst eine gÃ¼ltige URL eingeben!');
     }
 }
 
 function updateDisplayCounts() {
-    // Zählt alle Monitore (TVs), zeigt aktuelle Zahl konfigurierter Geräte an
+    // ZÃ¤hlt alle Monitore (TVs), zeigt aktuelle Zahl konfigurierter GerÃ¤te an
     const displayCountElem = document.getElementById('display-count');
     if (displayCountElem && Array.isArray(displays)) {
-        displayCountElem.textContent = displays.length + ' TV-Geräte erkannt';
+        displayCountElem.textContent = displays.length + ' TV-GerÃ¤te erkannt';
     }
 
     // Aktuell konfigurierte Monitore (Anzahl gesetzter URLs)
@@ -464,7 +464,7 @@ function updateDisplayCounts() {
             const urlInput = document.querySelector(`input[data-monitor="${i}"]`);
             if (urlInput && urlInput.value.trim()) count++;
         }
-        tvCounter.textContent = count + ' TV-Geräte konfiguriert';
+        tvCounter.textContent = count + ' TV-GerÃ¤te konfiguriert';
     }
 }
 
