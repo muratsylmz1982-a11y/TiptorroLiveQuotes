@@ -5,13 +5,16 @@
   "author": "Murat Söylemez",
   "main": "main.js",
   "build": {
-    "productName": "TTQuotes",
-    "appId": "de.ttquotes.app",
-    "copyright": "Copyright © 2025 Murat Söylemez",
+   "productName": "TTQuotes",
+   "appId": "de.ttquotes.app",
+   "copyright": "Copyright © 2025 Murat Söylemez",
     "files": [
-      "**/*"
-    ],
-    "win": {
+   "**/*","!defaults/**"
+  ],
+  "extraResources": [
+    { "from": "defaults", "to": "defaults" }
+  ],
+   "win": {
       "target": "nsis",
       "icon": "assets/ttquotes.ico"
     }
