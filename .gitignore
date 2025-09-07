@@ -33,3 +33,7 @@ logs/
 /artifacts/
 /installer/
 /installer-outputs/
+
+# Local backups
+*.backup.html
+*backup*.html
