@@ -541,6 +541,16 @@ ipcMain.handle('open-performance-dashboard', () => {
   return openPerformanceDashboard() !== null;
 });
 
+// Live-Snapshot (Pull) für das Dashboard
+ipcMain.handle('get-performance-data', () => {
+  try {
+    return performanceMonitor.getDashboardData();
+  } catch (e) {
+    return { error: e.message };
+  }
+});
+
+
 // Update-System
 ipcMain.handle('check-for-updates', async () => {
   try {

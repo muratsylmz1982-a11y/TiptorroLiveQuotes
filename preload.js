@@ -54,6 +54,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getPerformanceData: () => ipcRenderer.invoke('get-performance-data'),
   getPerformanceHistory: (max) => ipcRenderer.invoke('get-performance-history', max),
 
+  // Live-Push vom Main-Prozess
+  onDashboardUpdate: (cb) => ipcRenderer.on('dashboard-update', (_e, data) => cb?.(data)),
+
+
   // Update-System
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
   getUpdateStatus: () => ipcRenderer.invoke('get-update-status'),
