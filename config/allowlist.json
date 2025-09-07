@@ -1,5 +1,5 @@
 ﻿{
-  "enforce": false,
+  "enforce": true,
   "origins": [
     "https://shop.tiptorro.com",
     "https://docs.google.com"

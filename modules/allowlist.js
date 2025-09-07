@@ -23,17 +23,22 @@ loadConfig();
 function isAllowedUrl(raw) {
   try {
     const u = new URL(raw);
+
+    // Lokale/Interne Navigationsziele IMMER erlauben (für App-HTMLs & about:blank)
+    if (u.protocol === 'file:' || u.protocol === 'about:') return true;
+
     const originAllowed = ORIGINS.some(o => u.origin === o);
     const prefixAllowed = PREFIXES.some(p => raw.startsWith(p));
     const allowed = originAllowed || prefixAllowed;
 
     if (!allowed && !ENFORCE) {
       try { console.warn('[allowlist][monitor]', u.href, 'nicht erlaubt (Config)'); } catch {}
-      return true; // Monitor-Only: NICHT blocken, nur warnen
+      return true; // Monitor-Only: erlauben, nur warnen
     }
     return allowed;
   } catch {
-    return false;
+    // Ungültige URL -> lieber blocken (außer im Monitor-Only, s.u.)
+    return !ENFORCE;
   }
 }
 
