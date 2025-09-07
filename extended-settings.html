@@ -1,8 +1,8 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; connect-src 'self' https:; frame-src https:; object-src 'none'; base-uri 'self'; form-action 'self';">
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://shop.tiptorro.com https://docs.google.com;">
+    <meta charset="UTF-8">
     <title>TTQuotes - Erweiterte Einstellungen</title>
     <link rel="stylesheet" href="style.css">
     <style>
@@ -224,9 +224,9 @@
     <div class="topbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #000; border-bottom: 1px solid #333;">
         <div class="header-left" style="display: flex; align-items: center; gap: 15px; padding: 15px 20px;">
             <button onclick="goBack()" class="btn" style="background: var(--tt-green); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
-                �f¢â�,� �, Zur�f�'�,¼ck
+                ← Zurück
             </button>
-            <h2 style="color: var(--tt-green); margin: 0;">�f°�.¸â�,�º�, �f¯�,¸�, Erweiterte Einstellungen</h2>
+            <h2 style="color: var(--tt-green); margin: 0;">🛠️ Erweiterte Einstellungen</h2>
         </div>
     </div>
 
@@ -236,12 +236,12 @@
         <!-- Werkzeuge & Monitoring -->
         <div class="settings-section">
             <div class="settings-header">
-                <h3>Verf�f�'�,¼gbare Tools</h3>
+                <h3>Verfügbare Tools</h3>
             </div>
             <div class="settings-body">
                 <!-- Refresh -->
 <div class="settings-section">
-  <div class="settings-header"><h3>�f°�.¸â�,�â�,�ž Refresh-Einstellungen</h3></div>
+  <div class="settings-header"><h3>🔄 Refresh-Einstellungen</h3></div>
   <div class="settings-body">
     <label>Automatischer Refresh
       <input type="checkbox" id="refreshEnabled">
@@ -256,33 +256,33 @@
 </div>
                 <div class="tools-grid">
                     <div class="tool-card">
-                        <div class="tool-icon">�f°�.¸â�,��"�. </div>
+                        <div class="tool-icon">📊</div>
                         <h4>Performance Dashboard</h4>
-                        <p>Live-Metriken und System-�f�'�.�?oberwachung</p>
-                        <button class="tool-btn" onclick="openPerformanceDashboard()">Dashboard �f�'�,¶ffnen</button>
+                        <p>Live-Metriken und System-Überwachung</p>
+                        <button class="tool-btn" onclick="openPerformanceDashboard()">Dashboard öffnen</button>
                         <div class="tool-status" id="performanceStatus">Bereit</div>
                     </div>
                     
                     <div class="tool-card">
-                        <div class="tool-icon">�f°�.¸â�,�â�,�ž</div>
-                        <h4>Update-Pr�f�'�,¼fung</h4>
-                        <p>Auf neue App-Versionen pr�f�'�,¼fen</p>
-                        <button class="tool-btn" onclick="checkForUpdates()">Jetzt pr�f�'�,¼fen</button>
+                        <div class="tool-icon">🔄</div>
+                        <h4>Update-Prüfung</h4>
+                        <p>Auf neue App-Versionen prüfen</p>
+                        <button class="tool-btn" onclick="checkForUpdates()">Jetzt prüfen</button>
                         <div class="tool-status" id="updateStatus">Zuletzt: Nie</div>
                     </div>
                     
                     <div class="tool-card">
-                        <div class="tool-icon">�f°�.¸â�,��"�<�?�</div>
+                        <div class="tool-icon">📈</div>
                         <h4>Analytics-Report</h4>
                         <p>Nutzungsstatistiken anzeigen</p>
                         <button class="tool-btn" onclick="showAnalyticsReport()">Report anzeigen</button>
-                        <div class="tool-status" id="analyticsStatus">�f¢â�?s¬â�,��"</div>
+                        <div class="tool-status" id="analyticsStatus">–</div>
                     </div>
                     
                     <div class="tool-card">
-                        <div class="tool-icon">�f°�.¸�,§�,ª</div>
+                        <div class="tool-icon">🧪</div>
                         <h4>System-Tests</h4>
-                        <p>Unit-Tests ausf�f�'�,¼hren</p>
+                        <p>Unit-Tests ausführen</p>
                         <button class="tool-btn" onclick="runSystemTests()">Tests starten</button>
                         <div class="tool-status" id="testStatus">Bereit</div>
                     </div>
@@ -292,17 +292,17 @@
     </div>
     <!-- Actions Bar -->
 <div class="actions-bar">
-  <button class="action-btn" onclick="saveSettings()">�f°�.¸â�,��"��,¾ Einstellungen speichern</button>
-  <button class="action-btn secondary" onclick="loadSettings()">�f°�.¸â�,�â�,�ž Neu laden</button>
-  <button class="action-btn error" onclick="resetSettings()">�f¢�.¡�, �f¯�,¸�, Auf Standard zur�f�'�,¼cksetzen</button>
+  <button class="action-btn" onclick="saveSettings()">💾 Einstellungen speichern</button>
+  <button class="action-btn secondary" onclick="loadSettings()">🔄 Neu laden</button>
+  <button class="action-btn error" onclick="resetSettings()">⚠️ Auf Standard zurücksetzen</button>
   <!-- Statusanzeige -->
 <div id="statusMessage" class="status-message"></div>
 </div>
 <!-- Analytics Modal -->
 <div id="analyticsModal" class="modal-overlay">
   <div class="modal">
-    <button class="close-modal" onclick="hideAnalyticsModal()">�f�'â�,��?�</button>
-    <h3>�f°�.¸â�,��"�<�?� Analytics Report</h3>
+    <button class="close-modal" onclick="hideAnalyticsModal()">×</button>
+    <h3>📈 Analytics Report</h3>
     <pre id="analyticsContent" style="white-space:pre-wrap;font-size:12px;color:#ddd"></pre>
   </div>
 </div>
@@ -315,22 +315,22 @@
     async function openPerformanceDashboard() {
         try {
             await window.electronAPI.openPerformanceDashboard();
-            document.getElementById('performanceStatus').textContent = 'Dashboard ge�f�'�,¶ffnet �f¢�.�?oâ�,��"';
+            document.getElementById('performanceStatus').textContent = 'Dashboard geöffnet ✓';
         } catch (e) {
-            document.getElementById('performanceStatus').textContent = 'Fehler �f¢�.�?oâ�,��?�';
+            document.getElementById('performanceStatus').textContent = 'Fehler ✗';
             console.error(e);
         }
     }
 
     async function checkForUpdates() {
-        document.getElementById('updateStatus').textContent = 'Pr�f�'�,¼fung l�f�'�,¤uft...';
+        document.getElementById('updateStatus').textContent = 'Prüfung läuft...';
         try {
             const res = await window.electronAPI.checkForUpdates();
             document.getElementById('updateStatus').textContent = res.hasUpdate
-                ? `Update verf�f�'�,¼gbar: v${res.version}`
-                : 'App ist aktuell �f¢�.�?oâ�,��"';
+                ? `Update verfügbar: v${res.version}`
+                : 'App ist aktuell ✓';
         } catch (e) {
-            document.getElementById('updateStatus').textContent = 'Fehler �f¢�.�?oâ�,��?�';
+            document.getElementById('updateStatus').textContent = 'Fehler ✗';
             console.error(e);
         }
     }
@@ -343,7 +343,7 @@
         try {
             const report = await window.electronAPI.getAnalyticsReport();
             pre.textContent = JSON.stringify(report, null, 2);
-            document.getElementById('analyticsStatus').textContent = `${report.stats?.totalEvents||0} Events �f¢�.�?oâ�,��"`;
+            document.getElementById('analyticsStatus').textContent = `${report.stats?.totalEvents||0} Events ✓`;
         } catch(e) {
             pre.textContent = 'Fehler beim Laden.';
             console.error(e);
@@ -358,14 +358,14 @@
         document.getElementById('testStatus').textContent = 'Tests laufen...';
         try {
             const result = await window.electronAPI.runSystemTests();
-            document.getElementById('testStatus').textContent = `${result.testsPassed}/${result.testsRun} Tests bestanden �f¢�.�?oâ�,��"`;
+            document.getElementById('testStatus').textContent = `${result.testsPassed}/${result.testsRun} Tests bestanden ✓`;
         } catch (e) {
-            document.getElementById('testStatus').textContent = 'Fehler �f¢�.�?oâ�,��?�';
+            document.getElementById('testStatus').textContent = 'Fehler ✗';
             console.error(e);
         }
     }
 
-    // L�f�'�,¤dt aktuelle Konfiguration
+    // Lädt aktuelle Konfiguration
     async function loadSettings() {
         try {
             const currentConfig = await window.electronAPI.getExtendedConfig();
@@ -397,28 +397,28 @@ window.electronAPI.send('config-updated');
 
         // Statusmeldung
         if (successConfig && successAS) {
-            showStatus('Einstellungen & Auto-Start gespeichert �f¢�.�?oâ�,��"', 'success');
+            showStatus('Einstellungen & Auto-Start gespeichert ✓', 'success');
         } else {
             throw new Error('Save fehlgeschlagen');
         }
     } catch (err) {
-        showStatus('Fehler beim Speichern �f¢�.�?oâ�,��?�', 'error');
+        showStatus('Fehler beim Speichern ✗', 'error');
         console.error(err);
     }
 }
 
 
-    // Setzt auf Standard zur�f�'�,¼ck
+    // Setzt auf Standard zurück
     async function resetSettings() {
-        if (confirm('Alle Einstellungen auf Standard zur�f�'�,¼cksetzen?')) {
+        if (confirm('Alle Einstellungen auf Standard zurücksetzen?')) {
             try {
                 const success = await window.electronAPI.resetExtendedConfig();
                 if (success) {
                     await loadSettings(); // Neu laden
-                    showStatus('Einstellungen zur�f�'�,¼ckgesetzt �f¢�.�?oâ�,��"', 'success');
+                    showStatus('Einstellungen zurückgesetzt ✓', 'success');
                 }
             } catch (err) {
-                showStatus('Fehler beim Zur�f�'�,¼cksetzen �f¢�.�?oâ�,��?�', 'error');
+                showStatus('Fehler beim Zurücksetzen ✗', 'error');
                 console.error(err);
             }
         }
@@ -439,7 +439,7 @@ window.electronAPI.send('config-updated');
   document.getElementById('autoStartSwitch').addEventListener('click', evt => {
     evt.currentTarget.classList.toggle('active');
   });
-    // ESC schlie�f�'�.¸t Modal
+    // ESC schließt Modal
     document.addEventListener('keydown', evt => {
         if (evt.key === 'Escape') hideAnalyticsModal();
     });
