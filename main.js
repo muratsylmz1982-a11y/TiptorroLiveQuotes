@@ -122,7 +122,6 @@ function createConfigWindow() {
             contextIsolation: true,
             nodeIntegration: false,
             enableRemoteModule: false,
-            webSecurity: true
         }
     });
 
@@ -182,7 +181,7 @@ function openPerformanceDashboard() {
             contextIsolation: true,
             preload: path.join(__dirname, 'preload.js'),
             enableRemoteModule: false,
-            webSecurity: true
+              
         }
     });
     
@@ -218,7 +217,7 @@ function openExtendedSettings() {
             contextIsolation: true,
             preload: path.join(__dirname, 'preload.js'),
             enableRemoteModule: false,
-            webSecurity: true
+            
         }
     });
     
@@ -342,7 +341,7 @@ killTicketchecker();
                             nodeIntegration: false,
                             contextIsolation: true,
                             enableRemoteModule: false,
-                            webSecurity: true
+                            
                         }
                     });
                     win.setMenuBarVisibility(false);
@@ -396,7 +395,7 @@ killTicketchecker();
                         y: display.bounds.y,
                         width: display.bounds.width,
                         height: display.bounds.height,
-                        webPreferences: { nodeIntegration: false, contextIsolation: true, enableRemoteModule: false, webSecurity: true }
+                        webPreferences: { nodeIntegration: false, contextIsolation: true, enableRemoteModule: false }
                     });
                     win.setMenuBarVisibility(false);
                     win.webContents.setUserAgent(
