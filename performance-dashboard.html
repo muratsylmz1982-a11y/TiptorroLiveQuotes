@@ -46,9 +46,9 @@ body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:#fff;margin:0
 <body>
     <div class="dashboard">
         <div class="header">
-            <h1>Ã°Å¸Å½Â¯ TTQuotes Performance Dashboard</h1>
-            <button class="refresh-btn" onclick="refreshDashboard()">Ã°Å¸â€â€ž Aktualisieren</button>
-            <button class="refresh-btn" onclick="clearLogs()">Ã°Å¸â€”â€˜Ã¯Â¸Â Logs lÃƒÂ¶schen</button>
+            <h1>�f°�.¸�.½�,¯ TTQuotes Performance Dashboard</h1>
+            <button class="refresh-btn" onclick="refreshDashboard()">�f°�.¸â�,�â�,�ž Aktualisieren</button>
+            <button class="refresh-btn" onclick="clearLogs()">�f°�.¸â�,��?�â�,��o�f¯�,¸�, Logs l�f�'�,¶schen</button>
         </div>
         
         <div class="metrics-grid">
@@ -67,13 +67,13 @@ body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:#fff;margin:0
             <div class="metric-card">
                 <div class="metric-title">Durchschnittsspeicher</div>
                 <div class="metric-value" id="averageMemory">-</div>
-                <div class="metric-label">ÃƒÅ“ber alle Messungen</div>
+                <div class="metric-label">�f�'�.�?ober alle Messungen</div>
             </div>
             
             <div class="metric-card">
                 <div class="metric-title">Speicher-Peak</div>
                 <div class="metric-value" id="peakMemory">-</div>
-                <div class="metric-label">HÃƒÂ¶chster Wert</div>
+                <div class="metric-label">H�f�'�,¶chster Wert</div>
             </div>
             
             <div class="metric-card">
@@ -95,10 +95,10 @@ body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:#fff;margin:0
         let logs = [];
         
         function refreshDashboard() {
-            // In einer echten Implementierung wÃƒÂ¼rde hier eine IPC-Nachricht an den Main Process gesendet
+            // In einer echten Implementierung w�f�'�,¼rde hier eine IPC-Nachricht an den Main Process gesendet
             addLog('Dashboard-Aktualisierung angefordert');
             
-            // Simulierte Daten fÃƒÂ¼r Demo-Zwecke
+            // Simulierte Daten f�f�'�,¼r Demo-Zwecke
             updateDashboardData({
                 uptime: '2h 15m 43s',
                 currentMemory: '156MB',
@@ -117,9 +117,9 @@ body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:#fff;margin:0
             document.getElementById('lastUpdate').textContent = `Zuletzt: ${data.lastUpdate}`;
             
             const statusElement = document.getElementById('systemStatus');
-            statusElement.textContent = data.status === 'healthy' ? 'Ã¢Å“â€¦ Gesund' : 
-                                      data.status === 'warning' ? 'Ã¢Å¡Â Ã¯Â¸Â Warnung' : 
-                                      'Ã°Å¸Å¡Â¨ Kritisch';
+            statusElement.textContent = data.status === 'healthy' ? '�f¢�.�?oâ�,�¦ Gesund' : 
+                                      data.status === 'warning' ? '�f¢�.¡�, �f¯�,¸�, Warnung' : 
+                                      '�f°�.¸�.¡�,¨ Kritisch';
             statusElement.className = `metric-value status-${data.status}`;
             
             addLog(`Metriken aktualisiert - RAM: ${data.currentMemory}, Status: ${data.status}`);
@@ -129,7 +129,7 @@ body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:#fff;margin:0
             const timestamp = new Date().toLocaleTimeString();
             logs.unshift(`[${timestamp}] ${message}`);
             
-            // Behalte nur 50 Log-EintrÃƒÂ¤ge
+            // Behalte nur 50 Log-Eintr�f�'�,¤ge
             if (logs.length > 50) {
                 logs = logs.slice(0, 50);
             }
