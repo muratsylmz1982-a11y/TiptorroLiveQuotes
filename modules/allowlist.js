@@ -3,19 +3,19 @@ const path = require('path');
 
 const CFG_PATH = path.join(__dirname, '..', 'config', 'allowlist.json');
 
-let ALLOWED_ORIGINS = [];
+let ORIGINS = [];
+let PREFIXES = [];
 let ENFORCE = false;
 
 function loadConfig() {
   try {
     const raw = fs.readFileSync(CFG_PATH, 'utf8');
     const json = JSON.parse(raw);
-    if (Array.isArray(json.origins)) {
-      ALLOWED_ORIGINS = json.origins.filter(Boolean).map(s => String(s).trim());
-    }
-    ENFORCE = Boolean(json.enforce);
+    ORIGINS = Array.isArray(json.origins) ? json.origins.map(s => String(s).trim()).filter(Boolean) : [];
+    PREFIXES = Array.isArray(json.pathPrefixes) ? json.pathPrefixes.map(s => String(s).trim()).filter(Boolean) : [];
+    ENFORCE = !!json.enforce;
   } catch {
-    // bleibt bei Defaults (leer + nicht erzwingen)
+    // Defaults bleiben leer/false
   }
 }
 loadConfig();
@@ -23,11 +23,13 @@ loadConfig();
 function isAllowedUrl(raw) {
   try {
     const u = new URL(raw);
-    const allowed = ALLOWED_ORIGINS.some(origin => u.origin === origin);
-    if (ALLOWED_ORIGINS.length === 0 || (!allowed && !ENFORCE)) {
-      // Monitor-Only: erlauben, aber warnen
-      try { console.warn('[allowlist][monitor]', u.origin, 'nicht in ALLOWED_ORIGINS'); } catch {}
-      return true;
+    const originAllowed = ORIGINS.some(o => u.origin === o);
+    const prefixAllowed = PREFIXES.some(p => raw.startsWith(p));
+    const allowed = originAllowed || prefixAllowed;
+
+    if (!allowed && !ENFORCE) {
+      try { console.warn('[allowlist][monitor]', u.href, 'nicht erlaubt (Config)'); } catch {}
+      return true; // Monitor-Only: NICHT blocken, nur warnen
     }
     return allowed;
   } catch {
@@ -35,9 +37,9 @@ function isAllowedUrl(raw) {
   }
 }
 
-// Read-only Getter exportieren
 module.exports = {
-  get ALLOWED_ORIGINS() { return ALLOWED_ORIGINS.slice(); },
+  get ORIGINS() { return ORIGINS.slice(); },
+  get PREFIXES() { return PREFIXES.slice(); },
   get ENFORCE() { return ENFORCE; },
   isAllowedUrl,
   loadConfig

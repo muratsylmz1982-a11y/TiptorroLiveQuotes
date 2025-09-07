@@ -1,1 +1,11 @@
-﻿{"enforce": false, "origins": []}
+﻿{
+  "enforce": false,
+  "origins": [
+    "https://shop.tiptorro.com",
+    "https://docs.google.com"
+  ],
+  "pathPrefixes": [
+    "https://shop.tiptorro.com",
+    "https://docs.google.com/presentation"
+  ]
+}
