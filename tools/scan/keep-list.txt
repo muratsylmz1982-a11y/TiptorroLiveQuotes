@@ -1,8 +1,18 @@
-index.html
-extended-settings.html
+# Always keep these runtime directories/files
+modules/
+config/
+assets/
+defaults/
+
+# Core entry points
+main.js
 preload.js
 renderer.js
+index.html
+extended-settings.html
 style.css
-assets/ttquotes.ico
+
+# Top-level images/icons that HTML might reference
 tt.png
 tt3.svg
+assets/ttquotes.ico

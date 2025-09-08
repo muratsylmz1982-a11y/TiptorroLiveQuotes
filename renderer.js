@@ -36,6 +36,16 @@ function hideStatus() {
     setTimeout(() => banner.hidden = true, 300);
   }
 }
+// Lightweight toast helper (no deps)
+function toast(message, duration = 3000) {
+  try {
+    const el = document.createElement('div');
+    el.textContent = message;
+    el.style.cssText = 'position:fixed;right:16px;bottom:16px;padding:10px 14px;border-radius:10px;background:#222;color:#fff;font:14px/1.2 system-ui;box-shadow:0 6px 20px rgba(0,0,0,.2);z-index:9999;opacity:.98';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), duration);
+  } catch {}
+}
 
 window.addEventListener('DOMContentLoaded', async () => {
     displays = await window.electronAPI.getDisplays();
@@ -493,4 +503,12 @@ function updateDisplayCounts() {
 window.quitApp = function() {
     window.electronAPI.quitApp();
 };
+if (window.monitor) {
+  window.monitor.onChange(({ displays, primaryId }) => {
+    console.log('[Hotplug] displays changed', { displays, primaryId });
+    toast(`Displays: ${displays.length} • Primary: ${primaryId}`);
+    // TODO: hier Toast/Overlay/Reload falls gewünscht
+  });
+  window.monitor.getStatus().then(s => console.log('[Hotplug] initial', s));
+}
 

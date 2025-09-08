@@ -236,6 +236,16 @@ contextBridge.exposeInMainWorld('overlayAPI', {
     setupObservers();
   }
 })();
-
+try {
+  contextBridge.exposeInMainWorld('monitor', {
+    getStatus: () => ipcRenderer.invoke('monitor:getStatus'),
+    onChange: (cb) => {
+      if (typeof cb !== 'function') return () => {};
+      const fn = (_e, payload) => cb(payload);
+      ipcRenderer.on('monitor:changed', fn);
+      return () => ipcRenderer.removeListener('monitor:changed', fn);
+    },
+  });
+} catch {}
 
 
