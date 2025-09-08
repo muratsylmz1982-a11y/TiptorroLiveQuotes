@@ -4,7 +4,7 @@ Mehrmonitor-App (Electron) für Tiptorro Sportwetten: erkennt alle angeschlossen
 
 ![Status](https://img.shields.io/github/actions/workflow/status/muratsylmz1982-a11y/TiptorroLiveQuotes/ci.yml?branch=main)
 ![Release](https://img.shields.io/github/v/release/muratsylmz1982-a11y/TiptorroLiveQuotes)  
-Aktuelles Release: **v1.2.2**
+Aktuelles Release: **v1.2.3**
 
 ---
 
@@ -83,5 +83,4 @@ CSP gesetzt; Ressourcen auf definierte Domains beschränkt
 
 Changelog
 
-Siehe CHANGELOG.md
-
+Siehe CHANGELOG.md.
