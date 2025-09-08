@@ -1,5 +1,5 @@
 ﻿const { BrowserWindow, screen } = require('electron');
-const { safeLoadUrl } = require('./safeLoad');
+const { safeLoadUrl } = require('./safeload');
 let warteWindows = [];
 
 function zeigeWartebildschirme() {

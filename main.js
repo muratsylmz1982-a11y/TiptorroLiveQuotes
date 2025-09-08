@@ -1,9 +1,11 @@
-const { safeLoadUrl } = require('./modules/safeLoad');
+const { monitorService } = require('./modules/monitor-service');
+const { safeLoadUrl } = require('./modules/safeload');
 /* ===== TTQ early session hardening (must run before any BrowserWindow) ===== */
 try {
   const { hardenSession, hardenWebContents } = require('./modules/security');
   const { app, session } = require('electron');
   const allowlist = require('./modules/allowlist');
+ 
 
 
   // Default-Session sofort härten (nur einmal)
@@ -310,6 +312,7 @@ await analyticsManager.cleanup();
 }
 // Ready-Block
 app.whenReady().then(() => {
+
     // AnalyticsManager VOR Verwendung initialisieren
     analyticsManager = new AnalyticsManager(app);
     let displays = screen.getAllDisplays();
@@ -411,8 +414,9 @@ killTicketchecker();
             });
         }, 1000);
     }  // â† schlieÃŸt den else-Block
-
+monitorService.start();   // <— hier hinzufügen
 });   // â† schlieÃŸt den app.whenReady().then-Block
+
 // START-Button: Live-Views starten
 ipcMain.on('start-app', async (event, neueKonfig) => {
     schliesseWartebildschirme();

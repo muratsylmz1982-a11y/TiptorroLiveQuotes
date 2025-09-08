@@ -6,7 +6,7 @@ const path = require('path');
 const utils = require('./utils');
 const { spawn, execSync } = require('child_process');
 const fs = require('fs');
-const { safeLoadUrl } = require('./safeLoad');
+const { safeLoadUrl } = require('./safeload');
 let ticketcheckerProcess = null;
 const displayWindowManager = new WindowManager();
 const DisplayService = require('./DisplayService');
@@ -103,9 +103,14 @@ function createDisplayWindow(liveWindows, display, url) {
             frame: false,
             fullscreen: true,
             alwaysOnTop: true,
+            skipTaskbar: true,
+            focusable: false,
             backgroundColor: '#000',
-            webPreferences: { nodeIntegration: false, contextIsolation: true }
+            webPreferences: {nodeIntegration: false,contextIsolation: true,backgroundThrottling: false}
         });
+        // weiterlaufen auch wenn unsichtbar/geparkt
+        failWin.webContents.setBackgroundThrottling(false);
+
         failWin.loadFile(path.join(__dirname, '../invalid.html'));
         liveWindows.push(failWin);
         return;
@@ -125,9 +130,12 @@ function createDisplayWindow(liveWindows, display, url) {
   contextIsolation: true,
   preload: path.join(__dirname, '../preload.js'),
   webSecurity: true,
-  experimentalFeatures: true
+  experimentalFeatures: true,
+    backgroundThrottling: false
 }
     });
+    // weiterlaufen auch wenn versteckt/geparkt
+win.webContents.setBackgroundThrottling(false);
 // Notaus-Button einfügen
     win.webContents.on('did-finish-load', () => {
         win.webContents.executeJavaScript(`
@@ -215,9 +223,10 @@ function showMonitorNumbers(previewWindows, displayInfo, displays) {
             focusable: false,
             skipTaskbar: true,
             backgroundColor: '#000',
-            webPreferences: { nodeIntegration: false }
+            webPreferences: { nodeIntegration: false, backgroundThrottling: false }
         });
-
+            previewWin.webContents.setBackgroundThrottling(false);
+        
         const html = `
             <html><head><meta charset="utf-8">
             <style>

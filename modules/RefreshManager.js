@@ -1,8 +1,7 @@
 const path = require('path');
 const logger = require('./logger');
 const fs = require('fs');
-
-const { safeLoadUrl } = require('./safeLoad');
+const { safeLoadUrl } = require('./safeload');
 class RefreshManager {
     constructor(extendedConfig) {
         this.isRunning = false;

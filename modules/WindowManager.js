@@ -48,7 +48,10 @@ class WindowManager {
     
     // Erstellt ein Overlay-Fenster mit automatischem Tracking
     createOverlay(config) {
-        const overlay = new BrowserWindow(config);
+        // weiterlaufen auch wenn versteckt/geparkt
+    config.webPreferences = Object.assign({}, config.webPreferences, { backgroundThrottling: false });
+    const overlay = new BrowserWindow(config);
+    overlay.webContents.setBackgroundThrottling(false);
         const id = overlay.id;
         
         this.registerWindow(id, overlay, 'overlay');
@@ -59,7 +62,10 @@ class WindowManager {
     
     // Erstellt ein Live-Display-Fenster
     createLiveWindow(config) {
-        const window = new BrowserWindow(config);
+        // weiterlaufen auch wenn versteckt/geparkt
+    config.webPreferences = Object.assign({}, config.webPreferences, { backgroundThrottling: false });
+    const window = new BrowserWindow(config);
+    window.webContents.setBackgroundThrottling(false);
         this.liveWindows.push(window);
         this.registerWindow(window.id, window);
         
