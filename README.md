@@ -84,3 +84,4 @@ CSP gesetzt; Ressourcen auf definierte Domains beschränkt
 Changelog
 
 Siehe CHANGELOG.md
+
