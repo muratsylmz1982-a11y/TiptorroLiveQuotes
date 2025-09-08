@@ -1,0 +1,3 @@
+﻿app-update.yml
+elevate.exe
+defaults/favourite.json

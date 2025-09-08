@@ -1,0 +1,4 @@
+main.backup.js
+modules/windowmanager.backup.js
+perf-dashboard.client.js
+performance-dashboard.html
