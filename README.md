@@ -4,7 +4,7 @@ Mehrmonitor-App (Electron) für Tiptorro Sportwetten: erkennt alle angeschlossen
 
 ![Status](https://img.shields.io/github/actions/workflow/status/muratsylmz1982-a11y/TiptorroLiveQuotes/ci.yml?branch=main)
 ![Release](https://img.shields.io/github/v/release/muratsylmz1982-a11y/TiptorroLiveQuotes)  
-Aktuelles Release: **v1.2.0**
+Aktuelles Release: **v1.2.2**
 
 ---
 
@@ -23,9 +23,13 @@ Aktuelles Release: **v1.2.0**
 - Automatische **Display-Erkennung** & Zuordnung
 - **Wartescreen** je Monitor (Logo + ID)
 - **Remote-Setup** via TeamViewer über Primär-UI (Favoriten + URL je Display)
+- **Monitor-Hotplug (ab v1.2.2):**
+  - **Zur Laufzeit:** Fällt ein Monitor (HDMI/TV/Defekt) aus, wird die dort laufende Live-Seite **geparkt** (unsichtbar, läuft weiter) – **kein Fallback auf Primär**.
+  - **Wiederanschluss:** Seite wird **automatisch** auf genau diesem Monitor **fortgesetzt**.
+  - **Neustart:** Beim App/PC-Neustart wird **nicht** automatisch geparkt (Primär bleibt normal).
 - **Autostart** nach Windows-Neustart (Option)
 - **Notausstieg**: *Esc* oder **Beenden**-Button
-- Refresh-Manager, Performance-Dashboard (optional)
+- **Refresh-Manager** (koordinierte Reloads; Default: **30 Min.** & Overlay **3,5 s** – in Erweiterten Einstellungen änderbar)
 - Vorbereitete Sicherheitsmechanismen: **Allowlist & CSP**
 
 ## Systemvoraussetzungen
@@ -36,8 +40,8 @@ Aktuelles Release: **v1.2.0**
 ## Installation (Shops)
 1. Neuestes Release herunterladen:  
    → **Releases:** https://github.com/muratsylmz1982-a11y/TiptorroLiveQuotes/releases
-2. TTQuotes Setup x.y.z.exe ausführen und dem Assistent folgen.  
-   (Alternative: **Portable** dist/win-unpacked/TTQuotes.exe)
+2. `TTQuotes Setup x.y.z.exe` ausführen und dem Assistent folgen.  
+   (Alternative: **Portable** `dist/win-unpacked/TTQuotes.exe`)
 3. App startet → auf allen Displays Wartescreens, **Primärmonitor** zeigt die Steuer-UI.
 
 ## Bedienung (Kurz)
@@ -49,44 +53,34 @@ Aktuelles Release: **v1.2.0**
 ## Troubleshooting
 - Seite lädt nicht → Netzwerk/Firewall & Ziel-Domain prüfen, **Vorschau** neu laden.
 - Monitor-Zuordnung falsch → Windows-Anzeigeeinstellungen prüfen, Mapping neu speichern.
-- Kein Autostart → shell:startup Verknüpfung oder per Option aktivieren.
-- Vollständiger Reset → App beenden, %APPDATA%\Tiptorro Live Quotes\ sichern/löschen, App neu starten.
-
-Mehr Details: siehe **docs/OPERATIONS.md**.
+- Kein Autostart → `shell:startup` Verknüpfung oder per Option aktivieren.
+- Vollständiger Reset → App beenden, `%APPDATA%\Tiptorro Live Quotes\` sichern/löschen, App neu starten.
 
 ## Development/Build
-`ash
+```bash
 npm ci
-npm start      # Dev-Start
-npm test       # Jest-Tests
-npm run build  # electron-builder (Dist/Installer)
+npm start         # Dev-Start
+npm test          # Jest-Tests
+npm run dist-win  # Windows-Installer bauen (electron-builder)
+
 Dokumentation
 
-Benutzerhandbuch: docs/USER_GUIDE.md
+Benutzerhandbuch: docs/user_guide.md
 
-Betrieb/Support: docs/OPERATIONS.md
+Betrieb/Support: docs/operations.md
 
-Architektur: docs/ARCHITECTURE.md
+Architektur: docs/architecture.md
 
-Security-Checkliste: docs/SECURITY.md
+Security: docs/security.md
 
 Sicherheit (Kurz)
 
-Renderer mit contextIsolation: true, nodeIntegration: false
+Renderer: contextIsolation: true, nodeIntegration: false (Preload als einzige Bridge)
 
-Allowlist-/Hardening-Hooks vorhanden (aktuell Monitor-Only, kein Blocking)
+Allowlist-/Hardening-Hooks aktiv (Navigation/Popups), safeLoadUrl(...) für externe Loads
 
-CSP eingetragen (permissiv; wird später geschärft)
+CSP gesetzt; Ressourcen auf definierte Domains beschränkt
 
 Changelog
-v1.2.0
 
-Fix: Umlaute/Encoding stabilisiert (Start/Settings/Dashboard)
-
-Docs: README, ARCHITECTURE, OPERATIONS, SECURITY ergänzt
-
-CI: GitHub Actions (npm ci + npm test)
-
-Security: Allowlist + Hardening-Hooks (monitor-only), BrowserWindow-Flags
-
-© Tiptorro Sportwetten – Alle Rechte vorbehalten.
+Siehe CHANGELOG.md
