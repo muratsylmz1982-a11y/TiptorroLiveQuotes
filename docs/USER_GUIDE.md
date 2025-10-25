@@ -896,5 +896,5 @@ Nach erfolgreicher Einrichtung sollten Sie folgendes sehen:
 
 ![Tiptorro Logo](assets/tiptorro-logo.png)
 
-**Tiptorro Live Quotes v2.0** - Copyright © 2025 Tiptorro Technologies GmbH  
+**Tiptorro Live Quotes v2.0** - Copyright © 2025 Torro Tec GmbH  
 Alle Rechte vorbehalten.
