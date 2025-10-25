@@ -18,14 +18,28 @@ try {
     process.exit(1);
 }
 
-const HTML_PATH = path.join(__dirname, '..', 'docs', 'USER_GUIDE.html');
-const PDF_PATH = path.join(__dirname, '..', 'docs', 'TTQuotes_Benutzerhandbuch_v1.2.5.pdf');
+// Standardmäßig USER_GUIDE, kann über CLI-Argument überschrieben werden
+const docType = process.argv[2] || 'user';
+
+const HTML_PATHS = {
+    user: path.join(__dirname, '..', 'docs', 'USER_GUIDE.html'),
+    support: path.join(__dirname, '..', 'docs', 'SUPPORT_INSTALLATION.html')
+};
+
+const PDF_PATHS = {
+    user: path.join(__dirname, '..', 'docs', 'TTQuotes_Benutzerhandbuch_v1.2.5.pdf'),
+    support: path.join(__dirname, '..', 'docs', 'TTQuotes_Support_Installation_v1.2.5.pdf')
+};
+
+const HTML_PATH = HTML_PATHS[docType];
+const PDF_PATH = PDF_PATHS[docType];
 
 /**
  * Generiert PDF aus HTML-Datei
  */
 async function generatePDF() {
-    console.log('🚀 TTQuotes PDF Manual Generator');
+    const docName = docType === 'support' ? 'Support Installation' : 'Benutzerhandbuch';
+    console.log(`🚀 TTQuotes PDF Generator - ${docName}`);
     console.log('================================\n');
 
     // Prüfe ob HTML-Datei existiert

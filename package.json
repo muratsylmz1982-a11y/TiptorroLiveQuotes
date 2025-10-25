@@ -31,7 +31,9 @@
     "release": "node scripts/release.js patch",
     "release:minor": "node scripts/release.js minor",
     "release:major": "node scripts/release.js major",
-    "docs:pdf": "node scripts/generate-pdf-manual.js"
+    "docs:pdf": "node scripts/generate-pdf-manual.js user && node scripts/generate-pdf-manual.js support",
+    "docs:pdf:user": "node scripts/generate-pdf-manual.js user",
+    "docs:pdf:support": "node scripts/generate-pdf-manual.js support"
   },
   "jest": {
     "testEnvironment": "node",

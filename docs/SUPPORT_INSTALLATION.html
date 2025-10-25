@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTQuotes - Support Installations-Anleitung v1.2.5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ========== Tiptorro Brand Colors ========== */
+        :root {
+            --tt-black: #000000;
+            --tt-green: #269947;
+            --tt-white: #ffffff;
+            --tt-red: #eb243a;
+            --tt-gray: #737373;
+            --tt-dark-bg: #0a0a0a;
+            --tt-card-bg: #121211;
+            --tt-border: #222;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: var(--tt-black);
+            color: var(--tt-white);
+            line-height: 1.7;
+            font-size: 16px;
+            padding-top: 180px;
+        }
+
+        /* ========== Header ========== */
+        .header {
+            background: linear-gradient(135deg, var(--tt-black) 0%, #0d0d0d 100%);
+            border-bottom: 3px solid var(--tt-green);
+            padding: 25px 0 15px 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(38, 153, 71, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-logo-img {
+            height: 55px;
+            filter: drop-shadow(0 0 15px rgba(38, 153, 71, 0.5));
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        .header-text-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .header-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--tt-green);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            text-shadow: 0 0 20px rgba(38, 153, 71, 0.4);
+            line-height: 1.1;
+        }
+
+        .header-subtitle {
+            font-size: 15px;
+            color: var(--tt-gray);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            line-height: 1.3;
+        }
+
+        /* ========== Sticky Navigation ========== */
+        .nav-menu {
+            background: linear-gradient(135deg, #0d0d0d 0%, var(--tt-black) 100%);
+            border-bottom: 2px solid var(--tt-border);
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-item {
+            background: var(--tt-card-bg);
+            border: 1px solid var(--tt-border);
+            color: var(--tt-white);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-item:hover {
+            background: var(--tt-green);
+            color: var(--tt-black);
+            border-color: var(--tt-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(38, 153, 71, 0.4);
+        }
+
+        /* ========== Container ========== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 40px 60px 40px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            scroll-margin-top: 200px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--tt-green);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--tt-green), transparent);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--tt-white);
+            margin: 35px 0 18px 0;
+            border-left: 4px solid var(--tt-green);
+            padding-left: 18px;
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--tt-green);
+            margin: 25px 0 12px 0;
+        }
+
+        p {
+            margin-bottom: 14px;
+            color: #d0d0d0;
+        }
+
+        strong {
+            color: var(--tt-white);
+            font-weight: 700;
+        }
+
+        /* ========== Lists ========== */
+        ul, ol {
+            margin: 18px 0 18px 28px;
+            color: #d0d0d0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        ul li::marker {
+            color: var(--tt-green);
+        }
+
+        ol li::marker {
+            color: var(--tt-green);
+            font-weight: 700;
+        }
+
+        /* ========== Checkboxes ========== */
+        input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--tt-green);
+        }
+
+        /* ========== Code ========== */
+        code {
+            background: #1a1a1a;
+            color: var(--tt-green);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border: 1px solid var(--tt-border);
+        }
+
+        .code-block {
+            background: #0d0d0d;
+            border: 1px solid var(--tt-border);
+            border-left: 4px solid var(--tt-green);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        kbd {
+            display: inline-block;
+            padding: 4px 10px;
+            background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+            border: 2px solid var(--tt-green);
+            border-radius: 6px;
+            color: var(--tt-green);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ========== Tables ========== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: var(--tt-card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--tt-green) 0%, #1e7a38 100%);
+        }
+
+        th {
+            padding: 14px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--tt-white);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid var(--tt-border);
+            color: #d0d0d0;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #1a1a1a;
+        }
+
+        /* ========== Alert Boxes ========== */
+        .alert {
+            padding: 18px 22px;
+            border-radius: 8px;
+            margin: 22px 0;
+            border-left: 5px solid;
+            font-weight: 600;
+        }
+
+        .alert-success {
+            background: rgba(38, 153, 71, 0.1);
+            border-color: var(--tt-green);
+            color: var(--tt-green);
+        }
+
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: #f59e0b;
+            color: #fbbf24;
+        }
+
+        .alert-info {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            color: #60a5fa;
+        }
+
+        .alert-danger {
+            background: rgba(235, 36, 58, 0.1);
+            border-color: var(--tt-red);
+            color: var(--tt-red);
+        }
+
+        /* ========== Step Cards ========== */
+        .step {
+            background: var(--tt-card-bg);
+            border: 2px solid var(--tt-border);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+            padding-left: 90px;
+        }
+
+        .step-number {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--tt-green), #1e7a38);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--tt-white);
+            box-shadow: 0 4px 12px rgba(38, 153, 71, 0.4);
+        }
+
+        .step-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--tt-green);
+            margin-bottom: 10px;
+        }
+
+        .step-content {
+            color: #d0d0d0;
+        }
+
+        /* ========== Highlight Box ========== */
+        .highlight-box {
+            background: linear-gradient(135deg, #1a3a25 0%, #0d1f14 100%);
+            border: 2px solid var(--tt-green);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 0 25px rgba(38, 153, 71, 0.2);
+        }
+
+        .highlight-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--tt-green);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .new-badge {
+            display: inline-block;
+            background: var(--tt-green);
+            color: var(--tt-black);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* ========== Footer ========== */
+        .footer {
+            background: var(--tt-dark-bg);
+            border-top: 3px solid var(--tt-green);
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer-logo {
+            height: 50px;
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+
+        .footer-content {
+            color: var(--tt-gray);
+            font-size: 14px;
+        }
+
+        /* ========== Print Styles ========== */
+        @media print {
+            body {
+                background: white;
+                color: black;
+                padding-top: 0;
+            }
+            .header, .nav-menu {
+                position: static;
+            }
+            .nav-item {
+                display: none;
+            }
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 220px;
+            }
+            .container {
+                padding: 30px 20px;
+            }
+            .header-logo-img {
+                height: 45px;
+            }
+            .header-title {
+                font-size: 24px;
+            }
+            .header-subtitle {
+                font-size: 13px;
+            }
+            .section-title {
+                font-size: 26px;
+            }
+            .nav-menu {
+                padding: 10px 15px;
+            }
+            .nav-item {
+                font-size: 11px;
+                padding: 6px 12px;
+            }
+            .step {
+                padding-left: 20px;
+                padding-top: 75px;
+            }
+            .step-number {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <img src="../assets/logo2.png" alt="Tiptorro Logo" class="header-logo-img">
+            <div class="header-text-group">
+                <div class="header-title">🛠️ Support Installation</div>
+                <div class="header-subtitle">TTQuotes v1.2.5 • Remote-Installations-Anleitung für IT-Support</div>
+            </div>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <div class="nav-menu">
+            <a href="#overview" class="nav-item">📋 Übersicht</a>
+            <a href="#requirements" class="nav-item">✅ Voraussetzungen</a>
+            <a href="#installation" class="nav-item">🚀 Installation</a>
+            <a href="#health-check" class="nav-item">🏥 Health Check</a>
+            <a href="#troubleshooting" class="nav-item">🆘 Troubleshooting</a>
+            <a href="#checklist" class="nav-item">📝 Checkliste</a>
+            <a href="#quick-ref" class="nav-item">⚡ Quick Reference</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Section: Overview -->
+        <div class="section" id="overview">
+            <h1 class="section-title">📋 Übersicht</h1>
+            
+            <p>Diese Anleitung beschreibt die <strong>Remote-Installation</strong> und <strong>Konfiguration</strong> von TTQuotes in Tiptorro-Shops via TeamViewer.</p>
+
+            <div class="alert alert-info">
+                <strong>⏱️ Geschätzte Dauer:</strong> 5-10 Minuten pro Shop (abhängig von Monitor-Anzahl)
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-title">
+                    <span class="new-badge">Neu v1.2.5</span>
+                    <span>Was ist neu in dieser Version?</span>
+                </div>
+                <ul>
+                    <li><strong>🛡️ Error Handler System</strong> - Automatische Crash-Recovery ohne Support-Calls</li>
+                    <li><strong>🏥 Health Check Dashboard</strong> - Echtzeit-System-Überwachung mit Screenshot-Funktion</li>
+                    <li><strong>⌨️ Global Hotkey</strong> (Strg+Shift+H) - Schnellzugriff auf Health Check während Live-Betrieb</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section: Requirements -->
+        <div class="section" id="requirements">
+            <h1 class="section-title">✅ Voraussetzungen</h1>
+
+            <h2>System-Anforderungen</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Komponente</th>
+                        <th>Anforderung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Betriebssystem</strong></td>
+                        <td>Windows 10/11 (64-bit)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Arbeitsspeicher</strong></td>
+                        <td>Mind. 4GB RAM (8GB empfohlen für 4+ Monitore)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Internet</strong></td>
+                        <td>Stabile Breitband-Verbindung</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monitore</strong></td>
+                        <td>Alle TV-Monitore angeschlossen und eingeschaltet</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Benötigte Software</h2>
+            <ul>
+                <li>✅ <strong>TeamViewer</strong> (für Remote-Installation)</li>
+                <li>✅ <strong>TTQuotes Setup 1.2.5.exe</strong> (73 MB)</li>
+            </ul>
+
+            <div class="alert alert-info">
+                <strong>📥 Download:</strong> <code>https://github.com/muratsylmz1982-a11y/TiptorroLiveQuotes/releases/latest</code>
+            </div>
+
+            <h2>Zugriff benötigt</h2>
+            <ul>
+                <li>✅ Administrator-Rechte auf Ziel-PC</li>
+                <li>✅ TeamViewer-ID des Shop-PCs</li>
+                <li>✅ Liste der gewünschten URLs pro Monitor</li>
+            </ul>
+        </div>
+
+        <!-- Section: Installation -->
+        <div class="section" id="installation">
+            <h1 class="section-title">🚀 Installations-Prozess</h1>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <div class="step-title">Remote-Verbindung herstellen</div>
+                <div class="step-content">
+                    <ol>
+                        <li>TeamViewer öffnen</li>
+                        <li>TeamViewer-ID vom Shop-Mitarbeiter erfragen</li>
+                        <li>Verbindung herstellen</li>
+                        <li>Administrator-Rechte anfordern (falls nötig)</li>
+                    </ol>
+                    <div class="alert alert-success">
+                        <strong>💡 Tipp:</strong> Kurze Begrüßung, ca. Dauer nennen (15-30 Min.)
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <div class="step-title">System prüfen</div>
+                <div class="step-content">
+                    <p><strong>Wichtig vor Installation prüfen:</strong></p>
+                    <div class="code-block"># Windows-Version
+winver
+
+# Monitore angeschlossen?
+# Windows-Einstellungen → System → Anzeige</div>
+                    
+                    <p><strong>Checkliste:</strong></p>
+                    <ul>
+                        <li><input type="checkbox"> Windows 10/11 64-bit?</li>
+                        <li><input type="checkbox"> Alle Monitore sichtbar in Windows?</li>
+                        <li><input type="checkbox"> Monitore richtig angeordnet? (Position 1, 2, 3...)</li>
+                        <li><input type="checkbox"> Internet-Verbindung stabil?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <div class="step-title">TTQuotes installieren</div>
+                <div class="step-content">
+                    <ol>
+                        <li><strong>Installer starten:</strong> <code>TTQuotes Setup 1.2.5.exe</code> (ca. 73 MB)</li>
+                        <li><strong>Windows SmartScreen-Warnung:</strong>
+                            <div class="code-block">"Weitere Informationen" → "Trotzdem ausführen"</div>
+                            <div class="alert alert-warning">
+                                ⚠️ <strong>Normal!</strong> App ist nicht code-signiert, aber sicher.
+                            </div>
+                        </li>
+                        <li><strong>UAC-Dialog:</strong> "Ja" klicken</li>
+                        <li><strong>Installation läuft:</strong> 10-20 Sekunden</li>
+                        <li><strong>App startet automatisch</strong> nach Installation</li>
+                    </ol>
+
+                    <div class="highlight-box">
+                        <div class="highlight-title">
+                            <span class="new-badge">Neu</span>
+                            <span>Neue Features in v1.2.5</span>
+                        </div>
+                        <ul>
+                            <li>✅ <strong>Error Handler System</strong> - Automatische Crash-Recovery</li>
+                            <li>✅ <strong>Health Check Dashboard</strong> - Echtzeit-System-Überwachung</li>
+                            <li>✅ <strong>Global Hotkey</strong> (Strg+Shift+H) - Schnellzugriff auf Health Check</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">4</span>
+                <div class="step-title">Monitore konfigurieren</div>
+                <div class="step-content">
+                    <p><strong>Was Sie jetzt sehen:</strong></p>
+                    <ul>
+                        <li><strong>Hauptmonitor:</strong> Konfigurations-UI (schwarz mit Einstellungen)</li>
+                        <li><strong>Alle anderen Monitore:</strong> Wartebildschirme mit "Konfiguration erforderlich"</li>
+                    </ul>
+
+                    <div class="alert alert-info">
+                        <strong>💡 Wichtig:</strong> Jeder Wartebildschirm zeigt unten links eine <strong>große Nummer</strong> (1, 2, 3, 4...). Diese Nummer = Monitor in der Config-UI!
+                    </div>
+
+                    <p><strong>In der Konfigurations-UI:</strong></p>
+                    <ol>
+                        <li><strong>Für jeden Monitor:</strong> Dropdown-Menü öffnen</li>
+                        <li><strong>Favorit wählen</strong> (empfohlen) ODER <strong>Eigene URL</strong> eingeben</li>
+                        <li><strong>Vorschau testen:</strong> "Vorschau" Button klicken</li>
+                    </ol>
+
+                    <p><strong>Vorkonfigurierte Favoriten:</strong></p>
+                    <ul>
+                        <li>Live TV - Seite 1</li>
+                        <li>Live TV - Seite 2</li>
+                        <li>Live TV - Seite 3</li>
+                        <li>LiveScore TV</li>
+                        <li>Ticketchecker</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">5</span>
+                <div class="step-title">Live-Views starten</div>
+                <div class="step-content">
+                    <ol>
+                        <li><strong>Alle Monitore konfiguriert?</strong> ✓</li>
+                        <li><strong>Vorschau geprüft?</strong> ✓</li>
+                        <li><strong>Button klicken:</strong> <strong>"LIVE-VIEWS STARTEN"</strong></li>
+                    </ol>
+
+                    <p><strong>Was jetzt passiert:</strong></p>
+                    <ul>
+                        <li>Config-UI schließt sich</li>
+                        <li>Alle Monitore zeigen nun ihre zugewiesenen Inhalte</li>
+                        <li><strong>Warten:</strong> 10-20 Sekunden bis alles geladen ist</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">6</span>
+                <div class="step-title">Autostart aktivieren</div>
+                <div class="step-content">
+                    <div class="alert alert-warning">
+                        <strong>⚠️ Wichtig:</strong> Damit App nach PC-Neustart automatisch startet!
+                    </div>
+
+                    <ol>
+                        <li>Zurück zur Config-UI (falls nicht sichtbar: <kbd>ESC</kbd> drücken)</li>
+                        <li><strong>Unten links:</strong> "Autostart" Button klicken</li>
+                        <li>Button sollte grün/aktiv werden</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Health Check -->
+        <div class="section" id="health-check">
+            <h1 class="section-title">🏥 Health Check Dashboard</h1>
+
+            <div class="highlight-box">
+                <div class="highlight-title">
+                    <span class="new-badge">Neu v1.2.5</span>
+                    <span>System-Überwachung demonstrieren</span>
+                </div>
+                <p>Der wichtigste neue Feature für Support-Diagnose!</p>
+            </div>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <div class="step-title">Health Check Dashboard öffnen</div>
+                <div class="step-content">
+                    <p><strong>Zwei Methoden:</strong></p>
+                    <ul>
+                        <li><strong>Methode 1:</strong> Drücken Sie <kbd>Strg</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd></li>
+                        <li><strong>Methode 2:</strong> Klicken Sie "🏥 HEALTH CHECK" im Hauptfenster</li>
+                    </ul>
+
+                    <div class="alert alert-success">
+                        <strong>✅ Vorteil:</strong> Dashboard öffnet sich <strong>immer im Vordergrund</strong>, auch über Live-Views!
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <div class="step-title">Status prüfen</div>
+                <div class="step-content">
+                    <p><strong>Checkliste für erfolgreiche Installation:</strong></p>
+                    <ul>
+                        <li><input type="checkbox"> <strong>Overall Status:</strong> Sollte "HEALTHY" sein (grün)</li>
+                        <li><input type="checkbox"> <strong>Monitore:</strong> Zeigt Anzahl aktiver Displays (z.B. "3 Monitore")</li>
+                        <li><input type="checkbox"> <strong>Memory:</strong> Sollte < 300 MB sein</li>
+                        <li><input type="checkbox"> <strong>CPU:</strong> Sollte < 15% sein</li>
+                        <li><input type="checkbox"> <strong>Network:</strong> "Online" mit Latenz < 100ms</li>
+                    </ul>
+
+                    <h3>Status-Bedeutungen</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Bedeutung</th>
+                                <th>Aktion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>🟢 <strong>HEALTHY</strong></td>
+                                <td>Alles OK, läuft normal</td>
+                                <td>Keine Aktion nötig</td>
+                            </tr>
+                            <tr>
+                                <td>🟡 <strong>WARNING</strong></td>
+                                <td>Kleinere Probleme (z.B. keine Monitore aktiv, hohe CPU)</td>
+                                <td>Prüfen, meist unkritisch</td>
+                            </tr>
+                            <tr>
+                                <td>🔴 <strong>CRITICAL</strong></td>
+                                <td>Schwerwiegende Probleme (Crashes, kritischer Speicher)</td>
+                                <td>Sofort beheben!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <div class="step-title">Auto-Monitoring aktivieren</div>
+                <div class="step-content">
+                    <ol>
+                        <li>Klicken Sie <strong>"Start Monitoring"</strong></li>
+                        <li>Dashboard aktualisiert sich automatisch alle 5 Sekunden</li>
+                        <li>Zeigen Sie dem Shop-Mitarbeiter: "Hier sehen Sie den System-Status"</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h2>Warum Health Check Dashboard?</h2>
+            <ul>
+                <li>✅ <strong>Überwachung ohne Live-Views zu stoppen</strong></li>
+                <li>✅ <strong>Erkennung von Problemen bevor sie kritisch werden</strong></li>
+                <li>✅ <strong>Einfacher Support:</strong> Screenshots mit vollständiger System-Info</li>
+                <li>✅ <strong>Remote-Diagnose:</strong> Shop-Mitarbeiter kann Screenshot senden</li>
+                <li>✅ <strong>Weniger Support-Calls:</strong> Fehler werden automatisch behandelt</li>
+            </ul>
+        </div>
+
+        <!-- Section: Troubleshooting -->
+        <div class="section" id="troubleshooting">
+            <h1 class="section-title">🆘 Troubleshooting</h1>
+
+            <div class="highlight-box">
+                <div class="highlight-title">
+                    <span class="new-badge">Neu</span>
+                    <span>Diagnose mit Health Check Dashboard</span>
+                </div>
+                <p><strong>Bevor Sie Troubleshooting starten:</strong></p>
+                <ol>
+                    <li>Drücken Sie <kbd>Strg</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd> um Health Check Dashboard zu öffnen</li>
+                    <li>Prüfen Sie den <strong>Overall Status</strong></li>
+                    <li>Schauen Sie ins <strong>Error Log</strong> (unten im Dashboard)</li>
+                    <li>Machen Sie <strong>Screenshot</strong> für Support-Ticket</li>
+                </ol>
+            </div>
+
+            <h2>Häufige Probleme & Lösungen</h2>
+
+            <h3>Problem: "Windows hat diesen PC geschützt"</h3>
+            <div class="alert alert-warning">
+                <strong>Windows SmartScreen-Warnung</strong>
+            </div>
+            <p><strong>Lösung:</strong></p>
+            <div class="code-block">"Weitere Informationen" → "Trotzdem ausführen"</div>
+            <p><strong>Grund:</strong> App ist nicht code-signiert (normal, aber sicher)</p>
+
+            <h3>Problem: Monitor wird nicht erkannt</h3>
+            <p><strong>Symptome:</strong> Weniger Monitore angezeigt als angeschlossen</p>
+            <p><strong>Lösung:</strong></p>
+            <ol>
+                <li><strong>Windows-Bildschirm-Erkennung:</strong> <kbd>Windows</kbd> + <kbd>P</kbd> → "Erkennen" → "Erweitern"</li>
+                <li><strong>Anzeigeeinstellungen prüfen:</strong> Rechtsklick auf Desktop → "Anzeigeeinstellungen"</li>
+                <li><strong>TTQuotes neu starten:</strong> <kbd>ESC</kbd> → "BEENDEN" → Erneut starten</li>
+                <li><strong>Hardware prüfen:</strong> HDMI/DisplayPort-Kabel, Monitor eingeschaltet?</li>
+            </ol>
+
+            <h3>Problem: Website lädt nicht / bleibt schwarz</h3>
+            <p><strong>Symptome:</strong> Schwarzer Bildschirm oder "Kann nicht geladen werden"</p>
+            <p><strong>Lösung mit Health Check:</strong></p>
+            <ol>
+                <li>Health Check Dashboard öffnen (<kbd>Strg</kbd>+<kbd>Shift</kbd>+<kbd>H</kbd>)</li>
+                <li><strong>Network Status prüfen:</strong> Ist "Online"?</li>
+                <li><strong>Monitor Status prüfen:</strong> Zeigt "Loading" oder "Empty"?</li>
+                <li><strong>URL in normalem Browser testen</strong></li>
+                <li><strong>Firewall-Ausnahme für TTQuotes</strong> hinzufügen</li>
+            </ol>
+
+            <h3>Problem: App ist abgestürzt / Fenster reagiert nicht</h3>
+            <div class="highlight-box">
+                <div class="highlight-title">
+                    <span class="new-badge">Neu v1.2.5</span>
+                    <span>Error Handler kümmert sich automatisch!</span>
+                </div>
+                <p><strong>Was passiert automatisch:</strong></p>
+                <ul>
+                    <li>✅ Abgestürzte Fenster werden <strong>automatisch neu geladen</strong></li>
+                    <li>✅ Eingefrorene Fenster werden <strong>automatisch erkannt</strong></li>
+                    <li>✅ Fehler werden <strong>geloggt</strong> und im Health Check Dashboard angezeigt</li>
+                </ul>
+            </div>
+
+            <p><strong>Manuelles Eingreifen nur nötig wenn:</strong></p>
+            <ul>
+                <li>Fenster nach 30 Sekunden nicht neu lädt</li>
+                <li>Crash-Dialog erscheint</li>
+            </ul>
+
+            <p><strong>Dann:</strong></p>
+            <ol>
+                <li>Health Check Dashboard öffnen (<kbd>Strg</kbd>+<kbd>Shift</kbd>+<kbd>H</kbd>)</li>
+                <li>Error Log prüfen</li>
+                <li>Screenshot für Support machen</li>
+                <li>App neu starten (<kbd>ESC</kbd> → "LIVE-VIEWS STARTEN")</li>
+            </ol>
+
+            <h3>Problem: Health Check Dashboard zeigt WARNING</h3>
+            <div class="alert alert-info">
+                <strong>💡 Erklärung:</strong> Wenn <strong>keine Live-Views</strong> laufen (nur Config-UI offen), zeigt Health Check Status "WARNING" mit "0 Monitore aktiv". <strong>Das ist normal!</strong>
+            </div>
+            <p>Sobald Sie "LIVE-VIEWS STARTEN" klicken, ändert sich zu Status "HEALTHY".</p>
+
+            <h3>Problem: Hohe CPU/RAM-Nutzung</h3>
+            <p><strong>Diagnose mit Health Check:</strong></p>
+            <ol>
+                <li>Health Check Dashboard öffnen (<kbd>Strg</kbd>+<kbd>Shift</kbd>+<kbd>H</kbd>)</li>
+                <li>Aktuelle Werte prüfen:
+                    <ul>
+                        <li><strong>Normal:</strong> RAM < 300 MB, CPU < 15%</li>
+                        <li><strong>Hoch:</strong> RAM > 500 MB, CPU > 30%</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <p><strong>Lösungen:</strong></p>
+            <ul>
+                <li><strong>Refresh-Intervall erhöhen:</strong> Erweiterte Einstellungen → 30 Min.</li>
+                <li><strong>Anzahl Monitore reduzieren:</strong> Temporär weniger Monitore verwenden</li>
+                <li><strong>System-Upgrade empfehlen:</strong> Bei 4+ Monitoren: Mind. 8GB RAM</li>
+            </ul>
+        </div>
+
+        <!-- Section: Checklist -->
+        <div class="section" id="checklist">
+            <h1 class="section-title">📝 Post-Installation Checkliste</h1>
+
+            <p><strong>Nach erfolgreicher Installation abhaken:</strong></p>
+
+            <div class="step">
+                <span class="step-number">✓</span>
+                <div class="step-title">Standard-Checks</div>
+                <div class="step-content">
+                    <ul>
+                        <li><input type="checkbox"> Installation abgeschlossen (keine Fehler)</li>
+                        <li><input type="checkbox"> Alle Monitore zeigen korrekte Inhalte</li>
+                        <li><input type="checkbox"> Autostart aktiviert</li>
+                        <li><input type="checkbox"> PC-Neustart getestet</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">🆕</span>
+                <div class="step-title">Neue Checks v1.2.5</div>
+                <div class="step-content">
+                    <ul>
+                        <li><input type="checkbox"> <strong>Health Check Dashboard getestet</strong> (<kbd>Strg</kbd>+<kbd>Shift</kbd>+<kbd>H</kbd>)</li>
+                        <li><input type="checkbox"> <strong>Health Check zeigt "HEALTHY" Status</strong></li>
+                        <li><input type="checkbox"> <strong>Shop-Mitarbeiter mit Health Check vertraut gemacht</strong></li>
+                        <li><input type="checkbox"> <strong>Error Log ist leer</strong> (keine Fehler beim Start)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">📋</span>
+                <div class="step-title">Abschluss</div>
+                <div class="step-content">
+                    <ul>
+                        <li><input type="checkbox"> Shop-Mitarbeiter informiert</li>
+                        <li><input type="checkbox"> Installations-Datum dokumentiert</li>
+                        <li><input type="checkbox"> TeamViewer-Verbindung getrennt</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Quick Reference -->
+        <div class="section" id="quick-ref">
+            <h1 class="section-title">⚡ Quick Reference</h1>
+
+            <h2>Installations-Ablauf (Kurzfassung)</h2>
+            <div class="code-block">═══════════════════════════════════════════════
+   TTQuotes v1.2.5 - Support Quick Reference
+═══════════════════════════════════════════════
+
+1. TeamViewer verbinden
+2. Installer starten (SmartScreen: "Trotzdem ausführen")
+3. App startet automatisch
+4. Monitore konfigurieren (Dropdown oder URL)
+5. Vorschau testen
+6. "LIVE-VIEWS STARTEN"
+7. Autostart aktivieren
+8. ⭐ NEU: Health Check testen (Strg+Shift+H)
+9. PC-Neustart testen
+10. Shop-Mitarbeiter einweisen
+
+Notfall: ESC = App beenden
+
+NEU in v1.2.5:
+• Strg+Shift+H = Health Check Dashboard
+• Automatische Crash-Recovery
+• Error-Logging mit letzten 10 Fehlern
+
+═══════════════════════════════════════════════</div>
+
+            <h2>Health Check Dashboard - Schnellhilfe</h2>
+            <div class="code-block">═══════════════════════════════════════════════
+   Health Check Dashboard - Schnellhilfe
+═══════════════════════════════════════════════
+
+ÖFFNEN:
+• Tastenkombination: Strg + Shift + H
+• Oder: Button "🏥 HEALTH CHECK" im Hauptfenster
+
+STATUS-ANZEIGE:
+🟢 HEALTHY   = Alles OK, läuft normal
+🟡 WARNING   = Kleinere Probleme, aber läuft
+🔴 CRITICAL  = Schwerwiegende Probleme!
+
+WAS WIRD ÜBERWACHT:
+✓ Monitore (Anzahl aktiv, Status)
+✓ Speicher (RAM-Nutzung)
+✓ CPU (Prozessor-Auslastung)
+✓ Internet (Verbindung, Geschwindigkeit)
+✓ Fehler (Letzte 10 Fehler)
+
+MONITORING STARTEN:
+• Button "Start Monitoring" klicken
+• Dashboard aktualisiert sich alle 5 Sekunden
+• Immer im Vordergrund, auch über Live-Views
+
+BEI PROBLEMEN:
+1. Screenshot vom Dashboard machen
+2. An Support senden: support@tiptorro.com
+3. Dashboard schließen (X oben rechts)
+
+═══════════════════════════════════════════════</div>
+
+            <h2>Error Handler System - Info für Support</h2>
+            <div class="highlight-box">
+                <div class="highlight-title">
+                    <span class="new-badge">Neu v1.2.5</span>
+                    <span>Automatische Fehlerbehandlung</span>
+                </div>
+
+                <p><strong>Was macht der Error Handler?</strong></p>
+                <ul>
+                    <li>✅ Fängt alle Crashes und Fehler automatisch ab</li>
+                    <li>✅ Startet abgestürzte Fenster automatisch neu</li>
+                    <li>✅ Loggt alle Fehler mit Details (Typ, Message, Timestamp)</li>
+                    <li>✅ Zeigt letzte 10 Fehler im Health Check Dashboard</li>
+                </ul>
+
+                <p><strong>Fehlertypen die automatisch behandelt werden:</strong></p>
+                <ol>
+                    <li><strong>Renderer Crashes</strong> → Fenster wird automatisch neu geladen</li>
+                    <li><strong>GPU Crashes</strong> → GPU-Prozess startet automatisch neu</li>
+                    <li><strong>Unresponsive Windows</strong> → Dialog erscheint: "Warten" oder "Neu laden"</li>
+                    <li><strong>Uncaught Exceptions</strong> → Fehler wird geloggt, App läuft weiter</li>
+                    <li><strong>Promise Rejections</strong> → Fehler wird geloggt, App läuft weiter</li>
+                </ol>
+
+                <p><strong>Für Support bedeutet das:</strong></p>
+                <ul>
+                    <li>✅ <strong>Weniger Support-Calls</strong> wegen Crashes</li>
+                    <li>✅ <strong>Bessere Diagnose</strong> durch Error-Logs</li>
+                    <li>✅ <strong>24/7-Betrieb</strong> ohne manuelle Eingriffe</li>
+                    <li>✅ <strong>Remote-Diagnose</strong> via Health Check Screenshots</li>
+                </ul>
+            </div>
+
+            <h2>Error-Logs abrufen</h2>
+            <div class="code-block">Pfad: C:\Users\[Username]\AppData\Roaming\ttquotes\logs\
+
+Dateien:
+  - combined.log (alle Events)
+  - error.log (nur Fehler)
+  - analytics.json (Statistiken)</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <img src="../assets/logo2.png" alt="Tiptorro Logo" class="footer-logo">
+        <div class="footer-content">
+            <p><strong>Version 1.2.5</strong> • Oktober 2025</p>
+            <p>Entwickelt von Murat Söylemez für Tiptorro Sportwetten</p>
+            <p>Copyright © 2025 Torro Tec GmbH • Alle Rechte vorbehalten</p>
+            <p style="margin-top: 15px; color: var(--tt-green);">
+                📧 support@tiptorro.com • 🌐 github.com/muratsylmz1982-a11y/TiptorroLiveQuotes
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Highlight active section in navigation
+        window.addEventListener('scroll', function() {
+            let scrollPosition = window.scrollY + 250;
+            
+            document.querySelectorAll('.section').forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        item.style.background = 'var(--tt-card-bg)';
+                        item.style.color = 'var(--tt-white)';
+                        
+                        if (item.getAttribute('href') === '#' + sectionId) {
+                            item.style.background = 'var(--tt-green)';
+                            item.style.color = 'var(--tt-black)';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
