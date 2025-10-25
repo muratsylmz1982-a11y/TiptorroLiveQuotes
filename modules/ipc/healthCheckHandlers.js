@@ -19,6 +19,8 @@ function openHealthCheckDashboard(healthCheck) {
         height: 900,
         title: 'TTQuotes Health Check Dashboard',
         icon: path.join(__dirname, '..', '..', 'tttray.png'),
+        alwaysOnTop: true,  // Always on top, even above Live-Views
+        frame: true,
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
