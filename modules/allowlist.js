@@ -48,6 +48,11 @@ function getStatus() {
   };
 }
 
+/** Prüft, ob die Allowlist-Durchsetzung aktiv ist */
+function isEnforced() {
+  return enforce;
+}
+
 /** Enforce-Flag umschalten (falls später per UI benötigt) */
 function setEnforce(v) {
   enforce = !!v;
@@ -55,6 +60,7 @@ function setEnforce(v) {
 
 module.exports = {
   isAllowedUrl,
+  isEnforced,
   getStatus,
   setEnforce,
   PREFIXES,

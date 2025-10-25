@@ -2,25 +2,6 @@
 const { BrowserWindow } = require('electron');
 const logger = require('./logger');
 
-
-const { isAllowedUrl, ENFORCE } = require('./allowlist');
-/** Lädt URLs sicher: erlaubt -> loadURL; verboten -> blockieren bei ENFORCE, sonst erlauben (Monitor-Only). */
-function safeLoadUrl(win, url, opts) {
-  try {
-    if (isAllowedUrl(url)) {
-      return safeLoadUrl(win,url, opts);
-    }
-    if (ENFORCE) {
-      try { console.warn('[allowlist][block]', url); } catch {}
-      return Promise.resolve(); // nichts laden
-    }
-    try { console.warn('[allowlist][monitor]', url); } catch {}
-    return safeLoadUrl(win,url, opts);
-  } catch (e) {
-    try { console.warn('[safeLoadUrl][err]', e && e.message ? e.message : e); } catch {}
-    return Promise.resolve();
-  }
-}
 class WindowManager {
     constructor() {
         this.windows = new Map();

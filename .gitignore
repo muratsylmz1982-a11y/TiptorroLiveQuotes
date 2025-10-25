@@ -27,13 +27,23 @@ logs/
 # Installer/Artefakte
 *.msi
 *.exe
+*.exe.blockmap
 *.appx
 *.zip
 /release/
 /artifacts/
 /installer/
 /installer-outputs/
+latest.yml
+builder-debug.yml
+builder-effective-config.yaml
 
-# Local backups
+# Local backups & Archives
 *.backup.html
 *backup*.html
+*.backup.js
+/archive/
+
+# Trace & Debug files
+require-trace.log
+trace-*.log
