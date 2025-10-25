@@ -8,7 +8,7 @@ class ExtendedConfig {
         this.configPath = utils.getUserDataPath(app, 'extended-config.json');
         this.defaultConfig = {
             refresh: {
-                intervalMs: 1800000,        // 30 Minuten
+                intervalMs: 1200000,        // 20 Minuten
                 overlayMinTimeMs: 3500,     // 3,5 Sekunden
                 retryDelayMs: 1000,         // 1 Sekunde
                 enabled: true
@@ -134,7 +134,7 @@ class ExtendedConfig {
         
         // Refresh-Validierung
         if (validated.refresh) {
-            validated.refresh.intervalMs = Math.max(30000, validated.refresh.intervalMs || 60000);
+            validated.refresh.intervalMs = Math.max(30000, validated.refresh.intervalMs || 1200000);
             validated.refresh.overlayMinTimeMs = Math.max(1000, validated.refresh.overlayMinTimeMs || 3000);
             validated.refresh.retryDelayMs = Math.max(500, validated.refresh.retryDelayMs || 1000);
         }

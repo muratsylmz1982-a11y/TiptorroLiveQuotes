@@ -10,7 +10,7 @@ class RefreshManager {
         this.extendedConfig = extendedConfig;
 
         // Standardwerte (werden aus ExtendedConfig überschrieben)
-        this.refreshDelay = 1800000; // 30 Minuten
+        this.refreshDelay = 1200000; // 20 Minuten
         this.overlayDelay = 3500;    // 3,5 Sekunden
     }
 
@@ -33,7 +33,7 @@ class RefreshManager {
         window: win,
         url: (options && options.url) ? options.url : "about:blank",
         // Mindestabstand einstellen, damit Overlay niemals "sofort" kommt!
-        refreshDelay: Math.max(this.refreshDelay, 60000), // z.B. mind. 60 Sekunden
+        refreshDelay: this.refreshDelay,
         overlayDelay: options.overlayDelay || this.overlayDelay,
         lastRefresh: Date.now(),      // <--- HIER wird der Timer gesetzt, sodass erst nach refreshDelay der erste Refresh kommt!
         isRefreshing: false
