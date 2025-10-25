@@ -25,6 +25,9 @@ window.addEventListener('message', (event) => {
 
 // Sichere API ins Renderer-Fenster exposen
 contextBridge.exposeInMainWorld('electronAPI', {
+  // Generic invoke method for all IPC calls
+  invoke: (channel, ...args) => ipcRenderer.invoke(channel, ...args),
+  
   getAutostartStatus: () => ipcRenderer.invoke('get-autostart'),
   toggleAutostart: (enable) => ipcRenderer.invoke('toggle-autostart', enable),
   getAllowlistStatus: () => ipcRenderer.invoke('allowlist:getStatus'),
