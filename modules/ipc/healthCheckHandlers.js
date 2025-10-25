@@ -150,5 +150,8 @@ function registerHealthCheckHandlers(healthCheck, errorHandler) {
     logger.logSuccess('[IPC] Health Check & Error Handler IPC Handlers registriert');
 }
 
-module.exports = { registerHealthCheckHandlers };
+module.exports = { 
+    registerHealthCheckHandlers,
+    openHealthCheckDashboard 
+};
 

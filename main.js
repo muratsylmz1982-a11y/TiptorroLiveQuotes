@@ -366,6 +366,13 @@ updateManager.on('update-not-available', () => {
 });
 
     // ESC-Global Shortcut â†’ wie Notausstieg
+    // Health Check Dashboard Shortcut (Strg+Shift+H)
+    globalShortcut.register('CommandOrControl+Shift+H', () => {
+        logger.logInfo('[HOTKEY] Health Check Dashboard Shortcut gedrückt');
+        const { openHealthCheckDashboard } = require('./modules/ipc/healthCheckHandlers');
+        openHealthCheckDashboard(healthCheck);
+    });
+
     globalShortcut.register('Escape', () => {
         isAppReturningToUI = true;
         global.isAppReturningToUI = true;
