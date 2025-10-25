@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTQuotes - Benutzerhandbuch v1.2.5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ========== Tiptorro Brand Colors ========== */
+        :root {
+            --tt-black: #000000;
+            --tt-green: #269947;
+            --tt-white: #ffffff;
+            --tt-red: #eb243a;
+            --tt-gray: #737373;
+            --tt-dark-bg: #0a0a0a;
+            --tt-card-bg: #121211;
+            --tt-border: #222;
+        }
+
+        /* ========== Reset & Base ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: var(--tt-black);
+            color: var(--tt-white);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        /* ========== Header & Navigation ========== */
+        .header {
+            background: linear-gradient(135deg, var(--tt-black) 0%, #0d0d0d 100%);
+            border-bottom: 3px solid var(--tt-green);
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(38, 153, 71, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-logo {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--tt-green);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            text-shadow: 0 0 30px rgba(38, 153, 71, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .header-subtitle {
+            font-size: 18px;
+            color: var(--tt-gray);
+            font-weight: 600;
+            letter-spacing: 0.08em;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--tt-green), #1e7a38);
+            color: var(--tt-white);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(38, 153, 71, 0.3);
+        }
+
+        /* ========== Container & Layout ========== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .section {
+            margin-bottom: 80px;
+            page-break-inside: avoid;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--tt-green);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--tt-green), transparent);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--tt-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        /* ========== Typography ========== */
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--tt-white);
+            margin: 40px 0 20px 0;
+            border-left: 4px solid var(--tt-green);
+            padding-left: 20px;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--tt-green);
+            margin: 30px 0 15px 0;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: #d0d0d0;
+        }
+
+        strong {
+            color: var(--tt-white);
+            font-weight: 700;
+        }
+
+        /* ========== Feature Cards ========== */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: var(--tt-card-bg);
+            border: 2px solid var(--tt-border);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-card:hover {
+            border-color: var(--tt-green);
+            box-shadow: 0 0 20px rgba(38, 153, 71, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .feature-icon {
+            font-size: 42px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--tt-green);
+            margin-bottom: 10px;
+        }
+
+        .feature-description {
+            color: var(--tt-gray);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* ========== New Feature Badge ========== */
+        .new-feature {
+            background: linear-gradient(135deg, #1a3a25 0%, #0d1f14 100%);
+            border: 2px solid var(--tt-green);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 0 30px rgba(38, 153, 71, 0.2);
+        }
+
+        .new-badge {
+            display: inline-block;
+            background: var(--tt-green);
+            color: var(--tt-black);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 15px;
+        }
+
+        /* ========== Lists ========== */
+        ul, ol {
+            margin: 20px 0 20px 30px;
+            color: #d0d0d0;
+        }
+
+        li {
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        ul li::marker {
+            color: var(--tt-green);
+        }
+
+        ol li::marker {
+            color: var(--tt-green);
+            font-weight: 700;
+        }
+
+        /* ========== Code & Keyboard ========== */
+        code {
+            background: #1a1a1a;
+            color: var(--tt-green);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border: 1px solid var(--tt-border);
+        }
+
+        .code-block {
+            background: #0d0d0d;
+            border: 1px solid var(--tt-border);
+            border-left: 4px solid var(--tt-green);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        kbd {
+            display: inline-block;
+            padding: 4px 10px;
+            background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+            border: 2px solid var(--tt-green);
+            border-radius: 6px;
+            color: var(--tt-green);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ========== Tables ========== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: var(--tt-card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--tt-green) 0%, #1e7a38 100%);
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--tt-white);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--tt-border);
+            color: #d0d0d0;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #1a1a1a;
+        }
+
+        /* ========== Alert Boxes ========== */
+        .alert {
+            padding: 20px 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border-left: 5px solid;
+            font-weight: 600;
+        }
+
+        .alert-success {
+            background: rgba(38, 153, 71, 0.1);
+            border-color: var(--tt-green);
+            color: var(--tt-green);
+        }
+
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: #f59e0b;
+            color: #fbbf24;
+        }
+
+        .alert-info {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            color: #60a5fa;
+        }
+
+        .alert-danger {
+            background: rgba(235, 36, 58, 0.1);
+            border-color: var(--tt-red);
+            color: var(--tt-red);
+        }
+
+        /* ========== Buttons ========== */
+        .button {
+            display: inline-block;
+            padding: 12px 28px;
+            background: linear-gradient(90deg, var(--tt-green), #1e7a38);
+            color: var(--tt-white);
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(38, 153, 71, 0.3);
+        }
+
+        .button:hover {
+            background: linear-gradient(90deg, #3ae97c, var(--tt-green));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(38, 153, 71, 0.5);
+        }
+
+        /* ========== Step-by-Step Guide ========== */
+        .step {
+            background: var(--tt-card-bg);
+            border: 2px solid var(--tt-border);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+            padding-left: 80px;
+        }
+
+        .step-number {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--tt-green), #1e7a38);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--tt-white);
+            box-shadow: 0 4px 12px rgba(38, 153, 71, 0.4);
+        }
+
+        .step-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--tt-green);
+            margin-bottom: 10px;
+        }
+
+        .step-content {
+            color: #d0d0d0;
+        }
+
+        /* ========== TOC ========== */
+        .toc {
+            background: var(--tt-card-bg);
+            border: 2px solid var(--tt-green);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0 50px 0;
+        }
+
+        .toc-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--tt-green);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+        }
+
+        .toc a {
+            color: var(--tt-white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+            display: block;
+            padding: 8px 0;
+        }
+
+        .toc a:hover {
+            color: var(--tt-green);
+            padding-left: 10px;
+        }
+
+        /* ========== Footer ========== */
+        .footer {
+            background: var(--tt-dark-bg);
+            border-top: 3px solid var(--tt-green);
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            color: var(--tt-gray);
+            font-size: 14px;
+        }
+
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--tt-green);
+            margin-bottom: 15px;
+            letter-spacing: 0.15em;
+        }
+
+        /* ========== Print Styles ========== */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            .header {
+                position: static;
+                box-shadow: none;
+                border-bottom: 3px solid #269947;
+            }
+            .feature-card, .step, .new-feature {
+                page-break-inside: avoid;
+            }
+            a {
+                color: #269947;
+                text-decoration: underline;
+            }
+        }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            .header-logo {
+                font-size: 32px;
+            }
+            .section-title {
+                font-size: 28px;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            .step {
+                padding-left: 20px;
+                padding-top: 70px;
+            }
+            .step-number {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-logo">⚡ TTQUOTES</div>
+        <div class="header-subtitle">Professionelle Multi-Monitor Live-View Lösung</div>
+        <span class="version-badge">Version 1.2.5</span>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Table of Contents -->
+        <div class="toc">
+            <div class="toc-title">📑 Inhaltsverzeichnis</div>
+            <ul>
+                <li><a href="#overview">1. Überblick & Hauptfunktionen</a></li>
+                <li><a href="#new-features">2. Neue Features v1.2.5</a></li>
+                <li><a href="#installation">3. Installation & Ersteinrichtung</a></li>
+                <li><a href="#daily-use">4. Tägliche Bedienung</a></li>
+                <li><a href="#health-check">5. Health Check Dashboard</a></li>
+                <li><a href="#error-handler">6. Error Handler System</a></li>
+                <li><a href="#troubleshooting">7. Fehlerbehebung</a></li>
+                <li><a href="#support">8. Support & Kontakt</a></li>
+            </ul>
+        </div>
+
+        <!-- Section 1: Overview -->
+        <div class="section" id="overview">
+            <h1 class="section-title">Überblick</h1>
+            <p class="section-subtitle">Was ist TTQuotes?</p>
+            
+            <p><strong>TTQuotes</strong> ist eine professionelle Multi-Monitor-Anwendung für Windows, die speziell für die Darstellung von Live-Inhalten auf mehreren Bildschirmen entwickelt wurde. Die Software eignet sich ideal für Sportwetten-Shops, Digital Signage, Live-Sport-Displays und Kiosk-Systeme.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🖥️</span>
+                    <div class="feature-title">Multi-Monitor Support</div>
+                    <div class="feature-description">Unterstützung für bis zu 10+ Bildschirme gleichzeitig mit individueller Konfiguration pro Monitor.</div>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🔄</span>
+                    <div class="feature-title">Auto-Refresh</div>
+                    <div class="feature-description">Automatische Inhalts-Aktualisierung mit konfigurierbaren Intervallen (Standard: 20 Minuten).</div>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🔌</span>
+                    <div class="feature-title">Hotplug Support</div>
+                    <div class="feature-description">Dynamisches An- und Abstecken von Monitoren während des Betriebs ohne Neustart.</div>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <div class="feature-title">Kiosk-Modus</div>
+                    <div class="feature-description">Vollbild-Darstellung ohne Rahmen, immer im Vordergrund, Maus-Cursor automatisch verborgen.</div>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">⭐</span>
+                    <div class="feature-title">Favoriten-System</div>
+                    <div class="feature-description">Speichern und verwalten Sie häufig verwendete URLs für schnellen Zugriff.</div>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <div class="feature-title">Performance Monitor</div>
+                    <div class="feature-description">Echtzeit-Überwachung von RAM, CPU, Uptime und System-Ressourcen.</div>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <div class="feature-title">Sicherheit</div>
+                    <div class="feature-description">Domain Allowlist, Content Security Policy, sichere Session-Verwaltung.</div>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🚀</span>
+                    <div class="feature-title">Auto-Start</div>
+                    <div class="feature-description">Automatischer Start beim Windows-Hochfahren mit optionaler Verzögerung.</div>
+                </div>
+            </div>
+
+            <h2>🎯 Systemvoraussetzungen</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Komponente</th>
+                        <th>Mindestanforderung</th>
+                        <th>Empfohlen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Betriebssystem</strong></td>
+                        <td>Windows 10 (64-bit)</td>
+                        <td>Windows 11</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Prozessor</strong></td>
+                        <td>Intel i3 / AMD Ryzen 3</td>
+                        <td>Intel i5 / AMD Ryzen 5</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Arbeitsspeicher</strong></td>
+                        <td>4 GB RAM</td>
+                        <td>8 GB RAM</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Festplatte</strong></td>
+                        <td>500 MB freier Speicher</td>
+                        <td>2 GB freier Speicher</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Grafikkarte</strong></td>
+                        <td>DirectX 11 kompatibel</td>
+                        <td>Dedizierte GPU</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monitore</strong></td>
+                        <td>1 Monitor (1920×1080)</td>
+                        <td>2-6 Monitore (Full HD oder 4K)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Internet</strong></td>
+                        <td>Breitband (für Updates)</td>
+                        <td>Breitband (für Live-Inhalte)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section 2: New Features -->
+        <div class="section" id="new-features">
+            <h1 class="section-title">🎉 Neue Features v1.2.5</h1>
+            <p class="section-subtitle">Oktober 2025 • Stabilität & Monitoring Update</p>
+
+            <div class="new-feature">
+                <span class="new-badge">Neu</span>
+                <h2 style="margin-top: 0; border: none; padding: 0;">🛡️ Error Handler System</h2>
+                <p>Automatisches Fehler-Management und Crash-Recovery für maximale Stabilität.</p>
+                
+                <h3>✨ Features:</h3>
+                <ul>
+                    <li><strong>Global Error Handler</strong> für alle Prozess-Typen (Main, Renderer, GPU, Child)</li>
+                    <li><strong>Automatische Crash-Recovery</strong> mit sofortigem Neustart betroffener Fenster</li>
+                    <li><strong>Detaillierte Error-Statistiken</strong> mit Zeitstempeln und Stack-Traces</li>
+                    <li><strong>Unresponsive Window Detection</strong> mit automatischem Reload</li>
+                    <li><strong>Error-Log mit letzten 10 Einträgen</strong> für schnelle Diagnose</li>
+                </ul>
+
+                <div class="alert alert-success">
+                    <strong>✅ Vorteil:</strong> Die App erholt sich automatisch von Crashes und läuft stabil 24/7, auch bei problematischen Websites.
+                </div>
+            </div>
+
+            <div class="new-feature">
+                <span class="new-badge">Neu</span>
+                <h2 style="margin-top: 0; border: none; padding: 0;">🏥 Health Check Manager & Dashboard</h2>
+                <p>Echtzeit-Überwachung aller System-Metriken mit modernem Dashboard.</p>
+                
+                <h3>✨ Features:</h3>
+                <ul>
+                    <li><strong>Display Status Tracking</strong> (Active, Loading, Crashed, Empty)</li>
+                    <li><strong>CPU & Memory Monitoring</strong> mit Auslastungs-Levels (OK, Warning, Critical)</li>
+                    <li><strong>Network Status</strong> mit Latenz-Messung</li>
+                    <li><strong>Overall Health Status</strong> (HEALTHY, WARNING, CRITICAL)</li>
+                    <li><strong>Auto-Monitoring</strong> mit konfigurierbaren Intervallen (Standard: 5 Sekunden)</li>
+                    <li><strong>Always-on-Top Dashboard</strong> für Zugriff während Live-Views</li>
+                </ul>
+
+                <div class="alert alert-info">
+                    <strong>💡 Zugriff:</strong> Drücken Sie <kbd>Strg</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd> oder klicken Sie auf <strong>🏥 HEALTH CHECK</strong> im Hauptfenster.
+                </div>
+
+                <h3>🎛️ Dashboard-Bereiche:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bereich</th>
+                            <th>Beschreibung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>System Info</strong></td>
+                            <td>Platform, Electron-Version, CPU-Modell, RAM-Gesamt, Uptime</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Monitor Status</strong></td>
+                            <td>Anzahl aktiver Displays, URL, Position, Status (Active/Loading/Crashed)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ressourcen</strong></td>
+                            <td>CPU-Auslastung, RAM-Nutzung (App + System), Status-Levels</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Netzwerk</strong></td>
+                            <td>Verbindungsstatus, Latenz zu google.com</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Error Log</strong></td>
+                            <td>Letzte 10 Fehler mit Typ, Message, Zeitstempel</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="new-feature">
+                <span class="new-badge">Neu</span>
+                <h2 style="margin-top: 0; border: none; padding: 0;">⌨️ Global Hotkey</h2>
+                <p>Schneller Zugriff auf das Health Check Dashboard, selbst während Vollbild-Live-Views.</p>
+
+                <div class="code-block">
+<strong>Windows:</strong> Strg + Shift + H
+<strong>macOS:</strong> Cmd + Shift + H
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>✅ Vorteil:</strong> Sie können den System-Status überprüfen, ohne Live-Views zu stoppen!
+                </div>
+            </div>
+
+            <h2>📈 Weitere Verbesserungen</h2>
+            <ul>
+                <li>✅ <strong>Korrigierte Display-Erkennung:</strong> UI-Fenster werden nicht mehr als Monitore gezählt</li>
+                <li>✅ <strong>Generic IPC invoke():</strong> Einfachere Kommunikation zwischen Renderer und Main Process</li>
+                <li>✅ <strong>Verbesserte Logs:</strong> Alle console.log durch strukturierte Logger-Calls ersetzt</li>
+                <li>✅ <strong>Tests erweitert:</strong> 38 von 47 Tests bestanden (Error Handler + Health Check)</li>
+            </ul>
+        </div>
+
+        <!-- Section 3: Installation -->
+        <div class="section" id="installation">
+            <h1 class="section-title">📦 Installation & Ersteinrichtung</h1>
+            <p class="section-subtitle">Schritt für Schritt zur fertigen Installation</p>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <div class="step-title">Download</div>
+                <div class="step-content">
+                    <p><strong>Offizielle Download-Quelle:</strong></p>
+                    <div class="code-block">https://github.com/muratsylmz1982-a11y/TiptorroLiveQuotes/releases/latest</div>
+                    <p><strong>Datei:</strong> <code>TTQuotes Setup 1.2.5.exe</code> (ca. 73 MB)</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <div class="step-title">Windows SmartScreen</div>
+                <div class="step-content">
+                    <div class="alert alert-warning">
+                        <strong>⚠️ Hinweis:</strong> Windows SmartScreen zeigt eventuell eine Warnung, da die App-Signatur noch neu ist.
+                    </div>
+                    <p><strong>Lösung:</strong> Klicken Sie auf <strong>"Weitere Informationen"</strong> und dann auf <strong>"Trotzdem ausführen"</strong>.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <div class="step-title">Installation starten</div>
+                <div class="step-content">
+                    <ul>
+                        <li>Doppelklick auf <code>TTQuotes Setup 1.2.5.exe</code></li>
+                        <li><strong>UAC-Prompt:</strong> Klicken Sie <strong>"Ja"</strong> (Administrator-Rechte erforderlich)</li>
+                        <li><strong>Installationsort:</strong> Standard beibehalten: <code>C:\Program Files\TTQuotes\</code></li>
+                        <li><strong>Dauer:</strong> 2-5 Minuten</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">4</span>
+                <div class="step-title">Optionen wählen</div>
+                <div class="step-content">
+                    <p><strong>Empfohlene Einstellungen:</strong></p>
+                    <ul>
+                        <li>☑️ <strong>Desktop-Verknüpfung erstellen</strong></li>
+                        <li>☑️ <strong>Beim Windows-Start automatisch starten</strong> (ideal für 24/7-Betrieb)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">5</span>
+                <div class="step-title">Fertigstellung</div>
+                <div class="step-content">
+                    <p>✅ Nach erfolgreicher Installation finden Sie:</p>
+                    <ul>
+                        <li><strong>Desktop-Symbol:</strong> TTQuotes</li>
+                        <li><strong>Start-Menü:</strong> Start → Alle Programme → TTQuotes</li>
+                        <li><strong>Installationsordner:</strong> <code>C:\Program Files\TTQuotes\</code></li>
+                        <li><strong>Benutzer-Daten:</strong> <code>%APPDATA%\ttquotes\</code></li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>🎬 Erststart & Konfiguration</h2>
+
+            <div class="alert alert-info">
+                <strong>💡 Tipp:</strong> Beim ersten Start dauert das Laden 10-30 Sekunden, da das System alle verfügbaren Monitore erkennt.
+            </div>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <div class="step-title">Anwendung starten</div>
+                <div class="step-content">
+                    <ul>
+                        <li>Doppelklick auf Desktop-Symbol <strong>ODER</strong></li>
+                        <li>Start-Menü → TTQuotes</li>
+                    </ul>
+                    <p>Das <strong>Live TV Config</strong>-Fenster öffnet sich automatisch.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <div class="step-title">Monitor-Konfiguration</div>
+                <div class="step-content">
+                    <p>Für jeden erkannten Monitor:</p>
+                    <ol>
+                        <li><strong>Favorit auswählen:</strong> Klicken Sie auf <code>— Favorit wählen —</code> und wählen Sie eine URL</li>
+                        <li><strong>Oder manuelle URL eingeben:</strong> Geben Sie eine HTTPS-URL direkt ein</li>
+                    </ol>
+                    
+                    <p><strong>Beispiel-URLs:</strong></p>
+                    <div class="code-block">https://shop.tiptorro.com/livetv/?rows=12&scan=true&page=1&pagecount=1&sports=1&ngoal=true
+https://docs.google.com/spreadsheets/d/[ID]
+https://www.google.com/search?q=live+sport+ticker</div>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <div class="step-title">Favoriten anlegen (optional)</div>
+                <div class="step-content">
+                    <ol>
+                        <li>Klicken Sie <strong>"FAVORITEN BEARBEITEN"</strong></li>
+                        <li><strong>Name:</strong> z.B. <code>Live Sport</code></li>
+                        <li><strong>URL:</strong> z.B. <code>https://shop.tiptorro.com/livescoretv</code></li>
+                        <li>Klicken Sie <strong>"HINZUFÜGEN"</strong></li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">4</span>
+                <div class="step-title">Vorschau testen</div>
+                <div class="step-content">
+                    <ul>
+                        <li>Klicken Sie auf <strong>"VORSCHAU"</strong> neben dem Monitor</li>
+                        <li>Ein Vollbild-Fenster öffnet sich auf dem gewählten Monitor</li>
+                        <li><strong>Schließen:</strong> Klicken Sie irgendwo in das Fenster</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Daily Use -->
+        <div class="section" id="daily-use">
+            <h1 class="section-title">🎯 Tägliche Bedienung</h1>
+            <p class="section-subtitle">Standard-Workflows und wichtige Funktionen</p>
+
+            <h2>🚀 Live-Views starten</h2>
+            <div class="step">
+                <span class="step-number">1</span>
+                <div class="step-title">Konfiguration prüfen</div>
+                <div class="step-content">
+                    <p>Stellen Sie sicher, dass jeder Monitor eine zugewiesene URL hat (Favorit oder manuell).</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <div class="step-title">Live-Views starten</div>
+                <div class="step-content">
+                    <ul>
+                        <li>Klicken Sie <strong>"LIVE-VIEWS STARTEN"</strong></li>
+                        <li>Auf jedem Monitor öffnet sich sofort ein Vollbild-Fenster</li>
+                        <li><strong>Dauer:</strong> 2-5 Sekunden je nach Internetgeschwindigkeit</li>
+                    </ul>
+                    <div class="alert alert-success">
+                        <strong>✅ Live-Betrieb:</strong> Auto-Refresh alle 20 Minuten (konfigurierbar in Erweiterten Einstellungen)
+                    </div>
+                </div>
+            </div>
+
+            <h2>🛑 Live-Views beenden</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Methode</th>
+                        <th>Anleitung</th>
+                        <th>Ergebnis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Notaus-Hotspot</strong></td>
+                        <td>Klicken Sie ganz <strong>links am Bildschirm-Rand</strong> (unsichtbarer 16px Bereich)</td>
+                        <td>Alle Fenster schließen sofort</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tastenkombination</strong></td>
+                        <td>Drücken Sie <kbd>Alt</kbd> + <kbd>F4</kbd> auf einem Live-View-Fenster</td>
+                        <td>Nur das aktuelle Fenster schließt</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Haupt-Interface</strong></td>
+                        <td>Windows-Taskleiste → TTQuotes → <strong>"BEENDEN"</strong></td>
+                        <td>Programm beendet sich komplett</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>⚙️ Autostart konfigurieren</h2>
+            <div class="step">
+                <span class="step-number">1</span>
+                <div class="step-title">Autostart aktivieren</div>
+                <div class="step-content">
+                    <ul>
+                        <li>Klicken Sie <strong>"AUTO-START"</strong></li>
+                        <li><strong>Status wechselt:</strong> 🟢 Auto-Start aktiviert</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <div class="step-title">Verhalten bei Windows-Start</div>
+                <div class="step-content">
+                    <div class="code-block">1. Windows startet
+2. TTQuotes startet automatisch (nach 10 Sekunden Verzögerung)
+3. Lädt letzte Konfiguration
+4. Startet Live-Views automatisch (optional konfigurierbar)</div>
+                </div>
+            </div>
+
+            <h2>🔄 Konfiguration zurücksetzen</h2>
+            <div class="alert alert-danger">
+                <strong>⚠️ Vorsicht:</strong> Diese Aktion löscht alle Monitor-Zuweisungen! Favoriten bleiben erhalten.
+            </div>
+            <ul>
+                <li>Klicken Sie <strong>"KONFIGURATION LÖSCHEN"</strong></li>
+                <li>Bestätigen Sie mit <strong>"JA"</strong></li>
+                <li><strong>Ergebnis:</strong> Alle Monitor-URLs sind leer, Favoriten bleiben erhalten</li>
+            </ul>
+
+            <h2>📊 Performance Dashboard</h2>
+            <p>Überwachen Sie Ressourcen-Nutzung und System-Status:</p>
+            <ul>
+                <li>Klicken Sie <strong>"ERWEITERTE EINSTELLUNGEN"</strong> → <strong>"PERFORMANCE DASHBOARD"</strong></li>
+                <li>Zeigt: RAM-Nutzung, CPU-Auslastung, Uptime, Active Displays</li>
+                <li>Updates alle 3 Sekunden automatisch</li>
+            </ul>
+        </div>
+
+        <!-- Section 5: Health Check -->
+        <div class="section" id="health-check">
+            <h1 class="section-title">🏥 Health Check Dashboard</h1>
+            <p class="section-subtitle">Echtzeit-Überwachung Ihrer TTQuotes Installation</p>
+
+            <div class="alert alert-info">
+                <strong>💡 Quick Access:</strong> Drücken Sie <kbd>Strg</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd> (oder <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd> auf Mac) für sofortigen Zugriff!
+            </div>
+
+            <h2>🎛️ Dashboard öffnen</h2>
+            <p><strong>Methode 1:</strong> Global Hotkey (funktioniert immer, auch während Live-Views)</p>
+            <div class="code-block"><kbd>Strg</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd></div>
+
+            <p><strong>Methode 2:</strong> Über Hauptfenster</p>
+            <ul>
+                <li>Klicken Sie <strong>"🏥 HEALTH CHECK"</strong> im Hauptfenster</li>
+            </ul>
+
+            <h2>📊 Dashboard-Bereiche im Detail</h2>
+
+            <h3>1️⃣ Overall Status</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Bedeutung</th>
+                        <th>Farbe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>HEALTHY</strong></td>
+                        <td>Alle Systeme laufen normal, keine Probleme erkannt</td>
+                        <td style="color: #269947;">🟢 Grün</td>
+                    </tr>
+                    <tr>
+                        <td><strong>WARNING</strong></td>
+                        <td>Kleinere Probleme erkannt (z.B. hohe CPU, keine Monitore aktiv)</td>
+                        <td style="color: #fbbf24;">🟡 Gelb</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CRITICAL</strong></td>
+                        <td>Schwerwiegende Probleme (z.B. Crashes, kritischer Speicher)</td>
+                        <td style="color: #eb243a;">🔴 Rot</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>2️⃣ Monitor Status</h3>
+            <p>Zeigt alle aktiven Display-Fenster (Live-Views, Ticketchecker, etc.):</p>
+            <ul>
+                <li><strong>Monitore Gesamt:</strong> Anzahl aller erkannten Display-Fenster</li>
+                <li><strong>Active:</strong> Fenster mit erfolgreich geladener Website</li>
+                <li><strong>Loading:</strong> Fenster lädt gerade Inhalte</li>
+                <li><strong>Crashed:</strong> Fenster ist abgestürzt (wird automatisch neu gestartet)</li>
+                <li><strong>Empty:</strong> Fenster zeigt about:blank (keine URL geladen)</li>
+            </ul>
+
+            <div class="alert alert-warning">
+                <strong>⚠️ Hinweis:</strong> Wenn keine Live-Views laufen, zeigt das Dashboard <strong>"WARNING"</strong> mit <strong>"0 Monitore"</strong>. Dies ist normal und ändert sich zu <strong>"HEALTHY"</strong>, sobald Sie Live-Views starten.
+            </div>
+
+            <h3>3️⃣ Ressourcen-Monitoring</h3>
+            <p><strong>Memory (RAM):</strong></p>
+            <ul>
+                <li><strong>App Memory:</strong> Speicherverbrauch von TTQuotes (normal: &lt; 300 MB)</li>
+                <li><strong>System Memory:</strong> Gesamtspeicher-Nutzung des Systems</li>
+                <li><strong>Status-Levels:</strong>
+                    <ul>
+                        <li>🟢 <strong>OK:</strong> &lt; 70% Auslastung</li>
+                        <li>🟡 <strong>Warning:</strong> 70-90% Auslastung</li>
+                        <li>🔴 <strong>Critical:</strong> &gt; 90% Auslastung</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <p><strong>CPU:</strong></p>
+            <ul>
+                <li><strong>Current Load:</strong> Aktuelle CPU-Auslastung in %</li>
+                <li><strong>Status-Levels:</strong>
+                    <ul>
+                        <li>🟢 <strong>OK:</strong> &lt; 60% Auslastung</li>
+                        <li>🟡 <strong>Warning:</strong> 60-85% Auslastung</li>
+                        <li>🔴 <strong>Critical:</strong> &gt; 85% Auslastung</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>4️⃣ Netzwerk-Status</h3>
+            <ul>
+                <li><strong>Status:</strong> Online / Offline</li>
+                <li><strong>Latency:</strong> Ping zu google.com in Millisekunden</li>
+                <li><strong>Interpretation:</strong>
+                    <ul>
+                        <li>&lt; 50ms: Ausgezeichnet</li>
+                        <li>50-150ms: Gut</li>
+                        <li>&gt; 150ms: Langsam (kann zu Ladezeiten führen)</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>5️⃣ Error Statistics</h3>
+            <p>Zeigt alle vom Error Handler erfassten Fehler:</p>
+            <ul>
+                <li><strong>Total Errors:</strong> Gesamtzahl aller Fehler seit Start</li>
+                <li><strong>Uncaught Exceptions:</strong> Unerwartete Programmfehler</li>
+                <li><strong>Renderer Crashes:</strong> Abgestürzte Fenster</li>
+                <li><strong>Unresponsive:</strong> Fenster, die nicht mehr reagierten</li>
+            </ul>
+
+            <h3>6️⃣ Error Log</h3>
+            <p>Letzte 10 Fehler mit Details:</p>
+            <ul>
+                <li><strong>Type:</strong> Fehlertyp (z.B. uncaughtException, rendererCrashes)</li>
+                <li><strong>Message:</strong> Fehlermeldung</li>
+                <li><strong>Timestamp:</strong> Zeitpunkt des Fehlers</li>
+            </ul>
+
+            <div class="code-block"><strong>Aktionen:</strong>
+• "Clear Error Log" → Löscht alle Einträge im Log
+• "Reset Error Counts" → Setzt alle Zähler auf 0 zurück</div>
+
+            <h2>🔄 Auto-Monitoring aktivieren</h2>
+            <div class="step">
+                <span class="step-number">1</span>
+                <div class="step-title">Monitoring starten</div>
+                <div class="step-content">
+                    <ul>
+                        <li>Öffnen Sie das Health Check Dashboard</li>
+                        <li>Klicken Sie <strong>"Start Monitoring"</strong></li>
+                        <li>Dashboard aktualisiert sich automatisch alle 5 Sekunden</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <div class="step-title">Live-Updates beobachten</div>
+                <div class="step-content">
+                    <p>Alle Metriken werden in Echtzeit aktualisiert:</p>
+                    <ul>
+                        <li>Monitor-Status ändert sich bei Start/Stop von Live-Views</li>
+                        <li>CPU/RAM-Nutzung zeigt aktuelle Auslastung</li>
+                        <li>Neue Fehler erscheinen sofort im Error Log</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="alert alert-success">
+                <strong>✅ Tipp:</strong> Lassen Sie das Health Check Dashboard geöffnet und immer im Vordergrund (Always-on-Top), um den System-Status permanent zu überwachen!
+            </div>
+        </div>
+
+        <!-- Section 6: Error Handler -->
+        <div class="section" id="error-handler">
+            <h1 class="section-title">🛡️ Error Handler System</h1>
+            <p class="section-subtitle">Automatisches Fehler-Management für maximale Stabilität</p>
+
+            <p>Der Error Handler arbeitet vollautomatisch im Hintergrund und kümmert sich um alle auftretenden Fehler. Als Benutzer müssen Sie <strong>nichts tun</strong> – das System erholt sich selbstständig.</p>
+
+            <h2>🔍 Was macht der Error Handler?</h2>
+
+            <h3>1️⃣ Uncaught Exceptions (Unerwartete Programmfehler)</h3>
+            <ul>
+                <li><strong>Erkennung:</strong> Fängt alle unbehandelten JavaScript-Fehler ab</li>
+                <li><strong>Aktion:</strong> Loggt den Fehler mit Stack-Trace</li>
+                <li><strong>Reaktion:</strong> App läuft weiter (bei kritischen Fehlern: Dialog + Neustart)</li>
+            </ul>
+
+            <h3>2️⃣ Unhandled Promise Rejections</h3>
+            <ul>
+                <li><strong>Erkennung:</strong> Fängt fehlgeschlagene Async-Operationen ab</li>
+                <li><strong>Aktion:</strong> Loggt die Rejection mit Grund</li>
+                <li><strong>Reaktion:</strong> Verhindert, dass die App abstürzt</li>
+            </ul>
+
+            <h3>3️⃣ Renderer Process Crashes (Fenster-Abstürze)</h3>
+            <ul>
+                <li><strong>Erkennung:</strong> Erkennt wenn ein Fenster abstürzt</li>
+                <li><strong>Aktion:</strong> Loggt Crash-Details (URL, Grund, Window-ID)</li>
+                <li><strong>Reaktion:</strong> Lädt das Fenster automatisch neu (Reload)</li>
+            </ul>
+
+            <div class="alert alert-success">
+                <strong>✅ Beispiel:</strong> Ein Live-View-Fenster stürzt ab wegen einer problematischen Website → Error Handler startet das Fenster automatisch neu → Live-View läuft ohne manuelle Eingriffe weiter.
+            </div>
+
+            <h3>4️⃣ GPU Process Crashes</h3>
+            <ul>
+                <li><strong>Erkennung:</strong> Erkennt GPU-Treiber-Abstürze</li>
+                <li><strong>Aktion:</strong> Loggt den Crash</li>
+                <li><strong>Reaktion:</strong> Electron startet GPU-Prozess automatisch neu</li>
+            </ul>
+
+            <h3>5️⃣ Child Process Crashes</h3>
+            <ul>
+                <li><strong>Erkennung:</strong> Erkennt Abstürze von Hilfsprozessen</li>
+                <li><strong>Aktion:</strong> Loggt Typ und Grund des Crashes</li>
+                <li><strong>Reaktion:</strong> Prozess wird automatisch neu gestartet</li>
+            </ul>
+
+            <h3>6️⃣ Unresponsive Windows (Nicht reagierende Fenster)</h3>
+            <ul>
+                <li><strong>Erkennung:</strong> Erkennt wenn ein Fenster einfriert (&gt; 30 Sekunden keine Reaktion)</li>
+                <li><strong>Aktion:</strong> Zeigt Dialog: "Warten" oder "Neu laden"</li>
+                <li><strong>Reaktion:</strong> Bei "Neu laden" → Fenster wird neu geladen</li>
+            </ul>
+
+            <h2>📊 Error Statistics im Detail</h2>
+            <p>Der Error Handler trackt folgende Metriken (sichtbar im Health Check Dashboard):</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metrik</th>
+                        <th>Beschreibung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>totalErrors</strong></td>
+                        <td>Gesamtzahl aller Fehler seit App-Start</td>
+                    </tr>
+                    <tr>
+                        <td><strong>uncaughtException</strong></td>
+                        <td>Anzahl unerwarteter Programmfehler</td>
+                    </tr>
+                    <tr>
+                        <td><strong>unhandledRejection</strong></td>
+                        <td>Anzahl fehlgeschlagener Promise-Operationen</td>
+                    </tr>
+                    <tr>
+                        <td><strong>rendererCrashes</strong></td>
+                        <td>Anzahl abgestürzter Fenster</td>
+                    </tr>
+                    <tr>
+                        <td><strong>gpuCrashes</strong></td>
+                        <td>Anzahl GPU-Prozess-Abstürze</td>
+                    </tr>
+                    <tr>
+                        <td><strong>childProcessCrashes</strong></td>
+                        <td>Anzahl Hilfsprozess-Abstürze</td>
+                    </tr>
+                    <tr>
+                        <td><strong>unresponsive</strong></td>
+                        <td>Anzahl eingefrorener Fenster</td>
+                    </tr>
+                    <tr>
+                        <td><strong>lastError</strong></td>
+                        <td>Letzter Fehler mit Details (Typ, Message, Stack, Timestamp)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>errorLog</strong></td>
+                        <td>Array der letzten 10 Fehler (für Health Check Dashboard)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>🔄 Automatische Recovery-Strategien</h2>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <div class="step-title">Renderer Crash → Auto-Reload</div>
+                <div class="step-content">
+                    <div class="code-block">Fenster stürzt ab → Error Handler erkennt → Fenster wird automatisch neu geladen (reload()) → Inhalt erscheint wieder</div>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <div class="step-title">Unresponsive → User-Choice</div>
+                <div class="step-content">
+                    <div class="code-block">Fenster reagiert nicht → Nach 30 Sekunden: Dialog erscheint → "Warten" oder "Neu laden" → Bei Reload: Fenster wird neu gestartet</div>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <div class="step-title">Critical Exception → App-Restart</div>
+                <div class="step-content">
+                    <div class="code-block">Kritischer Fehler → Dialog: "App ist abgestürzt" → "Neustart" → App startet komplett neu → Letzte Konfiguration wird geladen</div>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <strong>💡 Für Admins:</strong> Alle Error-Logs werden automatisch in <code>%APPDATA%\ttquotes\logs\error.log</code> gespeichert (mit Log-Rotation, max. 7 Tage, 10 MB pro Datei).
+            </div>
+        </div>
+
+        <!-- Section 7: Troubleshooting -->
+        <div class="section" id="troubleshooting">
+            <h1 class="section-title">🔧 Fehlerbehebung</h1>
+            <p class="section-subtitle">Häufige Probleme und Lösungen</p>
+
+            <h2>❓ Monitor wird nicht erkannt</h2>
+            <div class="alert alert-warning">
+                <strong>Symptome:</strong> Weniger Monitore angezeigt als angeschlossen, z.B. "1 TV-Gerät erkannt" obwohl 2 Monitore angeschlossen sind.
+            </div>
+
+            <p><strong>Lösungsschritte:</strong></p>
+            <ol>
+                <li><strong>Windows-Bildschirm-Erkennung:</strong> <kbd>Windows</kbd> + <kbd>P</kbd> → "Erkennen" → "Erweitern"</li>
+                <li><strong>Anzeigeeinstellungen prüfen:</strong> Rechtsklick auf Desktop → "Anzeigeeinstellungen" → Sind alle Monitore als "Erweitert" konfiguriert?</li>
+                <li><strong>TTQuotes neu starten:</strong> "BEENDEN" → Programm komplett schließen → Erneut starten</li>
+                <li><strong>Hardware prüfen:</strong> HDMI/DisplayPort-Kabel fest eingesteckt? Monitor eingeschaltet? Grafikkarten-Treiber aktuell?</li>
+            </ol>
+
+            <h2>❓ Website lädt nicht / bleibt schwarz</h2>
+            <div class="alert alert-warning">
+                <strong>Symptome:</strong> Monitor zeigt schwarzen Bildschirm oder "Kann nicht geladen werden", endlose Ladezeit.
+            </div>
+
+            <p><strong>Lösungsschritte:</strong></p>
+            <ol>
+                <li><strong>URL direkt testen:</strong> Öffnen Sie die URL in Chrome/Edge → Funktioniert die Website grundsätzlich?</li>
+                <li><strong>Internet-Verbindung prüfen:</strong> Öffnen Sie CMD → <code>ping google.com</code></li>
+                <li><strong>URL-Format prüfen:</strong>
+                    <ul>
+                        <li>✅ Korrekt: <code>https://beispiel.de/pfad</code></li>
+                        <li>❌ Falsch: <code>beispiel.de</code> (ohne https://)</li>
+                        <li>❌ Falsch: <code>http://...</code> (unsichere Verbindung)</li>
+                    </ul>
+                </li>
+                <li><strong>Firewall/Proxy prüfen:</strong> Unternehmens-Netzwerk → IT-Admin kontaktieren</li>
+                <li><strong>Alternative URL testen:</strong> Verwenden Sie zunächst <code>https://shop.tiptorro.com/livescoretv</code></li>
+            </ol>
+
+            <h2>❓ Anwendung startet nicht</h2>
+            <div class="alert alert-warning">
+                <strong>Symptome:</strong> Doppelklick auf Desktop-Symbol → nichts passiert, Fehlermeldung beim Start.
+            </div>
+
+            <p><strong>Lösungsschritte:</strong></p>
+            <ol>
+                <li><strong>Als Administrator ausführen:</strong> Rechtsklick auf Desktop-Symbol → "Als Administrator ausführen"</li>
+                <li><strong>Windows-Ereignisanzeige prüfen:</strong> <kbd>Windows</kbd> + <kbd>R</kbd> → <code>eventvwr.msc</code> → Enter → Windows-Protokolle → Anwendung → Nach "TTQuotes" oder "Electron" suchen</li>
+                <li><strong>Neuinstallation:</strong> Programme und Features → "TTQuotes" → Deinstallieren → Download von GitHub → Neuinstallation als Administrator</li>
+                <li><strong>Kompatibilitätsmodus:</strong> Rechtsklick auf Icon → "Eigenschaften" → "Kompatibilität" → ☑️ "Programm im Kompatibilitätsmodus ausführen" → "Windows 10"</li>
+            </ol>
+
+            <h2>❓ Performance-Probleme / Langsamer Betrieb</h2>
+            <div class="alert alert-warning">
+                <strong>Symptome:</strong> Verzögerungen beim Wechseln, hohe CPU/RAM-Nutzung, System wird langsam.
+            </div>
+
+            <p><strong>Lösungsschritte:</strong></p>
+            <ol>
+                <li><strong>Health Check Dashboard öffnen:</strong> <kbd>Strg</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd> → Aktuelle Werte prüfen (Normal: RAM &lt; 300 MB, CPU &lt; 15%)</li>
+                <li><strong>Refresh-Intervall anpassen:</strong> "ERWEITERTE EINSTELLUNGEN" → Refresh-Tab → Standard: 20 Minuten → Bei Problemen: 30 Minuten oder mehr</li>
+                <li><strong>Anzahl Monitore reduzieren:</strong> Temporär nur 1-2 Monitore verwenden → Bessert sich die Performance?</li>
+                <li><strong>Website-Optimierung:</strong> Vermeiden Sie video-lastigen Content auf mehreren Monitoren, nutzen Sie optimierte Inhalte</li>
+                <li><strong>System-Ressourcen prüfen:</strong> <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Esc</kbd> → Task-Manager → Prozesse → "TTQuotes" → RAM/CPU beobachten</li>
+            </ol>
+
+            <h2>❓ Health Check Dashboard zeigt WARNING</h2>
+            <div class="alert alert-info">
+                <strong>Symptome:</strong> Dashboard zeigt "WARNING" Status, obwohl alles läuft.
+            </div>
+
+            <p><strong>Erklärung:</strong></p>
+            <ul>
+                <li>Wenn <strong>keine Live-Views</strong> laufen, zeigt das Dashboard <strong>"WARNING"</strong> mit <strong>"0 Monitore"</strong></li>
+                <li>Dies ist <strong>normal</strong>, da TTQuotes für Multi-Monitor-Betrieb konzipiert ist</li>
+                <li>Sobald Sie Live-Views starten, ändert sich der Status zu <strong>"HEALTHY"</strong></li>
+            </ul>
+
+            <h2>📁 Log-Dateien für Support</h2>
+            <p><strong>Log-Dateien-Pfad:</strong></p>
+            <div class="code-block">C:\Users\[Ihr Benutzername]\AppData\Roaming\ttquotes\logs\</div>
+
+            <p><strong>Wichtige Log-Dateien:</strong></p>
+            <ul>
+                <li><code>combined.log</code> - Alle Aktivitäten und Status-Meldungen</li>
+                <li><code>error.log</code> - Nur Fehler und Warnungen</li>
+                <li><code>analytics.json</code> - Nutzungsstatistiken (anonym)</li>
+            </ul>
+
+            <p><strong>Log-Dateien an Support senden:</strong></p>
+            <ol>
+                <li><kbd>Windows</kbd> + <kbd>R</kbd> → <code>%APPDATA%\ttquotes\logs</code> → Enter</li>
+                <li><kbd>Ctrl</kbd> + <kbd>A</kbd> → Alle Dateien auswählen</li>
+                <li>Rechtsklick → "Senden an" → "ZIP-komprimierten Ordner"</li>
+                <li>Dateiname: <code>TTQuotes-Logs-[Ihr Name]-[Datum].zip</code></li>
+                <li>Per E-Mail senden an: <strong>support@tiptorro.com</strong></li>
+            </ol>
+        </div>
+
+        <!-- Section 8: Support -->
+        <div class="section" id="support">
+            <h1 class="section-title">📞 Support & Kontakt</h1>
+            <p class="section-subtitle">Wir helfen Ihnen gerne weiter!</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">📧</span>
+                    <div class="feature-title">E-Mail Support</div>
+                    <div class="feature-description">
+                        <strong>support@tiptorro.com</strong><br>
+                        Antwortzeit: 1-2 Werktage<br>
+                        Sprachen: Deutsch, Englisch
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🌐</span>
+                    <div class="feature-title">GitHub Repository</div>
+                    <div class="feature-description">
+                        <strong>github.com/muratsylmz1982-a11y/TiptorroLiveQuotes</strong><br>
+                        Issues, Feature Requests, Releases
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">📚</span>
+                    <div class="feature-title">Dokumentation</div>
+                    <div class="feature-description">
+                        Vollständige Dokumentation im <code>docs/</code> Ordner:<br>
+                        ARCHITECTURE.md, SECURITY.md, OPERATIONS.md
+                    </div>
+                </div>
+            </div>
+
+            <h2>💬 Support-Anfrage stellen</h2>
+            <p><strong>Optimale Support-Anfrage (Betreff):</strong></p>
+            <div class="code-block">[TTQuotes] Problem: [Kurzbeschreibung]
+
+Beispiele:
+- [TTQuotes] Problem: Monitor 2 wird nicht erkannt
+- [TTQuotes] Problem: Website lädt nicht auf allen Monitoren</div>
+
+            <p><strong>E-Mail-Inhalt:</strong></p>
+            <div class="code-block">Hallo Support-Team,
+
+ich nutze TTQuotes Version 1.2.5 und habe folgendes Problem:
+
+PROBLEM:
+[Detaillierte Beschreibung des Problems]
+
+SYSTEM:
+- Windows-Version: [z.B. Windows 11]
+- Anzahl Monitore: [z.B. 3]
+- Monitore-Auflösung: [z.B. alle 1920x1080]
+
+BEREITS VERSUCHT:
+- [Was haben Sie bereits versucht?]
+- [Ist das Problem reproduzierbar?]
+
+LOG-DATEIEN:
+[Im Anhang: TTQuotes-Logs.zip]
+
+Mit freundlichen Grüßen,
+[Ihr Name]</div>
+
+            <h2>❓ Häufig gestellte Fragen (FAQ)</h2>
+
+            <h3>Kann ich die Software kostenlos nutzen?</h3>
+            <p>Ja, TTQuotes ist Open Source und kann kostenlos genutzt werden (MIT Lizenz).</p>
+
+            <h3>Wie viele Monitore werden unterstützt?</h3>
+            <p>Theoretisch unbegrenzt, praktisch getestet bis 10 Monitore. Begrenzt durch Ihre Grafikkarte und System-Performance.</p>
+
+            <h3>Werden auch Mac und Linux unterstützt?</h3>
+            <p>Aktuell nur Windows. Mac/Linux-Versionen sind technisch möglich (Electron ist plattformübergreifend), aber nicht offiziell getestet.</p>
+
+            <h3>Kann ich eigene Websites/Inhalte anzeigen?</h3>
+            <p>Ja, jede HTTPS-Website ist unterstützt. HTTP-Seiten sind aus Sicherheitsgründen standardmäßig blockiert (Allowlist konfigurierbar).</p>
+
+            <h3>Wie oft wird die Software aktualisiert?</h3>
+            <p>Major-Updates alle 2-3 Monate mit neuen Features, Bug-Fix-Updates monatlich oder nach Bedarf.</p>
+
+            <h3>Werden meine Daten an Tiptorro gesendet?</h3>
+            <p>Nein. Alle Daten bleiben lokal auf Ihrem System. Es werden keine Daten an externe Server gesendet.</p>
+
+            <h3>Was ist der Unterschied zwischen Performance Dashboard und Health Check Dashboard?</h3>
+            <p><strong>Performance Dashboard:</strong> Grundlegende Metriken (RAM, CPU, Uptime)<br>
+            <strong>Health Check Dashboard (NEU v1.2.5):</strong> Erweiterte Überwachung mit Display-Status, Error-Tracking, Network-Monitoring, Overall-Status</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-logo">⚡ TTQUOTES</div>
+        <div class="footer-content">
+            <p><strong>Version 1.2.5</strong> • Oktober 2025</p>
+            <p>Entwickelt von Murat Söylemez für Tiptorro Sportwetten</p>
+            <p>Copyright © 2025 Torro Tec GmbH • Alle Rechte vorbehalten</p>
+            <p style="margin-top: 15px; color: var(--tt-green);">
+                📧 support@tiptorro.com • 🌐 github.com/muratsylmz1982-a11y/TiptorroLiveQuotes
+            </p>
+        </div>
+    </div>
+</body>
+</html>
