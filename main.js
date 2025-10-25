@@ -1,3 +1,8 @@
+/* ===== TTQ Error Handler (must be first!) ===== */
+const errorHandler = require('./modules/ErrorHandler');
+errorHandler.init();
+/* ===== end TTQ Error Handler ===== */
+
 const { monitorService } = require('./modules/monitor-service');
 const { safeLoadUrl } = require('./modules/safeload');
 /* ===== TTQ early session hardening (must run before any BrowserWindow) ===== */
@@ -87,6 +92,14 @@ const refreshManager = getRefreshManager(app);
 
 // Optional global verfÃ¼gbar machen:
 global.refreshManager = refreshManager;
+
+// âœ… Health Check Manager initialisieren
+const healthCheckManager = require('./modules/HealthCheckManager');
+const healthCheck = healthCheckManager.init();
+
+// âœ… Health Check IPC Handlers registrieren
+const { registerHealthCheckHandlers } = require('./modules/ipc/healthCheckHandlers');
+registerHealthCheckHandlers(healthCheck, errorHandler);
 // --- Cleanup alte Auto-Start-EintrÃ¤ge via app.setLoginItemSettings ---
 app.whenReady().then(async () => {
 // 1) FAVOURITES SEED (zuerst!)
@@ -132,6 +145,7 @@ ipcMain.on('config-updated', async () => {
 // Tray-Icon entfernt
 let configWindow = null;
 let dashboardWindow = null;
+let healthCheckWindow = null;
 const windowManager = new WindowManager();
 const performanceMonitor = new PerformanceMonitor();
 let liveWindows = []; // Wird schrittweise durch windowManager ersetzt
