@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const utils = require('./utils');
 const EventEmitter = require('events');
+const logger = require('./logger');
 
 class AnalyticsManager extends EventEmitter {
     constructor(app) {
@@ -14,7 +15,7 @@ class AnalyticsManager extends EventEmitter {
         this.isTracking = true;
         this.analyticsPath = utils.getUserDataPath(app, 'analytics.json');
         
-        console.log('[ANALYTICS] Session gestartet:', this.sessionId);
+        logger.logInfo('[ANALYTICS] Session gestartet:', this.sessionId);
         this.trackEvent('app_start');
     }
     
@@ -36,7 +37,7 @@ class AnalyticsManager extends EventEmitter {
         };
         
         this.events.push(event);
-        console.log(`[ANALYTICS] Event: ${eventName}`, data);
+        logger.logDebug(`[ANALYTICS] Event: ${eventName}`, data);
         
         // Speichere regelmäßig
         if (this.events.length % 10 === 0) {
@@ -138,7 +139,7 @@ class AnalyticsManager extends EventEmitter {
             // Speichern
             await fs.promises.writeFile(this.analyticsPath, JSON.stringify(allAnalytics, null, 2));
             
-            console.log(`[ANALYTICS] ${this.events.length} Events gespeichert`);
+            logger.logSuccess(`[ANALYTICS] ${this.events.length} Events gespeichert`);
             this.events = []; // Lokale Events leeren
             
         } catch (error) {

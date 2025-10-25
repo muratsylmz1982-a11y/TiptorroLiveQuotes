@@ -37,7 +37,7 @@ class WindowManager {
         
         this.registerWindow(id, overlay, 'overlay');
         
-        console.log(`[WINDOW-MANAGER] Overlay ${id} erstellt`);
+        logger.logInfo(`[WINDOW-MANAGER] Overlay ${id} erstellt`);
         return overlay;
     }
     
@@ -50,13 +50,13 @@ class WindowManager {
         this.liveWindows.push(window);
         this.registerWindow(window.id, window);
         
-        console.log(`[WINDOW-MANAGER] Live-Window ${window.id} erstellt`);
+        logger.logInfo(`[WINDOW-MANAGER] Live-Window ${window.id} erstellt`);
         return window;
     }
     
     // Schließt alle Overlay-Fenster sicher
     closeAllOverlays() {
-        console.log(`[WINDOW-MANAGER] Schließe ${this.overlays.size} Overlays`);
+        logger.logInfo(`[WINDOW-MANAGER] Schließe ${this.overlays.size} Overlays`);
         this.overlays.forEach(overlay => {
             try {
                 if (!overlay.isDestroyed()) {
@@ -72,7 +72,7 @@ class WindowManager {
     
     // Schließt alle Live-Fenster sicher
     closeAllLiveWindows() {
-        console.log(`[WINDOW-MANAGER] Schließe ${this.liveWindows.length} Live-Windows`);
+        logger.logInfo(`[WINDOW-MANAGER] Schließe ${this.liveWindows.length} Live-Windows`);
         this.liveWindows.forEach(window => {
             try {
                 if (!window.isDestroyed()) {
@@ -88,7 +88,7 @@ class WindowManager {
     
     // Komplett-Cleanup aller Fenster
     cleanup() {
-        console.log('[WINDOW-MANAGER] Vollständiges Cleanup gestartet');
+        logger.logInfo('[WINDOW-MANAGER] Vollständiges Cleanup gestartet');
         this.closeAllOverlays();
         this.closeAllLiveWindows();
         
@@ -105,7 +105,7 @@ class WindowManager {
         });
         this.windows.clear();
         
-        console.log('[WINDOW-MANAGER] Cleanup abgeschlossen');
+        logger.logSuccess('[WINDOW-MANAGER] Cleanup abgeschlossen');
     }
     
     // Status-Info für Debugging

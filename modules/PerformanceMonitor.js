@@ -1,5 +1,6 @@
 // modules/PerformanceMonitor.js
 const EventEmitter = require('events');
+const logger = require('./logger');
 
 class PerformanceMonitor extends EventEmitter {
     constructor() {
@@ -15,7 +16,7 @@ class PerformanceMonitor extends EventEmitter {
         if (this.isMonitoring) return;
         
         this.isMonitoring = true;
-        console.log('[PERFORMANCE] Monitoring gestartet');
+        logger.logSuccess('[PERFORMANCE] Monitoring gestartet');
         
         // Sammle Metriken alle 30 Sekunden
         this.monitoringInterval = setInterval(() => {
@@ -33,7 +34,7 @@ class PerformanceMonitor extends EventEmitter {
             this.monitoringInterval = null;
         }
         this.isMonitoring = false;
-        console.log('[PERFORMANCE] Monitoring gestoppt');
+        logger.logInfo('[PERFORMANCE] Monitoring gestoppt');
     }
     
     // Sammelt aktuelle Performance-Metriken
@@ -72,7 +73,7 @@ class PerformanceMonitor extends EventEmitter {
             });
         }
         
-        console.log(`[PERFORMANCE] RAM: ${metrics.memory.heapUsed}MB, Uptime: ${metrics.uptime}s`);
+        logger.logDebug(`[PERFORMANCE] RAM: ${metrics.memory.heapUsed}MB, Uptime: ${metrics.uptime}s`);
     }
     
     // Trackt Window-Erstellung
@@ -87,7 +88,7 @@ class PerformanceMonitor extends EventEmitter {
                     duration: Math.round(duration),
                     timestamp: Date.now()
                 });
-                console.log(`[PERFORMANCE] ${windowType} erstellt in ${duration.toFixed(2)}ms`);
+                logger.logDebug(`[PERFORMANCE] ${windowType} erstellt in ${duration.toFixed(2)}ms`);
             }
         };
     }
@@ -104,7 +105,7 @@ class PerformanceMonitor extends EventEmitter {
                     duration: Math.round(duration),
                     timestamp: Date.now()
                 });
-                console.log(`[PERFORMANCE] Refresh Window-${windowId} in ${duration.toFixed(2)}ms`);
+                logger.logDebug(`[PERFORMANCE] Refresh Window-${windowId} in ${duration.toFixed(2)}ms`);
             }
         };
     }

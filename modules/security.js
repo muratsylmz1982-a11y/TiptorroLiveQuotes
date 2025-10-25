@@ -1,5 +1,6 @@
 const { shell } = require('electron');
 const allowlist = require('./allowlist');
+const logger = require('./logger');
 
 function hardenWebContents(wc) {
   // In-Page Navigationen im Fenster absichern
@@ -36,10 +37,10 @@ function hardenSession(sess) {
         if (allowlist.isAllowedUrl(url)) return callback({ cancel: false });
 
         if (allowlist.isEnforced()) {
-          try { console.warn('[allowlist][block]', url); } catch {}
+          try { logger.logWarning('[allowlist][block]', url); } catch {}
           return callback({ cancel: true });
         }
-        try { console.warn('[allowlist][monitor]', url, 'nicht erlaubt (Config)'); } catch {}
+        try { logger.logWarning('[allowlist][monitor]', url, 'nicht erlaubt (Config)'); } catch {}
         return callback({ cancel: false });
       }
     );

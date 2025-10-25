@@ -35,12 +35,12 @@ async function loadConfigAsync(app) {
         if (fs.existsSync(configPath)) {
             const data = await fsPromises.readFile(configPath, 'utf-8');
             const config = JSON.parse(data);
-            console.log('[CONFIG] Async Config geladen:', config.length, 'Einträge');
+            logger.logInfo('[CONFIG] Async Config geladen:', config.length, 'Einträge');
             return Array.isArray(config) ? config : [];
         }
         return [];
     } catch (err) {
-        console.warn('Fehler beim async Laden der Konfiguration:', err);
+        logger.logWarning('Fehler beim async Laden der Konfiguration:', err);
         return [];
     }
 }
@@ -49,10 +49,10 @@ async function saveConfigAsync(app, data) {
     const configPath = utils.getUserDataPath(app, 'config.json');
     try {
         await fsPromises.writeFile(configPath, JSON.stringify(data, null, 2), 'utf-8');
-        console.log('[CONFIG] Async Config gespeichert:', data.length, 'Einträge');
+        logger.logSuccess('[CONFIG] Async Config gespeichert:', data.length, 'Einträge');
         return true;
     } catch (err) {
-        console.error('Fehler beim async Speichern der Konfiguration:', err);
+        logger.logError('Fehler beim async Speichern der Konfiguration:', err);
         return false;
     }
 }
@@ -107,7 +107,7 @@ function deleteConfig(app) {
 // Validiert eine Konfiguration
 function validateConfig(config) {
     if (!Array.isArray(config)) {
-        console.warn('[CONFIG] Konfiguration ist kein Array');
+        logger.logWarning('[CONFIG] Konfiguration ist kein Array');
         return [];
     }
     
@@ -116,12 +116,12 @@ function validateConfig(config) {
     config.forEach((item, index) => {
         // Prüfe erforderliche Felder
         if (typeof item.monitorIndex !== 'number') {
-            console.warn(`[CONFIG] Ungültiger monitorIndex bei Index ${index}:`, item.monitorIndex);
+            logger.logWarning(`[CONFIG] Ungültiger monitorIndex bei Index ${index}:`, item.monitorIndex);
             return;
         }
         
         if (!item.url || typeof item.url !== 'string') {
-            console.warn(`[CONFIG] Ungültige URL bei Index ${index}:`, item.url);
+            logger.logWarning(`[CONFIG] Ungültige URL bei Index ${index}:`, item.url);
             return;
         }
         
@@ -129,7 +129,7 @@ function validateConfig(config) {
         try {
             new URL(item.url);
         } catch (error) {
-            console.warn(`[CONFIG] Malformierte URL bei Index ${index}:`, item.url);
+            logger.logWarning(`[CONFIG] Malformierte URL bei Index ${index}:`, item.url);
             return;
         }
         
@@ -138,14 +138,14 @@ function validateConfig(config) {
         const urlObj = new URL(item.url);
         
         if (!allowedProtocols.includes(urlObj.protocol)) {
-            console.warn(`[CONFIG] Unsicheres Protokoll bei Index ${index}:`, urlObj.protocol);
+            logger.logWarning(`[CONFIG] Unsicheres Protokoll bei Index ${index}:`, urlObj.protocol);
             return;
         }
         
         validConfigs.push(item);
     });
     
-    console.log(`[CONFIG] Validation: ${config.length} → ${validConfigs.length} gültige Einträge`);
+    logger.logInfo(`[CONFIG] Validation: ${config.length} → ${validConfigs.length} gültige Einträge`);
     return validConfigs;
 }
 module.exports = {

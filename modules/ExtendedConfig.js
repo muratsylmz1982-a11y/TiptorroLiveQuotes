@@ -1,6 +1,7 @@
 // modules/ExtendedConfig.js
 const fs = require('fs');
 const utils = require('./utils');
+const logger = require('./logger');
 
 class ExtendedConfig {
     constructor(app) {
@@ -156,7 +157,7 @@ class ExtendedConfig {
             validated.updates.checkIntervalHours = Math.max(1, Math.min(168, validated.updates.checkIntervalHours || 24));
         }
         
-        console.log('[EXTENDED-CONFIG] Konfiguration validiert');
+        logger.logInfo('[EXTENDED-CONFIG] Konfiguration validiert');
         return validated;
     }
     

@@ -1,49 +1,64 @@
-﻿# Node/Electron
+﻿# Dependencies
 node_modules/
-dist/
-out/
-build/
-electron-out/
-*.asar
 npm-debug.log*
+yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
 
-# OS/Editor
-.DS_Store
-Thumbs.db
-Desktop.ini
-.vscode/
-.idea/
-
-# Logs/Temp
-*.log
-logs/
-*.tmp
-*.bak
-*.swp
-*.orig
-
-# Installer/Artefakte
-*.msi
+# Build Output
+dist/
+build/
 *.exe
 *.exe.blockmap
-*.appx
-*.zip
-/release/
-/artifacts/
-/installer/
-/installer-outputs/
-latest.yml
-builder-debug.yml
-builder-effective-config.yaml
+*.yml
+win-unpacked/
 
-# Local backups & Archives
-*.backup.html
-*backup*.html
-*.backup.js
-/archive/
+# Logs
+logs/
+*.log
+combined.log
+error.log
 
-# Trace & Debug files
-require-trace.log
-trace-*.log
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Electron
+out/
+.webpack/
+
+# User Data & Config
+config/user-*.json
+analytics.json
+window-layout.json
+
+# Temporary Files
+*.tmp
+*.temp
+.cache/
+
+# Archive
+archive/
+
+# Tools/Scanning
+tools/scan/*.txt
+tools/scan/*.csv
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Lock files (optional - auskommentieren wenn Sie sie committen wollen)
+# package-lock.json

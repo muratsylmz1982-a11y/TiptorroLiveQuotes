@@ -1,4 +1,6 @@
 // modules/ipc/favoritesHandlers.js
+const logger = require('../logger');
+
 module.exports = (app, ipcMain, favorites) => {
   ipcMain.handle('get-favorites', () => favorites.loadFavorites(app));
   ipcMain.handle('save-favorites', (event, favs) => favorites.saveFavorites(app, favs));
@@ -22,17 +24,17 @@ const allowedEditors = {
 
 const editorCommand = allowedEditors[process.platform];
 if (!editorCommand) {
-    console.error('[FAVORITES] Plattform nicht unterstützt:', process.platform);
+    logger.logError('[FAVORITES] Plattform nicht unterstützt:', process.platform);
     return;
 }
 
 // Path-Traversal Schutz
 if (!favoritesPath.startsWith(app.getPath('userData'))) {
-    console.error('[FAVORITES] Unsicherer Pfad blockiert:', favoritesPath);
+    logger.logError('[FAVORITES] Unsicherer Pfad blockiert:', favoritesPath);
     return;
 }
 
-console.log('[FAVORITES] Öffne Editor:', editorCommand, favoritesPath);
+logger.logInfo('[FAVORITES] Öffne Editor:', editorCommand, favoritesPath);
 
 try {
     const editorProcess = spawn(editorCommand, [favoritesPath], { 
@@ -41,15 +43,15 @@ try {
     });
     
     editorProcess.on('error', (err) => {
-        console.error('[FAVORITES] Editor-Fehler:', err.message);
+        logger.logError('[FAVORITES] Editor-Fehler:', err.message);
     });
     
     editorProcess.on('exit', (code) => {
-        console.log('[FAVORITES] Editor beendet mit Code:', code);
+        logger.logInfo('[FAVORITES] Editor beendet mit Code:', code);
     });
     
 } catch (error) {
-    console.error('[FAVORITES] Fehler beim Editor-Start:', error.message);
+    logger.logError('[FAVORITES] Fehler beim Editor-Start:', error.message);
 }
   });
 };

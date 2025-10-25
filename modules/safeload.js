@@ -1,4 +1,5 @@
 const allowlist = require('./allowlist');
+const logger = require('./logger');
 
 function isHttp(url) { return /^https?:/i.test(url); }
 
@@ -18,15 +19,15 @@ function safeLoadUrl(win, url, opts) {
 
     // Durchsetzung aktiv? -> blockieren
     if (allowlist.isEnforced()) {
-      try { console.warn('[allowlist][block]', url); } catch {}
+      try { logger.logWarning('[allowlist][block]', url); } catch {}
       return Promise.resolve(); // nichts laden
     }
 
     // Monitor-Only: laden, aber warnen
-    try { console.warn('[allowlist][monitor]', url, 'nicht erlaubt (Config)'); } catch {}
+    try { logger.logWarning('[allowlist][monitor]', url, 'nicht erlaubt (Config)'); } catch {}
     return win.loadURL(url, opts);
   } catch (e) {
-    try { console.warn('[safeLoadUrl][err]', e && e.message ? e.message : e); } catch {}
+    try { logger.logWarning('[safeLoadUrl][err]', e && e.message ? e.message : e); } catch {}
     return Promise.resolve();
   }
 }
