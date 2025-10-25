@@ -7,6 +7,7 @@ const utils = require('./utils');
 const { spawn, execSync } = require('child_process');
 const fs = require('fs');
 const { safeLoadUrl } = require('./safeload');
+const logger = require('./logger');
 let ticketcheckerProcess = null;
 const displayWindowManager = new WindowManager();
 const DisplayService = require('./DisplayService');
@@ -64,7 +65,7 @@ function startTicketcheckerChrome(display) {
     ];
 
     if (!chromePath) {
-        console.error('Chrome nicht gefunden – Ticketscanner kann nicht gestartet werden!');
+        logger.logError('Chrome nicht gefunden – Ticketscanner kann nicht gestartet werden!');
         return;
     }
     if (ticketcheckerProcess && !ticketcheckerProcess.killed) {
@@ -77,7 +78,7 @@ function startTicketcheckerChrome(display) {
         } catch (e) { /* ignorieren */ }
         ticketcheckerProcess = null;
     }
-    console.log('[TICKETCHECKER] Starte Chrome mit:', chromePath, args.join(' '));
+    logger.logInfo('[TICKETCHECKER] Starte Chrome mit:', chromePath, args.join(' '));
     const proc = spawn(chromePath, args, { detached: true, stdio: 'ignore' });
     ticketcheckerProcess = proc;
 }
@@ -97,7 +98,7 @@ function createDisplayWindow(liveWindows, display, url) {
 
     // Ungültige URL abfangen
     if (!(utils.isHttpUrl(url) || url.startsWith('file://'))) {
-        console.warn('Ungültige oder leere URL, lade Platzhalter.');
+        logger.logWarning('Ungültige oder leere URL, lade Platzhalter.');
         const failWin = new BrowserWindow({
             x, y, width, height,
             frame: false,
@@ -165,10 +166,10 @@ win.webContents.setBackgroundThrottling(false);
     );
 
     safeLoadUrl(win,url)
-      .catch(err => console.error('[DISPLAY] Fehler beim Laden der Start-URL:', err));
+      .catch(err => logger.logError('[DISPLAY] Fehler beim Laden der Start-URL:', err));
 
     win.webContents.once('did-finish-load', () => {
-        console.log('[DISPLAY] Start-URL geladen (did-finish-load), bereit für Overlay-Refresh:', url);
+        logger.logInfo('[DISPLAY] Start-URL geladen (did-finish-load), bereit für Overlay-Refresh:', url);
 
         refreshManager.addWindow(win, {
             url: url,
@@ -256,7 +257,7 @@ function showMonitorNumbers(previewWindows, displayInfo, displays) {
 }
 
 function cleanupDisplayWindows() {
-    console.log('[DISPLAYS] Display-Window-Cleanup gestartet');
+    logger.logInfo('[DISPLAYS] Display-Window-Cleanup gestartet');
     refreshManager.cleanup();
     displayWindowManager.cleanup();
 }

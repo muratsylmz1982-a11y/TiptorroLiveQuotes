@@ -1,6 +1,7 @@
 ﻿const { app } = require('electron');
 const fs = require('fs');
 const path = require('path');
+const logger = require('./logger');
 
 function readJsonSafe(p) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; }
@@ -32,10 +33,10 @@ function getDefaultsFavPath() {
 
   const found = findFirstExisting(candidates);
   if (!found) {
-    console.warn('[FAV-SEED] no defaults found in', defaultsRoot, '(looked for favourites.json, favorites.json, favourite.json)');
+    logger.logWarning('[FAV-SEED] no defaults found in', defaultsRoot, '(looked for favourites.json, favorites.json, favourite.json)');
     return null;
   }
-  console.log('[FAV-SEED] using defaults file:', path.basename(found));
+  logger.logInfo('[FAV-SEED] using defaults file:', path.basename(found));
   return found;
 }
 
@@ -68,12 +69,12 @@ async function seedFavourites({ mode = 'copy', key = 'url' } = {}) {
   const userResolved = resolveUserFavPath();
   const { us: userUS, uk: userUK } = getUserFavPaths();
 
-  console.log('[FAV-SEED] defaults path:', defPath);
-  console.log('[FAV-SEED] user path (resolved):', userResolved);
+  logger.logInfo('[FAV-SEED] defaults path:', defPath);
+  logger.logInfo('[FAV-SEED] user path (resolved):', userResolved);
 
   const defaults = readJsonSafe(defPath);
   if (!Array.isArray(defaults)) {
-    console.warn('[FAV-SEED] defaults invalid JSON/array — skip');
+    logger.logWarning('[FAV-SEED] defaults invalid JSON/array — skip');
     return;
   }
 
@@ -85,9 +86,9 @@ async function seedFavourites({ mode = 'copy', key = 'url' } = {}) {
   if (mode === 'copy') {
     if (!Array.isArray(current) || current.length === 0) {
       atomicWrite(userResolved, defaults);
-      console.log('[FAV-SEED] wrote copy →', path.basename(userResolved));
+      logger.logSuccess('[FAV-SEED] wrote copy →', path.basename(userResolved));
     } else {
-      console.log('[FAV-SEED] user already has favourites — skip copy');
+      logger.logInfo('[FAV-SEED] user already has favourites — skip copy');
     }
     return;
   }
@@ -101,7 +102,7 @@ async function seedFavourites({ mode = 'copy', key = 'url' } = {}) {
       if (k != null && !seen.has(k)) { seen.add(k); merged.push(item); }
     }
     atomicWrite(userResolved, merged);
-    console.log('[FAV-SEED] wrote merge →', path.basename(userResolved));
+    logger.logSuccess('[FAV-SEED] wrote merge →', path.basename(userResolved));
   }
 }
 

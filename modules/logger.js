@@ -27,14 +27,17 @@ function cleanupOldLogs() {
             if (fileAge > maxAge) {
                 fs.unlinkSync(filePath);
                 deletedCount++;
+                // Verwende winston logger nicht hier (würde zirkulär werden), benutze console direkt
                 console.log(`[LOG-CLEANUP] Alte Log-Datei gelöscht: ${file}`);
             }
         });
         
         if (deletedCount > 0) {
+            // Verwende winston logger nicht hier (würde zirkulär werden), benutze console direkt
             console.log(`[LOG-CLEANUP] ${deletedCount} alte Log-Datei(en) gelöscht`);
         }
     } catch (error) {
+        // Verwende winston logger nicht hier (würde zirkulär werden), benutze console direkt
         console.error('[LOG-CLEANUP] Fehler beim Bereinigen alter Logs:', error.message);
     }
 }
@@ -90,12 +93,16 @@ logger.logError = (message, error) => {
     });
 };
 
+logger.logInfo = (message, data = null) => {
+    logger.info(`ℹ️  ${message}${data ? ' | ' + JSON.stringify(data) : ''}`);
+};
+
 logger.logSuccess = (message) => {
     logger.info(`✅ ${message}`);
 };
 
-logger.logWarning = (message) => {
-    logger.warn(`⚠️ ${message}`);
+logger.logWarning = (message, data = null) => {
+    logger.warn(`⚠️ ${message}${data ? ' | ' + JSON.stringify(data) : ''}`);
 };
 
 logger.logDebug = (message, data = null) => {

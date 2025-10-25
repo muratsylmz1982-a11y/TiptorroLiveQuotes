@@ -16,7 +16,7 @@ class UpdateManager extends EventEmitter {
 
 // Simuliert Update-Checking für Testzwecke
 simulateUpdateCheck() {
-    console.log('[UPDATE] Simuliere Update-Prüfung...');
+    logger.logDebug('[UPDATE] Simuliere Update-Prüfung...');
     
     // Simuliere verschiedene Update-Szenarien
     const scenarios = [

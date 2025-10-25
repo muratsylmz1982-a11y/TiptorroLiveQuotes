@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>TTQuotes Performance Dashboard</title>
     <!-- CSP: erlaubt nur lokale Ressourcen -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
+    <!-- CSP: Enhanced with object-src, base-uri, form-action for additional security -->
     <style>
         :root{
           --bg:#000;--panel:#111;--panel-grad:linear-gradient(145deg,#151515,#0d0d0d);

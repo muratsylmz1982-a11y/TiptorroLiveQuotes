@@ -19,7 +19,7 @@ class RefreshManager {
             const config = await this.extendedConfig.loadConfig();
             this.refreshDelay = config.refresh?.intervalMs || this.refreshDelay;
             this.overlayDelay = config.refresh?.overlayMinTimeMs || this.overlayDelay;
-            console.log('[REFRESH-MANAGER] Konfiguration geladen:', {
+            logger.logInfo('[REFRESH-MANAGER] Konfiguration geladen:', {
                 refreshDelay: this.refreshDelay,
                 overlayDelay: this.overlayDelay
             });
@@ -47,7 +47,7 @@ class RefreshManager {
     startCoordinatedRefresh() {
         this.isRunning = true;
         if (this.interval) return;
-        console.log('[REFRESH-MANAGER] Starte koordinierten Refreshâ€¦');
+        logger.logInfo('[REFRESH-MANAGER] Starte koordinierten Refresh…');
         this.interval = setInterval(() => {
             const now = Date.now();
             for (const w of this.windows) {
@@ -66,7 +66,7 @@ class RefreshManager {
         if (this.interval) {
             clearInterval(this.interval);
             this.interval = null;
-            console.log('[REFRESH-MANAGER] Refresh gestoppt.');
+            logger.logInfo('[REFRESH-MANAGER] Refresh gestoppt.');
         }
     }
 
@@ -109,7 +109,7 @@ try {
             window.webContents.executeJavaScript("window.overlayAPI && window.overlayAPI.hideOverlay();")
   .catch(err => logger.logError('[REFRESH-MANAGER] Fehler beim Overlay-Hide', err));
             windowData.isRefreshing = false;
-            console.log('[REFRESH-MANAGER] Zielseite vollstÃ¤ndig geladen, Overlay ausgeblendet');
+            logger.logInfo('[REFRESH-MANAGER] Zielseite vollständig geladen, Overlay ausgeblendet');
         });
 
         safeLoadUrl(window,url)
@@ -129,7 +129,7 @@ try {
 }
 }
     cleanup() {
-        console.log('[REFRESH-MANAGER] Cleanup');
+        logger.logInfo('[REFRESH-MANAGER] Cleanup');
         this.stopCoordinatedRefresh();
         this.windows = [];
     }
