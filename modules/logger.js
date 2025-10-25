@@ -1,6 +1,46 @@
 // modules/logger.js
 const winston = require('winston');
 const path = require('path');
+const fs = require('fs');
+
+// Logs-Ordner erstellen falls nicht vorhanden
+const logsDir = path.join(process.cwd(), 'logs');
+if (!fs.existsSync(logsDir)) {
+    fs.mkdirSync(logsDir, { recursive: true });
+}
+
+// Alte Logs bereinigen (älter als 7 Tage)
+function cleanupOldLogs() {
+    try {
+        const files = fs.readdirSync(logsDir);
+        const now = Date.now();
+        const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 Tage in Millisekunden
+        
+        let deletedCount = 0;
+        
+        files.forEach(file => {
+            const filePath = path.join(logsDir, file);
+            const stats = fs.statSync(filePath);
+            const fileAge = now - stats.mtime.getTime();
+            
+            // Lösche Dateien älter als 7 Tage
+            if (fileAge > maxAge) {
+                fs.unlinkSync(filePath);
+                deletedCount++;
+                console.log(`[LOG-CLEANUP] Alte Log-Datei gelöscht: ${file}`);
+            }
+        });
+        
+        if (deletedCount > 0) {
+            console.log(`[LOG-CLEANUP] ${deletedCount} alte Log-Datei(en) gelöscht`);
+        }
+    } catch (error) {
+        console.error('[LOG-CLEANUP] Fehler beim Bereinigen alter Logs:', error.message);
+    }
+}
+
+// Cleanup beim Start
+cleanupOldLogs();
 
 // Logger-Konfiguration
 const logger = winston.createLogger({
@@ -17,16 +57,18 @@ const logger = winston.createLogger({
     transports: [
         // Fehler-Log (nur Errors)
         new winston.transports.File({
-            filename: path.join(process.cwd(), 'logs', 'error.log'),
+            filename: path.join(logsDir, 'error.log'),
             level: 'error',
-            maxsize: 5242880, // 5MB
-            maxFiles: 5
+            maxsize: 10485760, // 10MB
+            maxFiles: 5,
+            tailable: true
         }),
         // Kombiniertes Log (alle Level)
         new winston.transports.File({
-            filename: path.join(process.cwd(), 'logs', 'combined.log'),
-            maxsize: 5242880, // 5MB
-            maxFiles: 3
+            filename: path.join(logsDir, 'combined.log'),
+            maxsize: 10485760, // 10MB
+            maxFiles: 5,
+            tailable: true
         }),
         // Console-Output (nur in Development)
         new winston.transports.Console({
@@ -38,13 +80,7 @@ const logger = winston.createLogger({
     ]
 });
 
-// Logs-Ordner erstellen falls nicht vorhanden
-const fs = require('fs');
-const logsDir = path.join(process.cwd(), 'logs');
-if (!fs.existsSync(logsDir)) {
-    fs.mkdirSync(logsDir, { recursive: true });
-    logger.info('📁 Logs-Ordner erstellt');
-}
+logger.info('📝 Logger initialisiert mit automatischer Log-Rotation (7 Tage, 10MB pro Datei)');
 
 // Hilfsfunktionen
 logger.logError = (message, error) => {

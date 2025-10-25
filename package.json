@@ -27,7 +27,10 @@
     "start": "electron .",
     "build": "electron-builder",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "release": "node scripts/release.js patch",
+    "release:minor": "node scripts/release.js minor",
+    "release:major": "node scripts/release.js major"
   },
   "jest": {
     "testEnvironment": "node",
