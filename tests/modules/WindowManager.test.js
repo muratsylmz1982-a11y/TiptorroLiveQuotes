@@ -13,7 +13,8 @@ jest.mock('electron', () => {
                 getURL: () => 'file://test.html',
                 send: () => {},
                 executeJavaScript: () => Promise.resolve(),
-                reload: () => {}
+                reload: () => {},
+                setBackgroundThrottling: () => {}
             };
         }
         on(event, cb) {
