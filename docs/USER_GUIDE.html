@@ -501,28 +501,65 @@
             letter-spacing: 0.15em;
         }
 
-        /* ========== Print Styles ========== */
+        /* ========== Print Styles - Magazine Layout ========== */
         @media print {
             body {
                 background: white;
                 color: black;
                 padding-top: 0;
             }
-            .header, .nav-menu {
+            
+            /* Cover Page - Full height for first page */
+            .header {
                 position: static;
                 box-shadow: none;
                 border-bottom: 3px solid #269947;
+                 /* Start content on right page */
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
             }
-            .nav-item {
+            
+            .nav-menu {
                 display: none;
             }
-            .feature-card, .step, .new-feature {
+            
+            /* Major sections start on right pages (odd page numbers) */
+            #new-features,
+            #installation,
+            #daily-use,
+            #health-check,
+            #error-handler,
+            #troubleshooting {
+                
+            }
+            
+            /* Avoid breaking inside important elements */
+            .feature-card, 
+            .step, 
+            .new-feature,
+            .code-block,
+            .warning-box,
+            .info-box,
+            .success-box {
                 page-break-inside: avoid;
             }
+            
             a {
                 color: #269947;
                 text-decoration: underline;
             }
+            
+            /* Two-page spread optimization */
+            @page {
+                margin: 20mm 15mm;
+                size: A4;
+            }
+            
+            
+            
+            
         }
 
         /* ========== Responsive ========== */
@@ -563,7 +600,7 @@
 <body>
     <!-- Header -->
     <div class="header">
-        <img src="../assets/logo2.png" alt="Tiptorro Logo" style="height: 60px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(38, 153, 71, 0.5));">
+        <img src="logo2.png" alt="Tiptorro Logo" style="height: 60px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(38, 153, 71, 0.5));">
         <div class="header-logo">⚡ TTQUOTES</div>
         <div class="header-subtitle">Professionelle Multi-Monitor Live-View Lösung</div>
         <span class="version-badge">Version 1.2.5</span>
@@ -1496,7 +1533,7 @@ Mit freundlichen Grüßen,
 
     <!-- Footer -->
     <div class="footer">
-        <img src="../assets/logo2.png" alt="Tiptorro Logo" style="height: 60px; margin-bottom: 15px; opacity: 0.8;">
+        <img src="logo2.png" alt="Tiptorro Logo" style="height: 60px; margin-bottom: 15px; opacity: 0.8;">
         <div class="footer-logo">⚡ TTQUOTES</div>
         <div class="footer-content">
             <p><strong>Version 1.2.5</strong> • Oktober 2025</p>

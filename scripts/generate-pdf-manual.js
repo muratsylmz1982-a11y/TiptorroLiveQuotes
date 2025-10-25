@@ -67,7 +67,7 @@ async function generatePDF() {
             waitUntil: 'networkidle0'
         });
 
-        console.log('🎨 Generiere PDF...');
+        console.log('🎨 Generiere PDF....');
         
         // PDF-Optionen
         await page.pdf({
@@ -83,7 +83,7 @@ async function generatePDF() {
             displayHeaderFooter: true,
             headerTemplate: `
                 <div style="font-size: 10px; color: #737373; text-align: center; width: 100%; padding: 10px 0;">
-                    <span style="color: #269947; font-weight: 700;">TTQuotes</span> - Benutzerhandbuch v1.2.5
+                    <span style="color: #269947; font-weight: 700;">TTQuotes</span> - ${docName} v1.2.5
                 </div>
             `,
             footerTemplate: `
