@@ -92,11 +92,24 @@ class HealthCheckManager {
      */
     async checkDisplays() {
         const windows = BrowserWindow.getAllWindows();
+        // Filter: Alle Fenster AUSSER Config-UI und Dashboards
         const displayWindows = windows.filter(win => {
             const title = win.getTitle();
-            return title.includes('TTQuotes Display') || 
-                   title.includes('Monitor') ||
-                   title.includes('Ticketchecker');
+            const url = win.webContents.getURL();
+            
+            // Exclude UI windows
+            if (title.includes('Config') || 
+                title.includes('Settings') || 
+                title.includes('Dashboard') ||
+                url.includes('index.html') ||
+                url.includes('extended-settings.html') ||
+                url.includes('performance-dashboard.html') ||
+                url.includes('health-check-dashboard.html')) {
+                return false;
+            }
+            
+            // Include all other windows (Live-Views, Ticketchecker, etc.)
+            return true;
         });
 
         const displays = displayWindows.map(win => {
