@@ -12,6 +12,8 @@
   .badge{padding:4px 10px;border-radius:9999px;font-size:12px;font-weight:600;display:inline-block}
   .badge.green{background:#16a34a;color:#fff}
   .badge.gray{background:#6b7280;color:#fff}
+  .action-btn.blue{background:#3b82f6;border-color:#2563eb}
+  .action-btn.blue:hover{background:#2563eb}
 </style>
 </head>
 <body>
@@ -51,6 +53,7 @@
       </div>
       <div class="actions-group">
         <button class="action-btn gray" onclick="editFavorites()">FAVORITEN BEARBEITEN</button>
+        <button class="action-btn blue" onclick="openHealthCheckDashboard()">&#127973; HEALTH CHECK</button>
         <button class="action-btn red" onclick="deleteConfig()">KONFIGURATION L&Ouml;SCHEN</button>
         <button class="action-btn red" onclick="quitApp()">BEENDEN</button>
         <button class="action-btn" onclick="window.location.href='extended-settings.html'">
@@ -125,6 +128,21 @@
           console.error('Auto-Start konnte nicht umgestellt werden');
         }
       });
+    }
+
+    // Health Check Dashboard öffnen
+    async function openHealthCheckDashboard() {
+      try {
+        const success = await window.electronAPI.invoke('open-health-check-dashboard');
+        if (success) {
+          console.log('Health Check Dashboard geöffnet');
+        } else {
+          alert('Fehler beim Öffnen des Health Check Dashboards');
+        }
+      } catch (error) {
+        console.error('Fehler:', error);
+        alert('Fehler: ' + error.message);
+      }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
