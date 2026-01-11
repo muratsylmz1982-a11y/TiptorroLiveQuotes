@@ -21,8 +21,36 @@ jest.mock('../modules/logger', () => ({
     logDebug: jest.fn()
 }));
 
+// Mock ErrorHandler
+jest.mock('../modules/ErrorHandler', () => ({
+    init: jest.fn(),
+    getInstance: jest.fn(() => ({
+        getStats: jest.fn(() => ({
+            totalErrors: 0,
+            errorTypes: {},
+            recentErrors: []
+        }))
+    }))
+}));
+
 // Mock os module
-jest.mock('os');
+jest.mock('os', () => ({
+    totalmem: jest.fn(() => 16 * 1024 * 1024 * 1024), // 16GB
+    freemem: jest.fn(() => 8 * 1024 * 1024 * 1024), // 8GB
+    cpus: jest.fn(() => [
+        { model: 'Intel Core i7', speed: 2400, times: { user: 100, idle: 100, sys: 100, nice: 0, irq: 0 } },
+        { model: 'Intel Core i7', speed: 2400, times: { user: 100, idle: 100, sys: 100, nice: 0, irq: 0 } }
+    ]),
+    networkInterfaces: jest.fn(() => ({
+        eth0: [
+            { internal: false, family: 'IPv4', address: '192.168.1.100', mac: '00:00:00:00:00:00' }
+        ]
+    })),
+    platform: jest.fn(() => 'win32'),
+    arch: jest.fn(() => 'x64'),
+    release: jest.fn(() => '10.0.19041'),
+    hostname: jest.fn(() => 'TEST-PC')
+}));
 
 describe('HealthCheckManager', () => {
     let healthCheck;
@@ -32,7 +60,7 @@ describe('HealthCheckManager', () => {
         jest.clearAllMocks();
         jest.resetModules();
         
-        // Setup os mocks
+        // Re-setup os mocks after resetModules
         os.totalmem.mockReturnValue(16 * 1024 * 1024 * 1024); // 16GB
         os.freemem.mockReturnValue(8 * 1024 * 1024 * 1024); // 8GB
         os.cpus.mockReturnValue([
@@ -91,6 +119,7 @@ describe('HealthCheckManager', () => {
         });
 
         test('should detect high memory usage', () => {
+            // 1GB free von 16GB total = 15GB used = 93.75% used
             os.freemem.mockReturnValue(1 * 1024 * 1024 * 1024); // Only 1GB free
             const memoryInfo = healthCheck.checkMemory();
 
@@ -123,7 +152,8 @@ describe('HealthCheckManager', () => {
         });
 
         test('should detect offline status', () => {
-            os.networkInterfaces.mockReturnValue({});
+            // Reset mock to return empty object (no network interfaces)
+            os.networkInterfaces.mockReturnValueOnce({});
             const networkInfo = healthCheck.checkNetwork();
 
             expect(networkInfo.online).toBe(false);
@@ -133,7 +163,8 @@ describe('HealthCheckManager', () => {
 
     describe('Display Check', () => {
         test('should check displays with no windows', async () => {
-            BrowserWindow.getAllWindows.mockReturnValue([]);
+            const { BrowserWindow } = require('electron');
+            BrowserWindow.getAllWindows = jest.fn(() => []);
             const displayStats = await healthCheck.checkDisplays();
 
             expect(displayStats.total).toBe(0);
@@ -142,6 +173,7 @@ describe('HealthCheckManager', () => {
         });
 
         test('should check displays with active windows', async () => {
+            const { BrowserWindow } = require('electron');
             const mockWindow = {
                 id: 1,
                 getTitle: jest.fn(() => 'TTQuotes Display 1'),
@@ -156,7 +188,7 @@ describe('HealthCheckManager', () => {
                 getBounds: jest.fn(() => ({ x: 0, y: 0, width: 1920, height: 1080 }))
             };
 
-            BrowserWindow.getAllWindows.mockReturnValue([mockWindow]);
+            BrowserWindow.getAllWindows = jest.fn(() => [mockWindow]);
             const displayStats = await healthCheck.checkDisplays();
 
             expect(displayStats.total).toBe(1);

@@ -30,8 +30,8 @@ describe('ErrorHandler', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        // Reset module cache
-        jest.resetModules();
+        // Don't reset modules - it recreates the mock and loses the calls
+        // jest.resetModules(); // Removed - prevents checking app.on calls
         ErrorHandler = require('../modules/ErrorHandler');
         errorHandler = ErrorHandler.init();
     });
@@ -52,6 +52,7 @@ describe('ErrorHandler', () => {
         });
 
         test('should register all error handlers', () => {
+            // Prüfe, dass app.on mit den erwarteten Events aufgerufen wurde
             expect(app.on).toHaveBeenCalledWith('render-process-gone', expect.any(Function));
             expect(app.on).toHaveBeenCalledWith('child-process-gone', expect.any(Function));
             expect(app.on).toHaveBeenCalledWith('gpu-process-crashed', expect.any(Function));

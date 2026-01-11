@@ -32,8 +32,8 @@
 <body>
     <div class="header">
         <h1>🎯 TTQuotes Performance Dashboard</h1>
-        <button class="btn refresh-btn">🔄 Aktualisieren</button>
-        <button class="btn secondary refresh-btn">🗑️ Logs löschen</button>
+        <button class="btn refresh-btn" id="refreshBtn">🔄 Aktualisieren</button>
+        <button class="btn secondary refresh-btn" id="clearLogsBtn">🗑️ Logs löschen</button>
     </div>
     <div class="metrics-grid">
         <div class="metric-card">
@@ -66,7 +66,7 @@
     </div>
     <div class="metric-card" style="margin-top:18px;">
         <div class="metric-title">Performance Logs</div>
-        <div class="logs" id="logContainer">Dashboard wird geladen...</div>
+        <div class="logs" id="perfLogs">Dashboard wird geladen...</div>
     </div>
     <script src="./perf-dashboard.client.js" defer></script>
 </body>

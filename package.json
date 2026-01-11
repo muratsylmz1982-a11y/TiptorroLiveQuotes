@@ -1,6 +1,6 @@
 {
   "name": "ttquotes",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Digitale Livescreen Steuerung für TV-Geräte",
   "author": "Murat Söylemez",
   "main": "main.js",

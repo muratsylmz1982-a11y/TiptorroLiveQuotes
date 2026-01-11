@@ -8,6 +8,8 @@ class RefreshManager {
         this.windows = [];
         this.interval = null;
         this.extendedConfig = extendedConfig;
+        this.refreshQueue = []; // Queue für gestaffelte Refreshes
+        this.refreshStaggerDelay = 5000; // 5 Sekunden zwischen Refreshes
 
         // Standardwerte (werden aus ExtendedConfig überschrieben)
         this.refreshDelay = 1200000; // 20 Minuten
@@ -47,18 +49,70 @@ class RefreshManager {
     startCoordinatedRefresh() {
         this.isRunning = true;
         if (this.interval) return;
-        logger.logInfo('[REFRESH-MANAGER] Starte koordinierten Refresh…');
+        
+        // Dynamisches Interval: 5s bei 6+ Displays, sonst 1s
+        const intervalMs = this.windows.length > 5 ? 5000 : 1000;
+        
+        logger.logInfo('[REFRESH-MANAGER] Starte koordinierten Refresh…', {
+            intervalMs: intervalMs,
+            windowCount: this.windows.length,
+            staggerDelay: this.refreshStaggerDelay
+        });
+        
         this.interval = setInterval(() => {
             const now = Date.now();
+            const windowsToRefresh = [];
+            
+            // Sammle alle Fenster, die neu geladen werden müssen
             for (const w of this.windows) {
                 if (
                     now - w.lastRefresh >= w.refreshDelay &&
-                    !w.isRefreshing // NEU: Nur, wenn kein Refresh lÃ¤uft!
+                    !w.isRefreshing
                 ) {
-                    this.refreshWindow(w);
+                    windowsToRefresh.push(w);
                 }
             }
-        }, 1000);
+            
+            // Gestaffelte Refreshes: Ein Fenster alle 5 Sekunden statt alle gleichzeitig
+            if (windowsToRefresh.length > 0) {
+                this.processRefreshQueue(windowsToRefresh);
+            }
+        }, intervalMs);
+    }
+    
+    /**
+     * Verarbeitet Refresh-Queue mit gestaffelten Refreshes
+     * Verhindert GPU-Spitzen durch gleichzeitige Reloads
+     */
+    processRefreshQueue(windowsToRefresh) {
+        // Wenn bereits Refreshes laufen, zur Queue hinzufügen
+        if (this.refreshQueue.length > 0) {
+            this.refreshQueue.push(...windowsToRefresh);
+            return;
+        }
+        
+        // Starte gestaffelte Refreshes
+        this.refreshQueue = windowsToRefresh;
+        this.processNextRefresh();
+    }
+    
+    /**
+     * Verarbeitet das nächste Fenster aus der Queue
+     */
+    processNextRefresh() {
+        if (this.refreshQueue.length === 0) {
+            return;
+        }
+        
+        const windowData = this.refreshQueue.shift();
+        this.refreshWindow(windowData);
+        
+        // Wenn noch Fenster in der Queue sind, nach staggerDelay das nächste verarbeiten
+        if (this.refreshQueue.length > 0) {
+            setTimeout(() => {
+                this.processNextRefresh();
+            }, this.refreshStaggerDelay);
+        }
     }
 
     stopCoordinatedRefresh() {
@@ -132,6 +186,7 @@ try {
         logger.logInfo('[REFRESH-MANAGER] Cleanup');
         this.stopCoordinatedRefresh();
         this.windows = [];
+        this.refreshQueue = []; // Queue leeren
     }
 }
 module.exports = RefreshManager;

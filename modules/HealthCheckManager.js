@@ -173,7 +173,7 @@ class HealthCheckManager {
                 total: this.formatBytes(systemMemory.total),
                 used: this.formatBytes(systemMemory.used),
                 free: this.formatBytes(systemMemory.free),
-                percentUsed: ((systemMemory.used / systemMemory.total) * 100).toFixed(1)
+                percentUsed: parseFloat(((systemMemory.used / systemMemory.total) * 100).toFixed(1))
             },
             status: 'healthy'
         };

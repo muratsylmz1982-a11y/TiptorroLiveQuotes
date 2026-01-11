@@ -12,6 +12,10 @@ class ErrorHandler {
         this.errorCount = 0;
         this.maxErrorsBeforeRestart = 10;
         this.errorLog = [];
+        // Erhöhe MaxListeners um EventEmitter-Warnungen zu vermeiden
+        if (process.setMaxListeners) {
+            process.setMaxListeners(15);
+        }
         this.setupHandlers();
         logger.logSuccess('[ERROR-HANDLER] Initialisiert');
     }

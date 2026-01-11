@@ -215,9 +215,11 @@
         /* Analytics Modal */
 .modal-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:2000;opacity:0;pointer-events:none;transition:.3s}
 .modal-overlay.show{opacity:1;pointer-events:auto}
-.modal{background:#111;border:1px solid #333;border-radius:12px;padding:24px;max-width:600px;width:90%;color:#fff}
-.modal h3{margin-top:0;color:var(--green-dark)}
-.close-modal{position:absolute;top:12px;right:14px;background:transparent;border:0;font-size:20px;color:#999;cursor:pointer}
+.modal{background:#111;border:1px solid #333;border-radius:12px;padding:24px;max-width:800px;width:90%;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;color:#fff;position:relative}
+.modal h3{margin-top:0;color:var(--tt-green);margin-bottom:16px}
+.close-modal{position:absolute;top:12px;right:14px;background:transparent;border:0;font-size:24px;color:#999;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:4px}
+.close-modal:hover{background:rgba(255,255,255,0.1);color:#fff}
+#analyticsContent{background:#0a0a0a;border:1px solid #222;border-radius:6px;padding:16px;overflow:auto;flex:1;font-family:'Courier New',monospace;font-size:12px;line-height:1.5;color:#ddd;white-space:pre-wrap;word-wrap:break-word}
     </style>
 </head>
 <body>
@@ -371,14 +373,26 @@
         try {
             const currentConfig = await window.electronAPI.getExtendedConfig();
             if (currentConfig) {
-                document.getElementById('refreshEnabled').checked = currentConfig.refresh?.enabled || false;
-                document.getElementById('refreshInterval').value = (currentConfig.refresh?.intervalMs || 30000) / 1000;
-                document.getElementById('overlayMin').value = currentConfig.refresh?.overlayMinTimeMs || 2000;
+                // Standardwerte: 1200000ms (20 Minuten) = 1200 Sekunden, 3500ms Overlay
+                const defaultIntervalMs = 1200000; // 20 Minuten
+                const defaultOverlayMs = 3500;     // 3,5 Sekunden
+                
+                document.getElementById('refreshEnabled').checked = currentConfig.refresh?.enabled !== undefined ? currentConfig.refresh.enabled : true;
+                document.getElementById('refreshInterval').value = (currentConfig.refresh?.intervalMs || defaultIntervalMs) / 1000;
+                document.getElementById('overlayMin').value = currentConfig.refresh?.overlayMinTimeMs || defaultOverlayMs;
+            } else {
+                // Wenn keine Config geladen werden kann, Standardwerte anzeigen
+                document.getElementById('refreshEnabled').checked = true;
+                document.getElementById('refreshInterval').value = 1200; // 20 Minuten in Sekunden
+                document.getElementById('overlayMin').value = 3500;
             }
         } catch (e) {
             console.error('Fehler beim Laden der Einstellungen:', e);
+            // Bei Fehler Standardwerte anzeigen
+            document.getElementById('refreshEnabled').checked = true;
+            document.getElementById('refreshInterval').value = 1200;
+            document.getElementById('overlayMin').value = 3500;
         }
-
     }
 
    // Speichert Konfiguration
