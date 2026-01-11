@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overlay Logo Rotation Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        
+        .test-container {
+            width: 100%;
+            max-width: 1920px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .test-title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #269947;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-shadow: 0 2px 10px #26994733;
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            background: #269947;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #2cb054;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px #26994766;
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn.secondary {
+            background: #333;
+        }
+        
+        .btn.secondary:hover {
+            background: #444;
+        }
+        
+        /* Overlay-Simulation */
+        .waiting-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 72vh;
+            width: 100%;
+        }
+        
+        :root {
+            --tt-black: #000;
+            --tt-green: #269947;
+            --tt-white: #fff;
+        }
+        
+        /* Logo mit Rotation - TEST VERSION */
+        .waiting-logo {
+            height: 120px;  /* KLEINER GEMACHT */
+            max-width: 200px;  /* KLEINER GEMACHT */
+            object-fit: contain;
+            background: transparent;
+            display: block;
+            margin: 0 auto 38px auto;
+            border-radius: 24px;
+            
+            /* SCHWARZEN HINTERGRUND ENTFERNEN - Freigestellt */
+            /* CSS-Filter für ICO: Entfernt schwarzen Hintergrund, behält Logo */
+            filter: 
+                drop-shadow(0 1px 10px #26994755)
+                brightness(1.2) contrast(1.1);
+            /* mix-blend-mode entfernt schwarzen Hintergrund */
+            mix-blend-mode: lighten;  /* Entfernt schwarze Bereiche, behält Logo */
+            
+            /* ROTATION ANIMATION - TEST (Schnell → Langsam → Schnell) */
+            animation: rotateLogo 2.5s ease-in-out infinite;
+            transform-style: preserve-3d;
+            transform-origin: center center;
+        }
+        
+        /* Alternative: Wenn das nicht funktioniert, kann man auch CSS-Mask verwenden */
+        .waiting-logo.alternative {
+            filter: drop-shadow(0 1px 10px #26994755);
+            mix-blend-mode: lighten;  /* Alternative: zeigt nur helle Bereiche */
+        }
+        
+        @keyframes rotateLogo {
+            /* OPTION 1: Schnell voll drehen, dann langsam, dann nochmal schnell voll drehen */
+            0% {
+                transform: perspective(1000px) rotateY(0deg);
+            }
+            30% {
+                transform: perspective(1000px) rotateY(360deg);  /* Schnell eine volle Umdrehung */
+            }
+            /* Kurz langsam */
+            35% {
+                transform: perspective(1000px) rotateY(380deg);  /* Langsam weiter */
+            }
+            40% {
+                transform: perspective(1000px) rotateY(360deg);  /* Kurz zurück */
+            }
+            /* Nochmal schnell voll drehen */
+            70% {
+                transform: perspective(1000px) rotateY(720deg);  /* Nochmal schnell eine volle Umdrehung */
+            }
+            /* Kurz langsam */
+            75% {
+                transform: perspective(1000px) rotateY(740deg);  /* Langsam weiter */
+            }
+            80% {
+                transform: perspective(1000px) rotateY(720deg);  /* Kurz zurück */
+            }
+            /* Zurück zum Start für nahtlose Wiederholung (720° = 0°) */
+            100% {
+                transform: perspective(1000px) rotateY(720deg);  /* Bleibt bei 720° (= 0° für Wiederholung) */
+            }
+        }
+        
+        /* Varianten für verschiedene Geschwindigkeiten */
+        .waiting-logo.fast {
+            animation: rotateLogo 1.5s linear infinite;
+        }
+        
+        .waiting-logo.slow {
+            animation: rotateLogo 5s linear infinite;
+        }
+        
+        /* Alternative: X-Achse Rotation (von oben nach unten) */
+        @keyframes rotateLogoX {
+            0% {
+                transform: perspective(1000px) rotateX(0deg);
+            }
+            100% {
+                transform: perspective(1000px) rotateX(360deg);
+            }
+        }
+        
+        .waiting-logo.paused {
+            animation-play-state: paused;
+        }
+        
+        .waiting-status {
+            font-size: 1.1em;
+            color: var(--tt-green, #269947);
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            margin-bottom: 18px;
+            text-align: center;
+            text-shadow: 0 2px 16px #26994710;
+        }
+        
+        .waiting-bar {
+            width: 100px;
+            height: 5px;
+            border-radius: 4px;
+            background: var(--tt-green, #269947);
+            opacity: 0.3;
+            margin-top: 10px;
+            animation: pulseBar 2s infinite linear;
+        }
+        
+        @keyframes pulseBar {
+            0%, 100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        
+        .waiting-spinner {
+            width: 48px;
+            height: 48px;
+            border: 6px solid #252725;
+            border-top: 6px solid var(--tt-green, #269947);
+            border-radius: 50%;
+            animation: spin 1.1s linear infinite;
+            margin: 38px auto 0 auto;
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .waiting-footer {
+            margin-top: 32px;
+            font-size: 14px;
+            color: #aaa;
+            opacity: 0.64;
+            letter-spacing: 0.09em;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .info-panel {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(38, 153, 71, 0.1);
+            border: 2px solid #269947;
+            border-radius: 12px;
+            padding: 20px 30px;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            max-width: 600px;
+        }
+        
+        .info-panel strong {
+            color: #269947;
+        }
+        
+        .speed-indicator {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-title">🔄 Logo Rotation Test</div>
+        
+        <div class="info-panel">
+            <div><strong>TEST-MODUS:</strong> Rotierendes Logo Animation</div>
+            <div class="speed-indicator" id="speedInfo">Geschwindigkeit: Normal (3s pro Umdrehung)</div>
+        </div>
+        
+        <div class="waiting-center">
+            <img class="waiting-logo" id="testLogo"
+                src="assets/ttquotes.ico"
+                alt="Logo">
+            <div class="waiting-status">Quoten werden Aktualisiert...</div>
+            <div class="waiting-bar"></div>
+            <div class="waiting-spinner"></div>
+        </div>
+        
+        <div class="waiting-footer">Torrotec Live Quotes &copy; 2025 – Tiptorro Sportwetten</div>
+        
+        <div class="controls">
+            <button class="btn" onclick="toggleRotation()">⏸️ Pause/Fortsetzen</button>
+            <button class="btn secondary" onclick="changeSpeed('slow')">🐌 Langsam</button>
+            <button class="btn secondary" onclick="changeSpeed('normal')">⚡ Normal</button>
+            <button class="btn secondary" onclick="changeSpeed('fast')">🚀 Schnell</button>
+            <button class="btn secondary" onclick="changeStyle('option1')">Option 1</button>
+            <button class="btn secondary" onclick="changeStyle('option2')">Option 2</button>
+            <button class="btn secondary" onclick="changeStyle('option3')">Option 3</button>
+        </div>
+    </div>
+    
+    <script>
+        const logo = document.getElementById('testLogo');
+        const speedInfo = document.getElementById('speedInfo');
+        let isPaused = false;
+        let currentSpeed = 'normal';
+        
+        function toggleRotation() {
+            isPaused = !isPaused;
+            if (isPaused) {
+                logo.classList.add('paused');
+            } else {
+                logo.classList.remove('paused');
+            }
+        }
+        
+        let currentStyle = 'option1';
+        
+        function changeSpeed(speed) {
+            currentSpeed = speed;
+            logo.className = 'waiting-logo style-' + currentStyle;
+            
+            switch(speed) {
+                case 'slow':
+                    logo.classList.add('slow');
+                    speedInfo.textContent = 'Geschwindigkeit: Langsam';
+                    break;
+                case 'normal':
+                    speedInfo.textContent = 'Geschwindigkeit: Normal';
+                    break;
+                case 'fast':
+                    logo.classList.add('fast');
+                    speedInfo.textContent = 'Geschwindigkeit: Schnell';
+                    break;
+            }
+            
+            if (isPaused) {
+                logo.classList.add('paused');
+            }
+        }
+        
+        function changeStyle(style) {
+            currentStyle = style;
+            logo.className = 'waiting-logo style-' + style;
+            
+            if (isPaused) {
+                logo.classList.add('paused');
+            }
+            
+            // Speed wieder anwenden
+            if (currentSpeed) {
+                changeSpeed(currentSpeed);
+            } else {
+                changeSpeed('normal');
+            }
+            
+            speedInfo.textContent = 'Stil: ' + style.toUpperCase() + ' | ' + speedInfo.textContent;
+        }
+    </script>
+</body>
+</html>
+

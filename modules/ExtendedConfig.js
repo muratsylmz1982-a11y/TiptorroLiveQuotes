@@ -90,7 +90,9 @@ class ExtendedConfig {
       await fs.promises.copyFile(this.configPath, backupPath);
     }
     
-    const validatedConfig = this.validateConfig(config);
+    // Config mit Defaults mergen, damit alle Sektionen vorhanden sind
+    const mergedConfig = this.mergeWithDefaults(config);
+    const validatedConfig = this.validateConfig(mergedConfig);
     await fs.promises.writeFile(this.configPath, JSON.stringify(validatedConfig, null, 2));
     
     const logger = require('./logger');

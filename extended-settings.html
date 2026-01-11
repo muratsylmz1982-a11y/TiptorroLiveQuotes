@@ -247,13 +247,13 @@
   <div class="settings-header"><h3>🔄 Refresh-Einstellungen</h3></div>
   <div class="settings-body">
     <label>Automatischer Refresh
-      <input type="checkbox" id="refreshEnabled">
+      <input type="checkbox" id="refreshEnabled" checked>
     </label><br><br>
     <label>Intervall (Sekunden)
-      <input type="number" id="refreshInterval" min="30" step="30" style="width:120px">
+      <input type="number" id="refreshInterval" min="30" step="30" value="1200" style="width:120px">
     </label><br><br>
     <label>Overlay-Min-Zeit (ms)
-      <input type="number" id="overlayMin" min="500" step="500" style="width:120px">
+      <input type="number" id="overlayMin" min="500" step="500" value="3500" style="width:120px">
     </label>
   </div>
 </div>
@@ -372,14 +372,19 @@
     async function loadSettings() {
         try {
             const currentConfig = await window.electronAPI.getExtendedConfig();
-            if (currentConfig) {
-                // Standardwerte: 1200000ms (20 Minuten) = 1200 Sekunden, 3500ms Overlay
-                const defaultIntervalMs = 1200000; // 20 Minuten
-                const defaultOverlayMs = 3500;     // 3,5 Sekunden
+            // Standardwerte: 1200000ms (20 Minuten) = 1200 Sekunden, 3500ms Overlay
+            const defaultIntervalMs = 1200000; // 20 Minuten
+            const defaultOverlayMs = 3500;     // 3,5 Sekunden
+            
+            if (currentConfig && currentConfig.refresh) {
+                // Verwende Werte aus Config, falls vorhanden, sonst Standardwerte
+                const intervalMs = currentConfig.refresh.intervalMs || defaultIntervalMs;
+                const overlayMs = currentConfig.refresh.overlayMinTimeMs || defaultOverlayMs;
+                const enabled = currentConfig.refresh.enabled !== undefined ? currentConfig.refresh.enabled : true;
                 
-                document.getElementById('refreshEnabled').checked = currentConfig.refresh?.enabled !== undefined ? currentConfig.refresh.enabled : true;
-                document.getElementById('refreshInterval').value = (currentConfig.refresh?.intervalMs || defaultIntervalMs) / 1000;
-                document.getElementById('overlayMin').value = currentConfig.refresh?.overlayMinTimeMs || defaultOverlayMs;
+                document.getElementById('refreshEnabled').checked = enabled;
+                document.getElementById('refreshInterval').value = intervalMs / 1000; // Konvertiere ms zu Sekunden
+                document.getElementById('overlayMin').value = overlayMs;
             } else {
                 // Wenn keine Config geladen werden kann, Standardwerte anzeigen
                 document.getElementById('refreshEnabled').checked = true;
@@ -397,28 +402,45 @@
 
    // Speichert Konfiguration
 async function saveSettings() {
-    const newConfig = {
-        refresh: {
-            enabled: document.getElementById('refreshEnabled').checked,
-            intervalMs: parseInt(document.getElementById('refreshInterval').value) * 1000,
-            overlayMinTimeMs: parseInt(document.getElementById('overlayMin').value)
-        }
-    };
-
     try {
+        // Aktuelle Config laden (falls vorhanden)
+        let currentConfig = null;
+        try {
+            currentConfig = await window.electronAPI.getExtendedConfig();
+        } catch (e) {
+            console.warn('Konnte Config nicht laden, verwende leere Config:', e);
+        }
+        
+        // Refresh-Sektion aktualisieren
+        const enabled = document.getElementById('refreshEnabled').checked;
+        const intervalValue = document.getElementById('refreshInterval').value;
+        const overlayValue = document.getElementById('overlayMin').value;
+        
+        const refreshConfig = {
+            enabled: enabled,
+            intervalMs: parseInt(intervalValue) * 1000,
+            overlayMinTimeMs: parseInt(overlayValue)
+        };
+        
+        // Neue Config zusammenstellen (entweder aktuelle Config erweitern oder nur refresh senden)
+        const newConfig = currentConfig ? {
+            ...currentConfig,
+            refresh: refreshConfig
+        } : {
+            refresh: refreshConfig
+        };
+
         // Konfiguration speichern
         const successConfig = await window.electronAPI.saveExtendedConfig(newConfig);
-window.electronAPI.send('config-updated');
-
-        // Statusmeldung
-        if (successConfig && successAS) {
-            showStatus('Einstellungen & Auto-Start gespeichert ✓', 'success');
+        
+        if (successConfig) {
+            showStatus('Einstellungen gespeichert ✓', 'success');
         } else {
-            throw new Error('Save fehlgeschlagen');
+            throw new Error('Speichern fehlgeschlagen');
         }
     } catch (err) {
+        console.error('Fehler beim Speichern:', err);
         showStatus('Fehler beim Speichern ✗', 'error');
-        console.error(err);
     }
 }
 
@@ -450,10 +472,13 @@ window.electronAPI.send('config-updated');
             }, 3000);
         }
     }
-    // Auto-Start Toggle
-  document.getElementById('autoStartSwitch').addEventListener('click', evt => {
-    evt.currentTarget.classList.toggle('active');
-  });
+    // Auto-Start Toggle (nur wenn Element existiert)
+    const autoStartSwitch = document.getElementById('autoStartSwitch');
+    if (autoStartSwitch) {
+        autoStartSwitch.addEventListener('click', evt => {
+            evt.currentTarget.classList.toggle('active');
+        });
+    }
     // ESC schließt Modal
     document.addEventListener('keydown', evt => {
         if (evt.key === 'Escape') hideAnalyticsModal();

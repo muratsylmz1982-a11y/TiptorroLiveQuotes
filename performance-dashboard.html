@@ -18,6 +18,9 @@
         .btn:hover{background:var(--green)}
         .btn.secondary{background:#333;color:#eee}
         .metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:18px}
+        .gpu-enabled{color:var(--green)}
+        .gpu-partial{color:var(--orange)}
+        .gpu-unknown{color:var(--gray)}
         .metric-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.03)}
         .metric-title{font-weight:700;color:var(--green-dark);letter-spacing:.03em;margin-bottom:6px}
         .metric-value{font-size:34px;font-weight:800}
@@ -48,6 +51,7 @@
               Heap verwendet
              <span id="rssInfo" class="info" title="Prozess-RAM (RSS): –">ⓘ</span>
            </div>
+        </div>
         <div class="metric-card">
             <div class="metric-title">Durchschnittsspeicher</div>
             <div class="metric-value" id="averageMemory">-</div>
@@ -58,7 +62,17 @@
             <div class="metric-value" id="peakMemory">-</div>
             <div class="metric-label">Höchster Wert</div>
         </div>
-        <div class="metric-card status-card" style="grid-column: span 4; max-width: 300px;">
+        <div class="metric-card">
+            <div class="metric-title">GPU-Beschleunigung</div>
+            <div class="metric-value" id="gpuStatus">-</div>
+            <div class="metric-label" id="gpuDetails">-</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">VRAM (Total)</div>
+            <div class="metric-value" id="vramTotal">-</div>
+            <div class="metric-label" id="vramDetails">-</div>
+        </div>
+        <div class="metric-card status-card" style="grid-column: span 2; max-width: 300px;">
             <div class="metric-title">System-Status</div>
             <div class="metric-value" id="systemStatus">-</div>
             <div class="metric-label" id="lastUpdate">-</div>

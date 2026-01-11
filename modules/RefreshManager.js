@@ -9,7 +9,9 @@ class RefreshManager {
         this.interval = null;
         this.extendedConfig = extendedConfig;
         this.refreshQueue = []; // Queue für gestaffelte Refreshes
-        this.refreshStaggerDelay = 5000; // 5 Sekunden zwischen Refreshes
+        // Gestaffelte Refreshes: Dynamische Verzögerung basierend auf Anzahl der Fenster
+        // Bei vielen Monitoren: Längere Verzögerung, um GPU-Spitzen zu vermeiden
+        this.refreshStaggerDelay = 5000; // Standard: 5 Sekunden
 
         // Standardwerte (werden aus ExtendedConfig überschrieben)
         this.refreshDelay = 1200000; // 20 Minuten
@@ -50,8 +52,14 @@ class RefreshManager {
         this.isRunning = true;
         if (this.interval) return;
         
-        // Dynamisches Interval: 5s bei 6+ Displays, sonst 1s
-        const intervalMs = this.windows.length > 5 ? 5000 : 1000;
+        // Dynamisches Interval: 10s bei 5+ Displays, 5s bei 3-4 Displays, sonst 1s
+        // Reduziert CPU-Overhead bei vielen Monitoren
+        let intervalMs = 1000;
+        if (this.windows.length >= 5) {
+            intervalMs = 10000; // 10 Sekunden bei 5+ Monitoren
+        } else if (this.windows.length >= 3) {
+            intervalMs = 5000;  // 5 Sekunden bei 3-4 Monitoren
+        }
         
         logger.logInfo('[REFRESH-MANAGER] Starte koordinierten Refresh…', {
             intervalMs: intervalMs,
@@ -69,7 +77,11 @@ class RefreshManager {
                     now - w.lastRefresh >= w.refreshDelay &&
                     !w.isRefreshing
                 ) {
-                    windowsToRefresh.push(w);
+                    // Prüfe, ob Fenster bereits in der Queue ist
+                    const isAlreadyInQueue = this.refreshQueue.some(q => q.window === w.window);
+                    if (!isAlreadyInQueue) {
+                        windowsToRefresh.push(w);
+                    }
                 }
             }
             
@@ -85,14 +97,27 @@ class RefreshManager {
      * Verhindert GPU-Spitzen durch gleichzeitige Reloads
      */
     processRefreshQueue(windowsToRefresh) {
+        // Filtere Duplikate: Prüfe, ob Fenster bereits in der Queue ist
+        const newWindows = windowsToRefresh.filter(newWin => {
+            return !this.refreshQueue.some(existingWin => existingWin.window === newWin.window);
+        });
+        
+        if (newWindows.length === 0) {
+            return; // Keine neuen Fenster zum Hinzufügen
+        }
+        
+        // Dynamische Verzögerung: Bei 5+ Fenstern längere Verzögerung (8s statt 5s)
+        const staggerDelay = this.windows.length >= 5 ? 8000 : 5000;
+        this.refreshStaggerDelay = staggerDelay;
+        
         // Wenn bereits Refreshes laufen, zur Queue hinzufügen
         if (this.refreshQueue.length > 0) {
-            this.refreshQueue.push(...windowsToRefresh);
+            this.refreshQueue.push(...newWindows);
             return;
         }
         
         // Starte gestaffelte Refreshes
-        this.refreshQueue = windowsToRefresh;
+        this.refreshQueue = newWindows;
         this.processNextRefresh();
     }
     

@@ -101,23 +101,7 @@ const healthCheck = healthCheckManager.init();
 const { registerHealthCheckHandlers } = require('./modules/ipc/healthCheckHandlers');
 registerHealthCheckHandlers(healthCheck, errorHandler);
 // --- Cleanup alte Auto-Start-EintrÃ¤ge via app.setLoginItemSettings ---
-app.whenReady().then(async () => {
-// 1) FAVOURITES SEED (zuerst!)
-  
-console.log('[FAV-SEED] start');
-try {
-  await seedFavourites({ mode: 'copy', key: 'url' });
-  console.log('[FAV-SEED] done (copy,url)');
-} catch (e) {
-  console.warn('[FAV-SEED] error:', e && e.message ? e.message : e);
-}
-app.setLoginItemSettings({
-    openAtLogin: false,
-    path: process.execPath,
-    args: []
-  });
-  console.log('[AUTO-START] Alte Login-Item-EintrÃ¤ge entfernt');
-});
+// Wird jetzt im Haupt-whenReady() Block ausgeführt
 const { zeigeWartebildschirme, schliesseWartebildschirme } = require('./modules/wartebildschirme');
 const WindowManager = require('./modules/WindowManager');
 const logger = require('./modules/logger');
@@ -147,7 +131,11 @@ let configWindow = null;
 let dashboardWindow = null;
 let healthCheckWindow = null;
 const windowManager = new WindowManager();
-const performanceMonitor = new PerformanceMonitor();
+const performanceMonitor = new PerformanceMonitor(app);
+// Registriere Callback für aktive Fenster-Anzahl
+performanceMonitor.setWindowCountCallback(() => {
+    return windowManager.getActiveLiveWindowCount();
+});
 let liveWindows = []; // Wird schrittweise durch windowManager ersetzt
 let isAppQuitting = false;
 let isAppReturningToUI = false;
@@ -325,26 +313,47 @@ await analyticsManager.cleanup();
     app.quit();
 }
 // Ready-Block
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+    try {
+        // 1) FAVOURITES SEED (zuerst!)
+        console.log('[FAV-SEED] start');
+        try {
+            await seedFavourites({ mode: 'copy', key: 'url' });
+            console.log('[FAV-SEED] done (copy,url)');
+        } catch (e) {
+            console.warn('[FAV-SEED] error:', e && e.message ? e.message : e);
+        }
+        
+        // 2) Auto-Start Cleanup
+        try {
+            app.setLoginItemSettings({
+                openAtLogin: false,
+                path: process.execPath,
+                args: []
+            });
+            console.log('[AUTO-START] Alte Login-Item-Einträge entfernt');
+        } catch (e) {
+            console.warn('[AUTO-START] Fehler:', e && e.message ? e.message : e);
+        }
 
-    // AnalyticsManager VOR Verwendung initialisieren
-    analyticsManager = new AnalyticsManager(app);
-    let displays = screen.getAllDisplays();
-    // Jetzt Event-Tracking starten
-    analyticsManager.trackMonitorSetup(displays);
+        // AnalyticsManager VOR Verwendung initialisieren
+        analyticsManager = new AnalyticsManager(app);
+        let displays = screen.getAllDisplays();
+        // Jetzt Event-Tracking starten
+        analyticsManager.trackMonitorSetup(displays);
 
-    // UpdateManager initialisieren (benÃ¶tigt configWindow spÃ¤ter)
-    updateManager = new UpdateManager(configWindow);
+        // UpdateManager initialisieren (benÃ¶tigt configWindow spÃ¤ter)
+        updateManager = new UpdateManager(configWindow);
 
-    // Performance Monitoring starten
-    performanceMonitor.startMonitoring();
-    performanceMonitor.on('warning', warning => {
-        logger.logWarning(`Performance-Warnung: ${warning.message}`);
-        analyticsManager.trackPerformanceWarning(warning.type, warning.value);
-    });
-    // Track Monitor-Setup
-    let saved = config.loadConfig(app);
-    let configIsValid = isValidConfig(saved, displays);
+        // Performance Monitoring starten
+        performanceMonitor.startMonitoring();
+        performanceMonitor.on('warning', warning => {
+            logger.logWarning(`Performance-Warnung: ${warning.message}`);
+            analyticsManager.trackPerformanceWarning(warning.type, warning.value);
+        });
+        // Track Monitor-Setup
+        let saved = config.loadConfig(app);
+        let configIsValid = isValidConfig(saved, displays);
 
 
 // Analytics Event-Handler
@@ -435,7 +444,23 @@ killTicketchecker();
             });
         }, 1000);
     }  // â† schlieÃŸt den else-Block
-monitorService.start();   // <— hier hinzufügen
+        monitorService.start();   // <— hier hinzufügen
+    } catch (error) {
+        // Fehlerbehandlung für den gesamten Ready-Block
+        logger.logError('[MAIN] Kritischer Fehler beim App-Start', error);
+        console.error('[MAIN] Kritischer Fehler:', error);
+        console.error('[MAIN] Stack:', error.stack);
+        // Versuche trotzdem Config-Fenster zu öffnen
+        try {
+            console.log('[MAIN] Versuche Config-Fenster zu öffnen trotz Fehler...');
+            zeigeWartebildschirme();
+            createConfigWindow();
+            console.log('[MAIN] Config-Fenster sollte jetzt geöffnet sein');
+        } catch (e) {
+            console.error('[MAIN] Konnte Config-Fenster nicht öffnen:', e);
+            console.error('[MAIN] Stack:', e.stack);
+        }
+    }
 });   // â† schlieÃŸt den app.whenReady().then-Block
 
 // START-Button: Live-Views starten
@@ -575,6 +600,23 @@ ipcMain.handle('get-performance-data', () => {
   }
 });
 
+// Log-Datei-Pfad zurückgeben
+ipcMain.handle('get-logs-path', () => {
+  try {
+    const path = require('path');
+    const logsDir = path.join(process.cwd(), 'logs');
+    return {
+      logsDir: logsDir,
+      errorLog: path.join(logsDir, 'error.log'),
+      combinedLog: path.join(logsDir, 'combined.log'),
+      // In packaged app: logs sind im App-Verzeichnis
+      packaged: app.isPackaged ? path.join(path.dirname(app.getPath('exe')), 'logs') : null
+    };
+  } catch (e) {
+    return { error: e.message };
+  }
+});
+
 
 // Update-System
 ipcMain.handle('check-for-updates', async () => {
@@ -595,7 +637,75 @@ ipcMain.handle('get-analytics-report', async () => {
   try {
     return await analyticsManager.generateReport();
   } catch (e) {
-    return { error: e.message };
+    console.error('[MAIN] Fehler beim Generieren des Analytics-Reports:', e);
+    return null;
+  }
+});
+
+// Logo als Base64 für Overlay zurückgeben (bessere Kompatibilität)
+ipcMain.handle('get-logo-path', () => {
+  try {
+    const path = require('path');
+    const fs = require('fs');
+    
+    // Versuche zuerst ttlogoneu.png, dann andere PNGs, dann ICO
+    const logoFiles = ['ttlogoneu.png', 'logo2.png', 'logo3.png', 'ttquotes.ico'];
+    let foundLogo = null;
+    
+    if (app.isPackaged) {
+      // Build-Modus: Assets sind in resources/assets (extraResources)
+      for (const logoFile of logoFiles) {
+        const testPath = path.join(process.resourcesPath, 'assets', logoFile);
+        if (fs.existsSync(testPath)) {
+          foundLogo = testPath;
+          break;
+        }
+      }
+    } else {
+      // Development-Modus: Assets sind relativ zu app.getAppPath()
+      for (const logoFile of logoFiles) {
+        const testPath = path.join(app.getAppPath(), 'assets', logoFile);
+        if (fs.existsSync(testPath)) {
+          foundLogo = testPath;
+          break;
+        }
+      }
+    }
+    
+    if (!foundLogo) {
+      console.error('[MAIN] Keine Logo-Datei gefunden');
+      return null;
+    }
+    
+    // Debug: Prüfe ob Datei existiert
+    const fileExists = fs.existsSync(foundLogo);
+    console.log('[MAIN] Logo-Pfad:', foundLogo);
+    console.log('[MAIN] Datei existiert:', fileExists);
+    
+    if (!fileExists) {
+      console.error('[MAIN] Logo-Datei nicht gefunden:', foundLogo);
+      return null;
+    }
+    
+    // Lese Datei als Base64 ein
+    const fileBuffer = fs.readFileSync(foundLogo);
+    const base64 = fileBuffer.toString('base64');
+    
+    // Bestimme MIME-Type basierend auf Dateiendung
+    const ext = path.extname(foundLogo).toLowerCase();
+    let mimeType = 'image/png';
+    if (ext === '.ico') {
+      mimeType = 'image/x-icon';
+    } else if (ext === '.png') {
+      mimeType = 'image/png';
+    }
+    
+    const dataUrl = `data:${mimeType};base64,${base64}`;
+    console.log('[MAIN] Logo als Base64 zurückgegeben, Größe:', base64.length, 'Zeichen');
+    return dataUrl;
+  } catch (err) {
+    console.error('[MAIN] Fehler beim Erstellen des Logo-Pfads:', err);
+    return null;
   }
 });
 

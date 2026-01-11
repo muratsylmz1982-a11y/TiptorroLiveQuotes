@@ -108,6 +108,20 @@ class WindowManager {
         logger.logSuccess('[WINDOW-MANAGER] Cleanup abgeschlossen');
     }
     
+    // Gibt Anzahl aktiver Live-Windows zurück (für Performance-Monitoring)
+    getActiveLiveWindowCount() {
+        try {
+            // Zähle nur nicht-destroyed Live-Windows
+            if (!this.liveWindows || !Array.isArray(this.liveWindows)) {
+                return 0;
+            }
+            return this.liveWindows.filter(win => win && !win.isDestroyed()).length;
+        } catch (err) {
+            // Fehler abfangen, falls windowManager noch nicht vollständig initialisiert ist
+            return 0;
+        }
+    }
+    
     // Status-Info für Debugging
     getStatus() {
         return {

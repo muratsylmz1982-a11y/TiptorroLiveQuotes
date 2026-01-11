@@ -88,6 +88,65 @@
     }
   }
 
+  function updateGPUMetrics(sample) {
+    const gpu = sample?.gpu;
+    const vram = sample?.vram;
+
+    // GPU-Status
+    if (gpu) {
+      const statusEl = $("gpuStatus");
+      const detailsEl = $("gpuDetails");
+      if (statusEl) {
+        let statusText = "Unbekannt";
+        let statusClass = "gpu-unknown";
+        if (gpu.status === "enabled") {
+          statusText = "Aktiviert";
+          statusClass = "gpu-enabled";
+        } else if (gpu.status === "partial") {
+          statusText = "Teilweise";
+          statusClass = "gpu-partial";
+        }
+        statusEl.textContent = statusText;
+        statusEl.className = `metric-value ${statusClass}`;
+      }
+      if (detailsEl) {
+        const features = [];
+        if (gpu.hardwareAcceleration) features.push("HW-Accel");
+        if (gpu.webgl) features.push("WebGL");
+        if (gpu.videoDecode) features.push("Video");
+        
+        // Wenn keine Features erkannt wurden, aber Feature-Keys vorhanden sind, zeige das an
+        if (features.length === 0 && gpu.featureKeys && gpu.featureKeys.length > 0) {
+          detailsEl.textContent = `${gpu.featureKeys.length} Features (nicht erkannt)`;
+          detailsEl.title = `Vorhandene Feature-Keys: ${gpu.featureKeys.slice(0, 5).join(', ')}${gpu.featureKeys.length > 5 ? '...' : ''}`;
+        } else if (features.length === 0) {
+          detailsEl.textContent = "Keine Features";
+        } else {
+          detailsEl.textContent = features.join(", ");
+        }
+      }
+    } else {
+      setText("gpuStatus", "Nicht verfügbar");
+      setText("gpuDetails", "-");
+    }
+
+    // VRAM
+    if (vram) {
+      setText("vramTotal", vram.totalVRAM || "-");
+      const vramDetails = $("vramDetails");
+      if (vramDetails) {
+        const gpuName = vram.gpuName || "Unbekannt";
+        vramDetails.textContent = gpuName;
+        if (vram.note) {
+          vramDetails.title = vram.note;
+        }
+      }
+    } else {
+      setText("vramTotal", "-");
+      setText("vramDetails", "Nicht verfügbar");
+    }
+  }
+
   function updateDashboardData(sample, sourceLabel) {
     const heapMiB = toMiB(sample?.currentMemory);
     const avgMiB = toMiB(sample?.averageMemory);
@@ -100,11 +159,29 @@
     setStatus(sample?.status || "healthy");
     setText("lastUpdated", hhmmss(new Date()));
 
+    // GPU/VRAM-Metriken aktualisieren
+    updateGPUMetrics(sample);
+
     updateTooltip(sample);
     lastSample = sample;
 
     // Always consider logging on updates
     logUpdate(sourceLabel || "", sample);
+    
+    // Debug-Info anzeigen (falls vorhanden)
+    if (sample?.debugInfo && sample.debugInfo.length > 0) {
+      sample.debugInfo.forEach(info => {
+        addLog(`DEBUG: ${info}`);
+      });
+    }
+    
+    // Multi-Monitor-Warnungen anzeigen (falls vorhanden)
+    if (sample?.multiMonitorWarnings && sample.multiMonitorWarnings.length > 0) {
+      sample.multiMonitorWarnings.forEach(warning => {
+        const icon = warning.severity === 'critical' ? '🔴' : '⚠️';
+        addLog(`${icon} ${warning.severity.toUpperCase()}: ${warning.message}`);
+      });
+    }
   }
 
   function wireButtons() {

@@ -128,8 +128,34 @@ window.addEventListener('DOMContentLoaded', async () => {
         return block;
     }
 
-    for (let i = 0; i < displays.length; i++) {
-        container.appendChild(createConfigBlock(i));
+    // Optimierung: Bei vielen Monitoren (5+) verzögerte Rendering für bessere UI-Performance
+    if (displays.length >= 5) {
+        // Lazy Loading: Render nur sichtbare Elemente zuerst, dann nach und nach
+        let rendered = 0;
+        const renderBatch = () => {
+            const batchSize = 3; // 3 Monitore pro Batch
+            const end = Math.min(rendered + batchSize, displays.length);
+            for (let i = rendered; i < end; i++) {
+                container.appendChild(createConfigBlock(i));
+            }
+            rendered = end;
+            if (rendered < displays.length) {
+                // Nächster Batch nach kurzer Verzögerung (nicht-blockierend)
+                setTimeout(renderBatch, 50);
+            } else {
+                // Alle gerendert, Event-Listener setzen
+                setupEventListeners();
+                updateDisplayCounts();
+            }
+        };
+        renderBatch();
+    } else {
+        // Bei weniger Monitoren: Normale Rendering
+        for (let i = 0; i < displays.length; i++) {
+            container.appendChild(createConfigBlock(i));
+        }
+        setupEventListeners();
+        updateDisplayCounts();
     }
 
     setupEventListeners();

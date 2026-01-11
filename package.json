@@ -16,6 +16,10 @@
       {
         "from": "defaults",
         "to": "defaults"
+      },
+      {
+        "from": "assets",
+        "to": "assets"
       }
     ],
     "win": {

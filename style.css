@@ -104,17 +104,18 @@ body {
     align-items: center;
     min-height: 70px;
     margin-bottom: 15px;
-    transition: box-shadow 0.16s, border-color 0.12s, background 0.16s, transform 0.10s;
+    transition: box-shadow 0.16s, border-color 0.12s, background 0.16s;
     position: relative; 
     opacity: 1;
 }
-.display-section:hover, .display-section:focus-within {
+/* HOVER-EFFEKTE TEMPORÄR DEAKTIVIERT FÜR PERFORMANCE-TEST */
+/* .display-section:hover, .display-section:focus-within {
     background: #191b19;
     border-color: var(--tt-green);
     box-shadow: 0 0 15px #26994755, 0 2px 15px #000b;
     transform: scale(1.003) translateZ(0);
     will-change: transform, box-shadow, background-color;
-}
+} */
 
 .monitor-info { display: flex; flex-direction: column; gap: 4px; }
 .monitor-name { font-size: 18px; font-weight: 700; color: var(--tt-green); margin: 0;}
@@ -157,7 +158,7 @@ input:focus, select:focus {border-color: var(--tt-green); box-shadow: 0 0 0 2px 
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
-.toggle-preview:hover { background: var(--tt-green); color: var(--tt-white); }
+/* .toggle-preview:hover { background: var(--tt-green); color: var(--tt-white); } */
 
 .actionbar {
     display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; 
@@ -180,33 +181,33 @@ input:focus, select:focus {border-color: var(--tt-green); box-shadow: 0 0 0 2px 
     letter-spacing: 0.07em;
     text-transform: uppercase;
     min-width: 160px;
-    transition: box-shadow 0.2s, background 0.2s, transform 0.2s, color 0.2s;
+    transition: box-shadow 0.2s, background 0.2s, color 0.2s;
     outline: none;
 }
-.action-btn:hover, .action-btn:focus {
+/* .action-btn:hover, .action-btn:focus {
     background: linear-gradient(90deg, #3ae97c 82%, var(--tt-green) 100%);
     color: #191919;
     transform: scale(1.05) translateY(-1px) translateZ(0);
     box-shadow: 0 4px 16px #26994744;
     will-change: transform, background-color;
-}
+} */
 .action-btn.red {
     background: linear-gradient(90deg, var(--tt-red) 85%, #5b141c 110%);
     color: #fff !important;
     box-shadow: 0 4px 20px #a8222555;
     font-weight: 700;
 }
-.action-btn.red:hover {
+/* .action-btn.red:hover {
     background: linear-gradient(88deg, #fd4a5b 90%, #ee4121 107%);
-}
+} */
 .action-btn.gray {
     background: #191919;
     color: #e0e0e0;
 }
-.action-btn.gray:hover {
+/* .action-btn.gray:hover {
     background: #2a2a2a;
     color: var(--tt-white);
-}
+} */
 
 /* ---------- Modal Favoriten: Overlay, Content & Header ---------- */
 .modal-overlay {
@@ -219,9 +220,9 @@ input:focus, select:focus {border-color: var(--tt-green); box-shadow: 0 0 0 2px 
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    /* Hardware-Beschleunigung */
-    will-change: opacity, transform;
-    transform: translateZ(0);
+    /* Hardware-Beschleunigung - TEMPORÄR DEAKTIVIERT FÜR PERFORMANCE-TEST */
+    /* will-change: opacity, transform; */
+    /* transform: translateZ(0); */
 }
 .modal-overlay.visible { display: flex; animation: modalFadeIn 0.3s ease-out; }
 @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -252,7 +253,7 @@ input:focus, select:focus {border-color: var(--tt-green); box-shadow: 0 0 0 2px 
     border-radius: 8px; transition: all 0.3s ease; width: 40px; height: 40px;
     display: flex; align-items: center; justify-content: center;
 }
-.close-button:hover { background: var(--tt-red); color: var(--tt-white); border-color: var(--tt-red); transform: scale(1.1);}
+/* .close-button:hover { background: var(--tt-red); color: var(--tt-white); border-color: var(--tt-red); transform: scale(1.1);} */
 .modal-body { padding: 30px; max-height: 60vh; overflow-y: auto; }
 .modal-body h4 { color: var(--tt-white); font-size: 16px; font-weight: 600; margin: 0 0 16px 0; text-transform: uppercase; letter-spacing: 0.05em; }
 
@@ -305,11 +306,11 @@ input:focus, select:focus {border-color: var(--tt-green); box-shadow: 0 0 0 2px 
     border-radius: 8px;
     transition: all 0.3s ease;
 }
-.favorite-item:hover {
+/* .favorite-item:hover {
     background: #222;
     border-color: var(--tt-green);
     transform: translateX(6px);
-}
+} */
 .small-modal {
     min-width: 360px;
     max-width: 430px;
@@ -357,7 +358,7 @@ input:focus, select:focus {border-color: var(--tt-green); box-shadow: 0 0 0 2px 
     letter-spacing: 0.07em;
     text-transform: uppercase;
     min-width: 110px;
-    transition: box-shadow 0.2s, background 0.2s, transform 0.2s, color 0.2s;
+    transition: box-shadow 0.2s, background 0.2s, color 0.2s;
     outline: none;
     display: inline-block;
 }
@@ -368,14 +369,14 @@ input:focus, select:focus {border-color: var(--tt-green); box-shadow: 0 0 0 2px 
     color: #191919;
     border: 1px solid #22c55e;
 }
-.btn.green:hover,
+/* .btn.green:hover,
 .save-btn:hover,
 .add-btn:hover {
     background: linear-gradient(90deg, #3ae97c 82%, var(--tt-green) 100%);
     color: #191919;
     transform: scale(1.02) translateY(-1px);
     box-shadow: 0 4px 16px #26994744;
-}
+} */
 .btn.red,
 .delete-btn {
     background: linear-gradient(90deg, var(--tt-red) 85%, #5b141c 110%);
@@ -383,12 +384,12 @@ input:focus, select:focus {border-color: var(--tt-green); box-shadow: 0 0 0 2px 
     box-shadow: 0 4px 20px #a8222555;
     border: 1px solid var(--tt-red);
 }
-.btn.red:hover,
+/* .btn.red:hover,
 .delete-btn:hover {
     background: linear-gradient(88deg, #fd4a5b 90%, #ee4121 107%);
     color: var(--tt-white);
     transform: scale(1.03) translateY(-1px);
-}
+} */
 
 /* ---------- Responsive Anpassung ---------- */
 @media (max-width: 1200px) {
@@ -410,10 +411,10 @@ input:focus, select:focus {border-color: var(--tt-green); box-shadow: 0 0 0 2px 
 /* ---------- Scrollbars & Details ---------- */
 ::-webkit-scrollbar { width: 8px; background: #181818;}
 ::-webkit-scrollbar-thumb { background: #26994755; border-radius: 10px;}
-::-webkit-scrollbar-thumb:hover { background: #269947aa;}
+/* ::-webkit-scrollbar-thumb:hover { background: #269947aa;} */
 .favorites-list::-webkit-scrollbar { width: 8px; }
 .favorites-list::-webkit-scrollbar-thumb { background: rgba(38, 153, 71, 0.5); border-radius: 4px; }
-.favorites-list::-webkit-scrollbar-thumb:hover { background: var(--tt-green); }
+/* .favorites-list::-webkit-scrollbar-thumb:hover { background: var(--tt-green); } */
 
 .favorites-empty { text-align: center; padding: 40px 20px; color: var(--tt-gray); font-style: italic;}
 /* Status Banner */
@@ -462,12 +463,12 @@ input:focus, select:focus {border-color: var(--tt-green); box-shadow: 0 0 0 2px 
   height: 24px;
   cursor: pointer;
   font-size: 16px;
-  line-height: 1;
+    line-height: 1;
 }
 
-.status-close:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
+/* .status-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+} */
 /* Debug-Elemente ausblenden */
 body::after,
 html::after,
